@@ -1,15 +1,21 @@
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
-import Main from "./components/Main"
+import { AnimatePresence } from "framer-motion";
+
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
+import CartModal from "./components/CartModal";
+import { useStore } from "./store";
 
 function App() {
+  const { cartOpen } = useStore();
   return (
-    <div className='font-mono grid place-items-center text-white h-svh text-3xl bg-slate-800'>
+    <div className="font-mono grid place-items-center text-white h-svh text-3xl bg-slate-800">
       <Navbar />
+      <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
       <Main />
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 
 import { ShoppingCart, Search, X } from "lucide-react";
 import { motion, useAnimate } from "framer-motion";
+import { useStore } from "../store";
 
 const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
-
+  const { toggleCart } = useStore();
+  
   const [scobe, animate] = useAnimate();
   const searchRef = useRef(null);
 
@@ -42,12 +43,12 @@ const Navbar = () => {
   };
 
   const handleCartOpen = () => {
-    setCartOpen(true);
+    toggleCart(true);
     console.log("Cart Opened");
   };
 
   const handleCartClose = () => {
-    setCartOpen(false);
+    toggleCart(false);
   };
 
   return (

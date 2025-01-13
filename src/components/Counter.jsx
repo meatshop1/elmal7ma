@@ -1,22 +1,26 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
 
-const Counter = ({hideCounter}) => {
-    const [count, setCount] = useState(1);
-    const handleIncrement = () => {
-        setCount((prev) => prev + 1);
-    };
-    const handleDecrement = () => {
-        if (count === 1) {
-            hideCounter();
-            return;
-        }
-        setCount((prev) => prev - 1);
-    };
+const Counter = ({ hideCounter, className }) => {
+  const [count, setCount] = useState(1);
+  const handleIncrement = () => {
+    setCount((prev) => prev + 1);
+  };
+  const handleDecrement = () => {
+    if (count === 1) {
+      hideCounter();
+      return;
+    }
+    setCount((prev) => prev - 1);
+  };
   return (
     <motion.div
-      className="absolute w-28 h-8 bg-slate-700 rounded-lg flex items-center justify-between right-4"
+      className={twMerge(
+        "absolute w-28 h-8 bg-slate-700 rounded-lg flex items-center justify-between right-4",
+        className
+      )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ height: 0, y: 20, opacity: 0, width: 0 }}
@@ -24,7 +28,7 @@ const Counter = ({hideCounter}) => {
     >
       <motion.button
         exit={{ height: 0 }}
-        transition={{duration: 0.1}}
+        transition={{ duration: 0.1 }}
         className="w-8 h-full bg-slate-800 rounded-lg grid place-items-center"
         onClick={handleDecrement}
       >
@@ -36,10 +40,10 @@ const Counter = ({hideCounter}) => {
       <motion.p
         className="text-white"
         exit={{ height: 0 }}
-        transition={{ duration: 0.1}}
+        transition={{ duration: 0.1 }}
       >
         <motion.p exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
-            {count}
+          {count}
         </motion.p>
       </motion.p>
 
