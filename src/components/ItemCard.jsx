@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import Counter from "./Counter";
 import { AnimatePresence, useAnimate, motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
 
-const ItemCard = ({ url, name, description, price }) => {
+const ItemCard = ({ url, name, description, price, className }) => {
   const [showCounter, setShowCounter] = useState(false);
 
   const [scobe, animate] = useAnimate();
@@ -20,7 +21,10 @@ const ItemCard = ({ url, name, description, price }) => {
 
   return (
     <motion.div ref={scobe}>
-      <div className="bg-slate-900 w-[16rem] h-80 rounded-lg shadow-lg flex flex-col items-start">
+      <div className={twMerge(
+        "bg-slate-900 w-[16rem] h-80 rounded-lg shadow-lg flex flex-col items-start",
+        className
+      )}>
         <img
           src={url}
           alt="placeholder"

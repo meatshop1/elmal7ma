@@ -9,7 +9,7 @@ import { useStore } from "./store";
 function App() {
   const { cartOpen } = useStore();
   return (
-    <div className="font-mono grid place-items-center text-white h-svh text-3xl bg-slate-800">
+    <div className="font-mono flex flex-col items-center text-white text-3xl bg-slate-800">
       <Navbar />
       <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
       <Main />

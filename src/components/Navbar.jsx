@@ -54,7 +54,7 @@ const Navbar = () => {
   return (
     <div
       ref={scobe}
-      className="border border-red-100 absolute top-0 w-full h-16 flex items-center justify-between px-4"
+      className="border border-red-100 w-full h-16 flex items-center justify-between px-4"
     >
       <p className="font-kufam font-semibold w-fit px-3">ملحمة المنزلة</p>
       <div className="z-40">
@@ -75,7 +75,7 @@ const Navbar = () => {
         ref={searchRef}
         onBlur={handleCloseSearch}
         onChange={handleUserInput}
-        className="focus:outline-none text-lg top-[0.8rem] overflow-hidden absolute right-[3.7rem] rounded-3xl hidden w-[2rem] h-8 bg-slate-700 px-2"
+        className="focus:outline-none text-lg top-[0.9rem] overflow-hidden absolute right-[3.7rem] rounded-3xl hidden w-[2rem] h-8 bg-slate-700 px-2"
         type="text"
         placeholder="Search.."
       />

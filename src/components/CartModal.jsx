@@ -8,7 +8,7 @@ const items = [
   {
     id: 1,
     url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Item 1",
+    name: "Farha ibrahiem",
     price: 100,
     description: "Description 1",
   },
@@ -72,8 +72,8 @@ const CartModal = () => {
           ))}
         </div>
         <div className="flex mt-2">
-          <p className="text-black font-poppins p-2 text-2xl">Total</p>
-          <p className="text-black font-poppins border text-2xl border-gray-200 p-2 shadow-sm rounded-lg ">
+          <p className="text-black font-poppins p-2 text-2xl">Total :</p>
+          <p className="text-black font-poppins text-2xl p-2 px-0 rounded-lg ">
             1500SR
           </p>
         </div>
