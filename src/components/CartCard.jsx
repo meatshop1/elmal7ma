@@ -1,10 +1,23 @@
 import { Trash2 } from "lucide-react";
 import Counter from "./Counter";
+import { motion } from "framer-motion";
+import { useStore } from "../store";
 
 const CartCard = ({ product }) => {
+  const { removeFromCart, increment, decrement } = useStore();
   return (
-    <div className="w-full h-32 font-poppins bg-slate-900 flex gap-2 rounded-lg p-2 my-2 relative">
-      <button className="w-8 h-8 hover:bg-slate-800 transition-all grid place-content-center rounded-full absolute top-2 right-2">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 2000 }}
+      transition={{ duration: 0.2 }}
+      layout
+      className="w-full h-32 font-poppins bg-slate-900 flex gap-2 rounded-lg p-2 my-2 relative"
+    >
+      <button
+        onClick={() => removeFromCart(product)}
+        className="w-8 h-8 hover:bg-slate-800 transition-all grid place-content-center rounded-full absolute top-2 right-2"
+      >
         <Trash2 />
       </button>
       <img
@@ -18,9 +31,14 @@ const CartCard = ({ product }) => {
         <p className="text-white text-2xl font-light mt-auto">
           {product.price}SR
         </p>
-        <Counter className="absloute bottom-2 right-2 text-xl" />
+        <Counter
+          initCount={product.count}
+          className="absloute bottom-2 right-2 text-xl"
+          increment={increment.bind(null, product)}
+          decrement={decrement.bind(null, product)}
+        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

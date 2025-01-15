@@ -2,18 +2,23 @@ import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
+import { useStore } from "../store";
 
-const Counter = ({ hideCounter, className }) => {
-  const [count, setCount] = useState(1);
+const Counter = ({ hideCounter, className, increment, decrement, initCount }) => {
+  const [count, setCount] = useState(initCount || 1);
   const handleIncrement = () => {
     setCount((prev) => prev + 1);
+    increment();
+    console.log(useStore.getState().cart);
   };
   const handleDecrement = () => {
+    decrement();
     if (count === 1) {
       hideCounter();
       return;
     }
     setCount((prev) => prev - 1);
+    console.log(useStore.getState().cart);
   };
   return (
     <motion.div
@@ -42,9 +47,9 @@ const Counter = ({ hideCounter, className }) => {
         exit={{ height: 0 }}
         transition={{ duration: 0.1 }}
       >
-        <motion.p exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
+        <motion.span exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
           {count}
-        </motion.p>
+        </motion.span>
       </motion.p>
 
       <motion.button

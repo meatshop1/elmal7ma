@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, animate } from "framer-motion";
 import { MoveRight, X } from "lucide-react";
+import { useState } from "react";
 import { useStore } from "../store";
 import CartCard from "./CartCard";
 
@@ -42,14 +42,20 @@ const items = [
     description: "Description 5",
   },
 ];
+
 const CartModal = () => {
   const { toggleCart } = useStore();
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
+  const { cart, Total } = useStore();
+
   return (
     <motion.div
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
-      onClick={() => toggleCart(false)}
-      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 grid place-items-center z-10"
+      onClick={() => {
+        document.body.style.overflow = "auto";
+        toggleCart(false);
+      }}
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 grid place-items-center z-30"
     >
       <motion.div
         initial={{ scale: 0 }}
@@ -61,33 +67,68 @@ const CartModal = () => {
         <p className="text-black font-poppins">Your Shopping Cart</p>
         <hr className="border border-gray-200 my-2" />
         <button
-          onClick={() => toggleCart(false)}
+          onClick={() => {
+            document.body.style.overflow = "auto";
+            toggleCart(false);
+          }}
           className="absolute w-8 h-8 bg-black grid place-content-center rounded-full -top-4 right-0"
         >
           <X />
         </button>
-        <div className="border border-gray-200 rounded-lg px-2 h-3/4 scrollbar-hide overflow-y-auto">
-          {items.map((item) => (
-            <CartCard key={item.id} product={item} />
-          ))}
-        </div>
-        <div className="flex mt-2">
-          <p className="text-black font-poppins p-2 text-2xl">Total :</p>
-          <p className="text-black font-poppins text-2xl p-2 px-0 rounded-lg ">
-            1500SR
-          </p>
-        </div>
-        <motion.button 
-        onHoverStart={() => setIsCheckoutHovered(true)}
-        onHoverEnd={() => setIsCheckoutHovered(false)}
-        className="text-black font-poppins border text-xl flex items-center justify-center gap-4 m-2 p-2 border-gray-500">
-          <span>Checkout</span>{" "}
-          <motion.span 
-            animate={{ x: isCheckoutHovered ? 10 : 0 }}
+        {cart.length ? (
+          <div className="border border-gray-200 rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-scroll">
+            <AnimatePresence>
+              {cart.map((item) => (
+                <CartCard key={item.id} product={item} />
+              ))}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.2 }}
+            exit={{ opacity: 0 }}
+            layout
+            className="text-black text-9xl font-poppins flex items-center justify-center rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-auto opacity-20"
           >
-            <MoveRight />
-          </motion.span>
-        </motion.button>
+            <span className="">Your cart is empty.</span>
+          </motion.p>
+        )}
+        {cart.length ? (
+          <div className="w-full flex flex-col">
+            <div className="flex mt-2">
+              <p className="text-black font-poppins p-2 text-2xl">Total :</p>
+              <p className="text-black font-poppins text-2xl p-2 px-0 rounded-lg ">
+                {Total}SR
+              </p>
+            </div>
+            <motion.button
+              disabled={!cart.length}
+              onHoverStart={() => setIsCheckoutHovered(true)}
+              onHoverEnd={() => setIsCheckoutHovered(false)}
+              className="text-black font-poppins border text-xl flex items-center justify-center gap-4 m-2 p-2 border-gray-500"
+            >
+              <span>Checkout</span>{" "}
+              <motion.span animate={{ x: isCheckoutHovered ? 10 : 0 }}>
+                <MoveRight />
+              </motion.span>
+            </motion.button>
+          </div>
+        ) : (
+          <motion.button 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          layout
+          onClick={() => {
+            document.body.style.overflow = "auto";
+            toggleCart(false);
+            window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+          }}
+          className="text-black rounded-lg w-fit p-5 ml-auto shadow-lg border font-poppins text-5xl flex font-light items-center justify-center">
+            <span>Add Some</span>
+          </motion.button>
+        )}
       </motion.div>
     </motion.div>
   );

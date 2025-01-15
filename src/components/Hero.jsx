@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MoveRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
+import elmanzla from "../assets/elmanzla-removebg-preview.png";
 
 const Hero = () => {
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
   const subHeading = "Shop the best quality meat in the market";
-  
+
   return (
     <div className="h-[100vh] relative w-full">
       <img
@@ -44,28 +45,50 @@ const Hero = () => {
         </motion.span>
       </h1>
       <p className="font-poppins text-4xl font-thin absolute top-[23rem] left-12 z-10">
-        {subHeading.split("").map((word, index) => (
-          word === " " ? <span>&nbsp;</span> :
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: (0.01 * index) + 0.5 }}
-            className="inline-block"
-          >
-            {word}
-          </motion.span>
-        ))}
+        {subHeading.split("").map((word, index) =>
+          word === " " ? (
+            <span key={index}>&nbsp;</span>
+          ) : (
+            <motion.span
+              key={word + index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.01 * index + 0.5 }}
+              className="inline-block"
+            >
+              {word}
+            </motion.span>
+          )
+        )}
       </p>
       <motion.button
         onHoverStart={() => setIsCheckoutHovered(true)}
         onHoverEnd={() => setIsCheckoutHovered(false)}
-        className=" font-poppins text-xl flex items-center justify-center gap-4 m-2 p-2 border w-64 absolute bottom-[2rem] right-10 z-10"
+        initial={{ opacity: 0, y: 200, x: "-50%" }}
+        animate={{ opacity: 1, y: 0, x: "-50%" }}
+        transition={{ duration: 0.2, delay: 0.8 }}
+        className=" font-poppins text-xl flex flex-col items-center rounded-full justify-center h-40 gap-4 m-2 p-2 border w-40 absolute bottom-[2rem] left-1/2 transition -translate-x-[50%] z-10"
+        onClick={() =>
+          window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+        }
       >
         <span>Shop now</span>{" "}
-        <motion.span animate={{ x: isCheckoutHovered ? 10 : 0 }}>
-          <MoveRight />
+        <motion.span
+          initial={{ y: 0 }}
+          animate={{ y: isCheckoutHovered ? 10 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <ArrowDown />
         </motion.span>
       </motion.button>
+
+      <motion.img
+        initial={{ opacity: 0, scale: 2 }}
+        animate={{ opacity: 1, scale: 1.1 }}
+        transition={{ duration: 0.5, delay: 0.5, type: "spring" }}
+        src={elmanzla}
+        className="w-[11.5rem] h-[11.5rem] absolute top-20 object-cover border-red-800 rounded-full right-24 z-10"
+      />
     </div>
   );
 };

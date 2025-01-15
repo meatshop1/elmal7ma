@@ -10,6 +10,8 @@ import Hero from "./components/Hero";
 
 
 // TODO: center the cart modal
+// TODO: Cart functionality 
+//BUG: when item is removed from the cart, the itemCard itseld should close the counter
 function App() {
   const { cartOpen } = useStore();
   return (

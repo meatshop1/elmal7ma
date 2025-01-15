@@ -6,8 +6,8 @@ import { useStore } from "../store";
 
 const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const { toggleCart } = useStore();
-  
+  const { toggleCart, itemsCount } = useStore();
+
   const [scobe, animate] = useAnimate();
   const searchRef = useRef(null);
 
@@ -43,21 +43,18 @@ const Navbar = () => {
   };
 
   const handleCartOpen = () => {
+    document.body.style.overflow = "hidden";
     toggleCart(true);
     console.log("Cart Opened");
   };
 
-  const handleCartClose = () => {
-    toggleCart(false);
-  };
-
   return (
     <motion.div
-    initial={{ y: -100 }}
-    animate={{ y: 0 }}
-    transition={{ duration: 1 }}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 1 }}
       ref={scobe}
-      className=" w-full h-16 flex items-center justify-between px-4 absolute top-0 bg-red-800 z-50"
+      className=" w-full h-16 flex items-center justify-between px-4 bg-red-800 z-50 absolute top-0"
     >
       <p className="font-kufam font-semibold w-fit px-3">ملحمة المنزلة</p>
       <div className="z-40">
@@ -68,9 +65,11 @@ const Navbar = () => {
           onClick={handleCartOpen}
           className="font-kufam font-semibold w-fit px-3 relative"
         >
-          <div className="absolute bg-slate-700 text-xs -top-2 right-1 rounded-full w-5 h-5 flex items-center justify-center">
-            1
-          </div>
+          {itemsCount !== 0 && (
+            <div className="absolute bg-slate-700 text-xs -top-2 right-1 rounded-full w-5 h-5 flex items-center justify-center">
+              {itemsCount}
+            </div>
+          )}
           <ShoppingCart />
         </button>
       </div>
