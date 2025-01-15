@@ -7,7 +7,7 @@ const Hero = () => {
   const subHeading = "Shop the best quality meat in the market";
   
   return (
-    <div className="h-[95vh] relative w-full">
+    <div className="h-[100vh] relative w-full">
       <img
         src="https://www.woodwardmeats.com/static/img/steak-feature/woodward-meats-steak-feature-600x450.cda43ce454b3.jpg"
         alt=""

@@ -52,9 +52,12 @@ const Navbar = () => {
   };
 
   return (
-    <div
+    <motion.div
+    initial={{ y: -100 }}
+    animate={{ y: 0 }}
+    transition={{ duration: 1 }}
       ref={scobe}
-      className="border border-red-100 w-full h-16 flex items-center justify-between px-4"
+      className=" w-full h-16 flex items-center justify-between px-4 absolute top-0 bg-red-800 z-50"
     >
       <p className="font-kufam font-semibold w-fit px-3">ملحمة المنزلة</p>
       <div className="z-40">
@@ -79,7 +82,7 @@ const Navbar = () => {
         type="text"
         placeholder="Search.."
       />
-    </div>
+    </motion.div>
   );
 };
 

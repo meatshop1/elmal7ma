@@ -62,7 +62,7 @@ const items = [
 
 const Main = () => {
   return (
-    <main className="flex flex-col items-center justify-center w-full mx-auto z-10">
+    <main className="flex flex-col items-center justify-center w-full mx-auto z-10 mb-10">
       <div className="m-auto h-fit mt-10 w-[60%] grid grid-rows-* grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
         {items.map((item) => (
           <ItemCard
