@@ -12,7 +12,7 @@ const CartCard = ({ product }) => {
       exit={{ opacity: 0, x: 2000 }}
       transition={{ duration: 0.2 }}
       layout
-      className="w-full h-32 font-poppins bg-slate-900 flex gap-2 rounded-lg p-2 my-2 relative"
+      className="w-full h-32 font-poppins bg-red-600 flex gap-2 rounded-lg p-2 my-2 relative"
     >
       <button
         onClick={() => removeFromCart(product)}

@@ -44,6 +44,7 @@ const Navbar = () => {
 
   const handleCartOpen = () => {
     document.body.style.overflow = "hidden";
+    console.log("clicked")
     toggleCart(true);
     console.log("Cart Opened");
   };
@@ -54,7 +55,7 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 1 }}
       ref={scobe}
-      className=" w-full h-16 flex items-center justify-between px-4 bg-red-800 z-50 absolute top-0"
+      className=" w-full h-16 flex items-center justify-between px-4 bg-red-800 z-30 fixed top-0"
     >
       <p className="font-kufam font-semibold w-fit px-3">ملحمة المنزلة</p>
       <div className="z-40">

@@ -65,7 +65,7 @@ const Locations = () => {
   return (
     <div
       style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
-      className="relative h-[45rem] bg-cyan-200 w-full"
+      className="relative h-[45rem] w-full"
     >
       <div className="h-[calc(100vh+45rem)] bg-black text-white relative -top-[calc(100vh)]">
         <div className="h-[45rem] w-full top-[calc(100vh-45rem)] sticky flex justify-center items-center">
@@ -78,8 +78,8 @@ const Locations = () => {
 
 const LocationContent = () => {
   return (
-    <div className="bg-yellow-100 w-full py-5 pb-10 h-[45rem]">
-      <h1 className="text-4xl text-center my-8 font-poppins w-full">Our Locations</h1>
+    <div className="bg-red-600 w-full py-5 pb-10 h-[45rem]">
+      <h1 className="text-6xl text-center my-8 font-poppins w-full">Visit us</h1>
       <div className=" grid grid-rows-* grid-cols-[repeat(auto-fill,minmax(21rem,1fr))] lg:w-[70%] m-auto">
         {locations.map((location) => (
           <LocationCard
