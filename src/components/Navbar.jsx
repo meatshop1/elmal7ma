@@ -54,7 +54,7 @@ const Navbar = () => {
           }`}
         >
           {itemsCount !== 0 && (
-            <div className="absolute bg-primary text-xs top-10 right-11 rounded-full w-5 h-5 flex items-center justify-center">
+            <div className={`absolute bg-primary text-xs ${hide ? "top-10 right-11" : "-top-2 right-1"} rounded-full w-5 h-5 flex items-center justify-center`}>
               {itemsCount}
             </div>
           )}
