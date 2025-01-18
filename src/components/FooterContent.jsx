@@ -4,7 +4,7 @@ import { Facebook, Instagram, Phone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 const FooterContent = () => {
-  const phone = "+1234567890";
+  const phone = "+20553097953";
   const whatsupLink = `https://wa.me/${phone}?text=Hello%2C%20I%20have%20a%20question%20about%20your%20products.`
   
   return (

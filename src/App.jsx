@@ -16,7 +16,8 @@ import Hero from "./components/Hero";
 function App() {
   const { cartOpen } = useStore();
   return (
-    <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
+    <div 
+    className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />
       <Hero />
       <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
