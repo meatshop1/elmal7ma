@@ -22,7 +22,7 @@ const Main = () => {
     <main className="flex flex-col items-center min-h-full justify-center w-full mx-auto z-10 mb-10">
       <ProductListFilter onChange={onChange} />
       {products && <ProductList products={products} className="" />}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p className="h-[100vh]">Loading...</p>}
     </main>
   );
 };

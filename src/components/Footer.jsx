@@ -1,4 +1,5 @@
 import React from "react";
+import FooterContent from "./FooterContent";
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
     >
       <div className="h-[calc(100vh+30rem)] bg-black text-white relative -top-[100vh]">
         <div className="h-[30rem] w-full top-[calc(100vh-30rem)] sticky flex justify-center items-center">
-          <div>Footer</div>
+          <FooterContent />
         </div>
       </div>
     </div>

@@ -151,9 +151,9 @@ function Form({ setIsCheckoutOpen }) {
   };
 
   return (
-    <div className="h-full gap-2 overflow-auto scrollbar-hide ">
+    <div className="h-full gap-2 overflow-auto scrollbar-hide  ">
       <button
-        onClick={() => setIsCheckoutOpen(prev => !prev)}
+        onClick={() => setIsCheckoutOpen((prev) => !prev)}
         className="absolute w-10 h-10 rounded-full bg-black grid place-content-center -top-4 -left-4"
       >
         <ArrowLeft />
@@ -185,10 +185,10 @@ function Form({ setIsCheckoutOpen }) {
             <button
               type="button"
               onClick={handleCurrentLocation}
-              className="text-black bg-white col-span-10 font-poppins justify-center gap-2 text-[1rem] h-9 border-2 border-black flex items-center text-lg self-center rounded-md"
+              className=" bg-white col-span-10 font-poppins justify-center gap-2 text-[1rem] h-9 border-2 border-custom flex items-center text-lg self-center rounded-md"
             >
-              <MapPinHouse />
-              <span>Use Current location</span>
+              <MapPinHouse stroke="#1D1616" />
+              <span className="text-custom">Use Current location</span>
             </button>
           </div>
         </div>

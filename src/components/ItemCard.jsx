@@ -35,7 +35,7 @@ const ItemCard = ({ product, className }) => {
     <motion.div ref={scobe}>
       <div
         className={twMerge(
-          "bg-slate-900 w-[16rem] h-80 rounded-lg shadow-lg flex flex-col items-start",
+          "bg-custom w-[16rem] h-80 rounded-lg shadow-lg flex flex-col items-start",
           className
         )}
       >
@@ -48,7 +48,7 @@ const ItemCard = ({ product, className }) => {
         <p className="text-sm text-gray-400 ml-4 mt-1">{product.description}</p>
         <div className="flex items-center justify-between w-full px-4 mt-auto py-2 relative">
           <p className="text-lg font-semibold">
-            <span className="font-thin text-2xl">{product.price}</span> SR
+            <span className="text-2xl">{product.price}</span><span className="pl-1 font-thin">SR</span>
           </p>
           <AnimatePresence>
             {showCounter && (
@@ -62,7 +62,7 @@ const ItemCard = ({ product, className }) => {
             )}
           </AnimatePresence>
           <button
-            className="bg-slate-800 text-white w-10 h-10 rounded-full grid place-items-center"
+            className="bg-primary text-white w-10 h-10 rounded-full grid place-items-center"
             onClick={() => handleAdd()}
           >
             {showCounter ? <Trash2 /> : <Plus />}

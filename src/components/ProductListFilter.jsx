@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
+import { Search } from "lucide-react";
 
 const taps = [
   { id: 1, name: "All" },
@@ -19,15 +20,15 @@ const ProductListFilter = ({ onChange }) => {
   }, [category, debouncedSearch]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex flex-col items-center justify-center w-1/4 ">
       <input
         type="text"
         placeholder="Search..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="text-black text-2xl rounded-md p-2 mt-10 focus:outline-none"
+        className="text-white text-xl rounded-md p-2 mt-10 focus:outline-none w-full h-9 bg-secondary"
       />
-      <div>
+      <div className="flex flex-wrap justify-center mt-2 w-full ">
         {taps.map((tap) => (
           <button
             key={tap.id}
@@ -43,10 +44,15 @@ const ProductListFilter = ({ onChange }) => {
               }
             }}
             className={`${
-              category.includes(tap.name) ? "bg-blue-500" : "bg-blue-300"
-            } ${
-              !category.length && tap.name === "All" ? "bg-blue-500" : ""
-            } text-white text-lg rounded-md px-2 m-2 focus:outline-none`}
+              !category.length && tap.name === "All"
+                ? " border-white bg-secondary"
+                : ""
+            }
+            ${
+              category.includes(tap.name)
+                ? " border-2 border-accent bg-secondary"
+                : "bg-custom border-2 border-transparent"
+            }  text-lg rounded-md px-2 m-1  focus:outline-none`}
           >
             {tap.name}
           </button>

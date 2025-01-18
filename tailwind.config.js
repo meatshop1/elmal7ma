@@ -12,7 +12,14 @@ export default {
         poppins: ["Poppins", "sans-serif"],
         gmono: ["Geist Mono", "monospace"],
         square: ["Nova Square", "serif"],
-      }
+      },
+      colors: {
+        // Add your custom colors here
+        'primary': '#8E1616', 
+        'secondary': '#D84040',
+        'accent': '#EEEEEE', 
+        'custom': '#1D1616', 
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],

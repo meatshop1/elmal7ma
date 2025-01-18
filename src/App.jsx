@@ -10,11 +10,13 @@ import Hero from "./components/Hero";
 
 
 
-// TODO: center the cart modal
+// TODO: color scheme
+// TODO: footer fill
+
 function App() {
   const { cartOpen } = useStore();
   return (
-    <div className="font-mono flex flex-col items-center text-white text-3xl bg-red-800">
+    <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />
       <Hero />
       <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>

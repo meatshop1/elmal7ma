@@ -78,7 +78,7 @@ const Locations = () => {
 
 const LocationContent = () => {
   return (
-    <div className="bg-red-600 w-full py-5 pb-10 h-[45rem]">
+    <div className="bg-secondary w-full py-5 pb-10 h-[45rem]">
       <h1 className="text-6xl text-center my-8 font-poppins w-full">
         Visit us
       </h1>
