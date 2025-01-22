@@ -9,7 +9,7 @@ const FooterContent = () => {
   
   return (
     <div className=" grid grid-cols-1 grid-rows-5 h-full w-full bg-custom ">
-      <div className="row-span-4 grid grid-cols-4 grid-rows-*">
+      <div className="row-span-4 grid grid-cols-4 grid-rows-* mt-3">
         <div className="flex flex-col justify-center items-center p-4  border-opacity-30 border-accent">
           <img
             src={elmanzla}

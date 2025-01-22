@@ -76,6 +76,11 @@ export const items = [
 export const fetchProducts = async (options) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    // TODO: replace the proudcts below with products1
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const response = await fetch(SERVER_URL + "/products");
+    const products1 = await response.json();
+
     let products = items;
     if (options?.search) {
         products = products.filter((product) =>

@@ -112,7 +112,7 @@ const FormField = ({
     />
     <div className="text-red-800 font-poppins h-4 flex items-center justify-start">
       {error && (
-        <span className="error-message h-full text-xs">{error.message}</span>
+        <span className="error-message h-full text-xs text-primary">{error.message}</span>
       )}
     </div>
   </div>
@@ -195,7 +195,7 @@ function Form({ setIsCheckoutOpen }) {
         <Bill />
         <button
           type="submit"
-          disabled={isSubmitting || isSubmitted || !isValid}
+          disabled={isSubmitting}
           className="submit-button text-black font-poppins mt-auto border disabled:opacity-50 border-black"
         >
           Submit

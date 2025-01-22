@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { Search } from "lucide-react";
+import { fetchCollections } from "../api/collections/fetchCollections";
+import { useQuery } from "@tanstack/react-query";
 
 const taps = [
   { id: 1, name: "All" },
@@ -14,6 +16,12 @@ const ProductListFilter = ({ onChange }) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState([]);
   const debouncedSearch = useDebounce(search);
+
+  // TODO: should be named tabs instead of collections then make sure to replace .name with .title
+  const { data: collections, isLoading } = useQuery({
+    queryKey: ["collections"],
+    queryFn: () => fetchCollections(),
+  });
 
   useEffect(() => {
     onChange({ search: debouncedSearch, category });
