@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useStore } from "../store";
 import CartCard from "./CartCard";
 import CheckoutForm from "./CheckoutForm";
+import Login from "./Login";
+import Register from "./Register";
 
 const items = [
   {
@@ -59,11 +61,13 @@ const CartModal = () => {
       className="fixed top-0 left-0 w-full h-full bg-custom bg-opacity-50 grid place-items-center z-30"
     >
       {isCheckoutOpen ? (
-        <CheckoutForm
-          setIsCheckoutOpen={setIsCheckoutOpen}
-          onClick={(e) => e.stopPropagation()}
-          className="w-[40%] h-[90%] bg-white rounded-lg flex flex-col p-5 z-50 relative"
-        />
+        // <CheckoutForm
+        //   setIsCheckoutOpen={setIsCheckoutOpen}
+        //   onClick={(e) => e.stopPropagation()}
+        //   className="w-[40%] h-[90%] bg-white rounded-lg flex flex-col p-5 z-50 relative"
+        // />
+        <Login />
+        // <Register />
       ) : (
         <Cart setIsCheckoutOpen={setIsCheckoutOpen} />
       )}

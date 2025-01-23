@@ -93,7 +93,7 @@ const Fields = [
   ],
 ];
 
-const FormField = ({
+export const FormField = ({
   type,
   placeholder,
   name,
