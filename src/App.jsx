@@ -23,8 +23,8 @@ function App() {
       <Hero />
       <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
       <Main />
-      {/* <Locations />
-      <Footer /> */}
+      <Locations />
+      {/* <Footer /> */}
     </div>
   );
 }
