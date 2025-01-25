@@ -28,15 +28,15 @@ const ProductListFilter = ({ onChange }) => {
   }, [category, debouncedSearch]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-1/4 ">
+    <div className="flex flex-col items-center justify-center w-full md:w-1/2 lg:w-1/3">
       <input
         type="text"
         placeholder="Search..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="text-white text-xl rounded-md p-2 mt-10 focus:outline-none w-full h-9 bg-secondary"
+        className="text-white text-lg rounded-md p-2 mt-5 focus:outline-none w-[80%] h-8 bg-secondary md:w-full md:h-10 md:text-xl"
       />
-      <div className="flex flex-wrap justify-center mt-2 w-full ">
+      <div className="flex flex-wrap justify-center mt-2 w-[80%] md:w-full">
         {taps.map((tap) => (
           <button
             key={tap.id}
@@ -60,7 +60,7 @@ const ProductListFilter = ({ onChange }) => {
               category.includes(tap.name)
                 ? " border-2 border-accent bg-secondary"
                 : "bg-custom border-2 border-transparent"
-            }  text-lg rounded-md px-2 m-1  focus:outline-none`}
+            }  text-sm rounded-md px-1 m-1 md:text-lg  focus:outline-none`}
           >
             {tap.name}
           </button>

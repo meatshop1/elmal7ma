@@ -25,7 +25,7 @@ const Navbar = () => {
   const classesWithoutScroll =
     "w-full h-12 flex items-center justify-between px-1 overflow-hidden bg-red-800 z-30 fixed top-0 md:px-4 md:h-16";
   const classesWithScroll =
-    "w-16 bg-[#1D1616] h-12 flex items-center justify-center overflow-hidden rounded-full transition-all px-1 bg-red-800 z-30 fixed right-4 top-4";
+    "w-12 h-12 flex items-center justify-center overflow-hidden rounded-full transition-all px-1 bg-red-800 z-30 fixed right-4 top-4";
 
   return (
     <motion.div

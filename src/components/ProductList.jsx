@@ -6,7 +6,7 @@ const ProductList = ({ products, className }) => {
   return (
     <div
       className={twMerge(
-        "m-auto h-fit mt-10 w-[60%] grid grid-rows-* grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]",
+        "h-fit md:mt-10 w-full lg:w-[60%] grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))]  md:grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]",
         className
       )}
     >

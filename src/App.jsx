@@ -21,9 +21,9 @@ function App() {
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />
       <Hero />
-      {/* <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
+      <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
       <Main />
-      <Locations />
+      {/* <Locations />
       <Footer /> */}
     </div>
   );

@@ -16,7 +16,7 @@ const ItemCard = ({ product, className }) => {
     console.log(product);
     setShowCounter((prev) => !prev);
     showCounter ? removeFromCart(product) : addToCart(product);
-    animate("button", { y: showCounter ? 0 : -40 });
+    animate("button", { y: showCounter ? 0 : -35 });
   };
 
   // this function should be called when the user deletes the item from the cart
@@ -35,20 +35,20 @@ const ItemCard = ({ product, className }) => {
     <motion.div ref={scobe}>
       <div
         className={twMerge(
-          "bg-custom w-[16rem] h-80 rounded-lg shadow-lg flex flex-col items-start",
+          "bg-custom w-[11rem] h-60 md:w-[16rem] md:h-80 rounded-lg shadow-lg flex flex-col items-start",
           className
         )}
       >
         <img
           src={product.url}
           alt="placeholder"
-          className="w-[93%] h-1/2 mx-auto rounded-lg mt-3"
+          className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3"
         />
-        <h2 className="text-xl font-semibold ml-4 mt-3">{product.name}</h2>
-        <p className="text-sm text-gray-400 ml-4 mt-1">{product.description}</p>
-        <div className="flex items-center justify-between w-full px-4 mt-auto py-2 relative">
-          <p className="text-lg font-semibold">
-            <span className="text-2xl">{product.price}</span><span className="pl-1 font-thin">SR</span>
+        <h2 className="text-[1rem] font-semibold ml-2 mt-2 md:text-xl md:ml-4 ">{product.name}</h2>
+        <p className="text-sm text-gray-400 ml-2 md:ml-4 bg-red">{product.description}</p>
+        <div className="flex items-center justify-between w-full px-2 md:px-4 mt-auto py-2 relative ">
+          <p className="text-lg font-semibold ">
+            <span className="text-xl md:text-2xl">{product.price}</span><span className="pl-1 font-thin">SR</span>
           </p>
           <AnimatePresence>
             {showCounter && (
@@ -62,10 +62,10 @@ const ItemCard = ({ product, className }) => {
             )}
           </AnimatePresence>
           <button
-            className="bg-primary text-white w-10 h-10 rounded-full grid place-items-center"
+            className={`bg-primary text-white w-7 h-7 md:w-10 md:h-10 rounded-full grid place-items-center md:mb-2`}
             onClick={() => handleAdd()}
           >
-            {showCounter ? <Trash2 /> : <Plus />}
+            {showCounter ? <Trash2 className="size-5 md:size-7"/> : <Plus />}
           </button>
         </div>
       </div>

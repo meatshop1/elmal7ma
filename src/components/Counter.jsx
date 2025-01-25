@@ -23,7 +23,7 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
   return (
     <motion.div
       className={twMerge(
-        "absolute w-28 h-8 bg-secondary rounded-lg flex items-center justify-between right-4",
+        "absolute w-20 h-6 md:w-28 md:h-8 bg-secondary rounded-lg flex items-center justify-between right-2 md:right-4",
         className
       )}
       initial={{ opacity: 0, y: 20 }}
@@ -34,16 +34,16 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
       <motion.button
         exit={{ height: 0 }}
         transition={{ duration: 0.1 }}
-        className="w-8 h-full bg-primary rounded-lg grid place-items-center"
+        className="w-7 md:w-8 h-full bg-primary rounded-lg grid place-items-center"
         onClick={handleDecrement}
       >
         <motion.span exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
-          <Minus />
+          <Minus className="size-5 md:size-7"/>
         </motion.span>
       </motion.button>
 
       <motion.p
-        className="text-white"
+        className="text-white font-semibold text-xl md:text-2xl"
         exit={{ height: 0 }}
         transition={{ duration: 0.1 }}
       >
@@ -55,11 +55,11 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
       <motion.button
         exit={{ height: 0 }}
         transition={{ duration: 0.1 }}
-        className="w-8 h-full bg-primary rounded-lg grid place-items-center"
+        className="w-7 md:w-8 h-full bg-primary rounded-lg grid place-items-center"
         onClick={handleIncrement}
       >
         <motion.p exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
-          <Plus />
+          <Plus className="size-5 md:size-7"/>
         </motion.p>
       </motion.button>
     </motion.div>
