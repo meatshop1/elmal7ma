@@ -13,7 +13,7 @@ const locations = [
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d927.5144843650011!2d39.2156240305102!3d21.58366144583185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3d12e7b7fda29%3A0x54a999ec4741eba7!2z2YXZhNit2YXYqSDYp9mE2YXZhtiy2YTYqQ!5e0!3m2!1sar!2seg!4v1736881570369!5m2!1sar!2seg"
         // style={{ width: "20rem", height: "20rem" }}
-        className="sl:w-[20rem] xl:h-[20rem] w-1/3 h-[8rem]"
+        className="xl:w-[20rem] xl:h-[20rem] w-1/3 h-[8rem]"
         allowFullScreen=""
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"

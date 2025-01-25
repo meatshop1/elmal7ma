@@ -24,7 +24,7 @@ function App() {
       <AnimatePresence>{cartOpen && <CartModal />}</AnimatePresence>
       <Main />
       <Locations />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
