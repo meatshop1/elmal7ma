@@ -11,6 +11,10 @@
   font-family: "Poppins", sans-serif;
   color: #EEEEEE;
 }
+body {
+  background-color: #1A202C;
+  /* overflow: hidden; */
+}
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
 html::-webkit-scrollbar {

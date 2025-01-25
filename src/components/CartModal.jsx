@@ -7,44 +7,7 @@ import CartContent from "./CartContent";
 import CheckoutForm from "./CheckoutForm";
 import SignModal from "./SignModal";
 
-const items = [
-  {
-    id: 1,
-    url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Farha ibrahiem",
-    price: 100,
-    description: "Description 1",
-  },
-  {
-    id: 2,
-    url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Item 2",
-    price: 200,
-    description: "Description 2",
-  },
-  {
-    id: 3,
-    url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Item 3",
-    price: 300,
-    description: "Description 3",
-  },
-  {
-    id: 4,
-    url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Item 4",
-    price: 400,
-    description: "Description 4",
-  },
-  {
-    id: 5,
-    url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
-    name: "Item 5",
-    price: 500,
 
-    description: "Description 5",
-  },
-];
 
 const CartModal = () => {
   const { toggleCart, cartOpen } = useStore();

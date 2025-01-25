@@ -1,20 +1,16 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 
-import { ShoppingCart, Search, X } from "lucide-react";
 import {
   motion,
-  useAnimate,
-  useScroll,
   useMotionValueEvent,
+  useScroll
 } from "framer-motion";
+import { ShoppingCart } from "lucide-react";
 import { useStore } from "../store";
 
 const Navbar = () => {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const { toggleCart, itemsCount } = useStore();
   const [hide, setHide] = useState(false);
-  const [scobe, animate] = useAnimate();
-  const searchRef = useRef(null);
+  const { toggleCart, itemsCount } = useStore();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -23,30 +19,26 @@ const Navbar = () => {
 
   const handleCartOpen = () => {
     document.body.style.overflow = "hidden";
-    console.log("clicked");
     toggleCart(true);
-    console.log("Cart Opened");
   };
 
   const classesWithoutScroll =
-    "w-full h-16 flex items-center justify-between px-4 overflow-hidden bg-red-800 z-30 fixed top-0";
+    "w-full h-12 flex items-center justify-between px-1 overflow-hidden bg-red-800 z-30 fixed top-0 md:px-4 md:h-16";
   const classesWithScroll =
-    "w-16 bg-[#1D1616] h-16 flex items-center justify-center overflow-hidden rounded-full transition-all px-4 bg-red-800 z-30 fixed right-4 top-4";
-  // if the page is scrolled down then the navbar will be only showing the cart icon
+    "w-16 bg-[#1D1616] h-12 flex items-center justify-center overflow-hidden rounded-full transition-all px-1 bg-red-800 z-30 fixed right-4 top-4";
+
   return (
     <motion.div
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 1 }}
       exit={{ y: -100 }}
-      ref={scobe}
       className={`${hide ? classesWithScroll : classesWithoutScroll}`}
     >
       {!hide && (
-        <p className="font-kufam font-semibold w-fit px-3">ملحمة المنزلة</p>
+        <p className="font-kufam font-semibold w-fit px-3 text-xl md:text-3xl">ملحمة المنزلة</p>
       )}
       <div className="z-40">
-        
         <button
           onClick={handleCartOpen}
           className={` grid place-content-center font-kufam font-semibold px-3 relative ${

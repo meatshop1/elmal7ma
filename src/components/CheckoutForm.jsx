@@ -102,7 +102,12 @@ function Form({ setIsCheckoutOpen }) {
         message: "Either location or current location is required", // Custom error message
         path: ["second_street"], // Attach the error to a specific field
       }
-    );
+    ).refine(
+      data => data.phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/),
+      {
+        message: "Invalid phone number",
+      }
+    )
 
   const [href, setHref] = useState("");
   const {

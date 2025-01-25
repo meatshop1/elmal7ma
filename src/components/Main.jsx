@@ -21,7 +21,7 @@ const Main = () => {
   return (
     <main className="flex flex-col items-center min-h-full justify-center w-full mx-auto z-10 mb-10">
       <ProductListFilter onChange={onChange} />
-      {products && <ProductList products={products} className="min-h-[100vh]" />}
+      {products && <ProductList products={products} className="min-h-[100vh] bg-red-50" />}
       {isLoading && <p className="h-[100vh]">Loading...</p>}
     </main>
   );
