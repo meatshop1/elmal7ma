@@ -66,7 +66,7 @@ const fields = [
   },
 ];
 
-const Register = () => {
+const Register = ({setLoginState ,setIsCheckoutOpen}) => {
   const {
     register,
     handleSubmit,
@@ -80,10 +80,16 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: registerFn,
     onSuccess: (data) => {
-      console.log("SUCCESS From mutation", data);
+      setIsCheckoutOpen(false);
     },
     onError: (error) => {
-      console.log("ERROR", error);
+      const errorData = JSON.parse(error.message);
+      for (const key in errorData) {
+        setError(key, {
+          type: "manual",
+          message: errorData[key][0],
+        });
+      }
     },
   });
 
@@ -120,7 +126,7 @@ const Register = () => {
           </button>
           <button
             type="button"
-            onClick={() => console.log("Redirect Login")} //TODO: navigate to Login page
+            onClick={() => setLoginState(true)} //TODO: navigate to Login page
             className="col-span-6 bg-secondary text-2xl  text-white p-2 rounded-md"
           >
             Login

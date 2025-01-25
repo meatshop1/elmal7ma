@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-
+import { postAddress } from "./api/order/postAddress";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
@@ -14,10 +14,17 @@ import Hero from "./components/Hero";
 // TODO: Responsive design
 // TODO: API integration
 
+// CheckoutForm must be protected by a route
 
 function App() {
   const { cartOpen } = useStore();
- 
+  postAddress({
+    neighborhood: "",
+    first_street: "",
+    second_street: "",
+    longitude: 0,
+    latitude: 0,
+  })
   return (
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />

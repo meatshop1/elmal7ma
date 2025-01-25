@@ -8,9 +8,10 @@ export const login = async (data) => {
         body: JSON.stringify(data),
     });
     const responseData = await response.json();
-    if (response.ok) {
-        localStorage.setItem("token", responseData.access);
-        localStorage.setItem("refreshToken", responseData.refresh);
+    if (!response.ok) {
+        throw new Error(JSON.stringify(responseData));
     }
+    localStorage.setItem("token", responseData.access);
+    localStorage.setItem("refreshToken", responseData.refresh);
     return responseData;
 };

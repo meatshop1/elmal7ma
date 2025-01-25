@@ -8,33 +8,6 @@ import { MapPinHouse } from "lucide-react";
 import Bill from "./Bill";
 import { ArrowLeft } from "lucide-react";
 
-const schema = z.object({
-  firstName: z
-    .string()
-    .nonempty("this field required")
-    .min(3, "name is too short")
-    .max(20),
-  lastName: z
-    .string()
-    .nonempty("this field required")
-    .min(3, "name is too short")
-    .max(20),
-  phone: z
-    .string()
-    .nonempty("this field required")
-    .length(11, "invalid phone number"),
-  district: z.string().min(10, "address is too short").max(50),
-  firstStreet: z.string().min(10, "address is too short").max(50),
-  secondStreet: z.string().min(10, "address is too short").max(50),
-});
-// .refine(
-//   (data) => data.currentLocation || (data.district && data.street), // At least one field must be present
-//   {
-//     message: "Either location or current location is required", // Custom error message
-//     path: ["currentLocation"], // Attach the error to a specific field
-//   }
-// );
-
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
     <motion.div
@@ -54,18 +27,6 @@ const Fields = [
   [
     {
       type: "text",
-      placeholder: "First Name",
-      name: "firstName",
-      className: "col-span-4",
-    },
-    {
-      type: "text",
-      placeholder: "Last Name",
-      name: "lastName",
-      className: "col-span-4",
-    },
-    {
-      type: "text",
       placeholder: "Phone",
       name: "phone",
       className: "col-span-8",
@@ -75,19 +36,19 @@ const Fields = [
     {
       type: "text",
       placeholder: "District",
-      name: "district",
-      className: "col-span-5",
+      name: "neighborhood",
+      className: "col-span-10",
     },
     {
       type: "text",
       placeholder: "Street 1",
-      name: "firstStreet",
-      className: "col-span-5",
+      name: "first_street",
+      className: "col-span-10",
     },
     {
       type: "text",
       placeholder: "Street 2",
-      name: "secondStreet",
+      name: "second_street",
       className: "col-span-10",
     },
   ],
@@ -112,13 +73,37 @@ export const FormField = ({
     />
     <div className="text-red-800 font-poppins h-4 flex items-center justify-start">
       {error && (
-        <span className="error-message h-full text-xs text-primary">{error.message}</span>
+        <span className="error-message h-full text-xs text-primary">
+          {error.message}
+        </span>
       )}
     </div>
   </div>
 );
 
 function Form({ setIsCheckoutOpen }) {
+  const [isCurrentLocationChecked, setIsCurrentLocationChecked] =
+    useState(false);
+  const schema = z
+    .object({
+      phone: z
+        .string()
+        .nonempty("this field required")
+        .length(11, "invalid phone number"),
+      neighborhood: z.string().max(50),
+      first_street: z.string().max(50),
+      second_street: z.string().max(50),
+    })
+    .refine(
+      (data) =>
+        isCurrentLocationChecked ||
+        (data.neighborhood && data.first_street && data.second_street), // At least one field must be present
+      {
+        message: "Either location or current location is required", // Custom error message
+        path: ["second_street"], // Attach the error to a specific field
+      }
+    );
+
   const [href, setHref] = useState("");
   const {
     register,
@@ -144,9 +129,14 @@ function Form({ setIsCheckoutOpen }) {
     );
   };
 
-  const handleLocationError = () => {};
+  const handleLocationError = () => {
+    console.log("Error getting location");
+  };
 
   const handleCurrentLocation = () => {
+    setIsCurrentLocationChecked((prev) => !prev);
+    setHref(null);
+    if (isCurrentLocationChecked) return;
     navigator.geolocation.getCurrentPosition(getLocation, handleLocationError);
   };
 
@@ -182,14 +172,19 @@ function Form({ setIsCheckoutOpen }) {
                 {...field}
               />
             ))}
-            <button
-              type="button"
-              onClick={handleCurrentLocation}
-              className=" bg-white col-span-10 font-poppins justify-center gap-2 text-[1rem] h-9 border-2 border-custom flex items-center text-lg self-center rounded-md"
-            >
+           
+          </div>
+          <div className="flex w-full items-center gap-4 mt-2">
+            <input
+              type="checkbox"
+              checked={isCurrentLocationChecked}
+              onChange={handleCurrentLocation}
+              className="h-5 w-5"
+            />
+            <label className="flex items-center gap-2">
+              <span className="text-custom text-lg ">Use Current Location</span>
               <MapPinHouse stroke="#1D1616" />
-              <span className="text-custom">Use Current location</span>
-            </button>
+            </label>
           </div>
         </div>
         <Bill />

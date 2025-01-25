@@ -24,7 +24,8 @@ const fields = [
     className: "col-span-6",
   },
 ];
-const Login = () => {
+
+const Login = ({ setLoginState, setIsCheckoutOpen }) => {
   const {
     register,
     handleSubmit,
@@ -38,24 +39,27 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log("SUCCESS From mutation", data);
+      setIsCheckoutOpen(false);
     },
     onError: (error) => {
-        console.log("ERROR", error);
-        }
+      const errorData = JSON.parse(error.message);
+      setError("username", {
+        type: "manual",
+        message: errorData.detail,
+      });
+    },
   });
 
   const onSubmit = async (data) => {
     mutation.mutate(data);
-    //TODO: navigate to order page    
+    //TODO: navigate to order page
   };
 
-
-
   return (
-    <div 
-    onClick={(e) => e.stopPropagation()}
-    className="w-[25%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="w-[25%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
+    >
       <div className="flex flex-col items-center h-full overflow-hidden">
         <h1 className="text-5xl font-bold text-custom mb-4">Login</h1>
         <form
@@ -79,7 +83,7 @@ const Login = () => {
           </button>
           <button
             type="button"
-            onClick={() => console.log("Register")} //TODO: navigate to register page
+            onClick={() => setLoginState(false)} //TODO: navigate to register page
             className="col-span-6 bg-secondary text-2xl  text-white p-2 rounded-md"
           >
             Register
