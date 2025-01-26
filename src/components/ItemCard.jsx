@@ -35,7 +35,7 @@ const ItemCard = ({ product, className }) => {
     <motion.div ref={scobe}>
       <div
         className={twMerge(
-          "bg-custom w-[11rem] h-60 md:w-[16rem] md:h-80 rounded-lg shadow-lg flex flex-col items-start",
+          "bg-custom w-[10.5rem] h-60 md:w-[16rem] md:h-80 rounded-lg shadow-lg flex flex-col items-start",
           className
         )}
       >

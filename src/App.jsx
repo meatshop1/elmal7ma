@@ -6,6 +6,7 @@ import Locations from "./components/Locations";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { useStore } from "./store";
+import { verify } from "./api/users/verify";
 
 // TODO: hero image takes a lot of time to load
 // TODO: add a loading spinner

@@ -4,54 +4,47 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MoveRight, X } from "lucide-react";
 import CartCard from "./CartCard";
 
-const CartContent = ({setIsCheckoutOpen}) => {
-    const { toggleCart } = useStore();
-    const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
-    const { cart, Total } = useStore();
-    return (
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0, transition: { duration: 0.1 } }}
-        onClick={(e) => e.stopPropagation()}
-        className="w-[40%] h-[90%] bg-accent overflow-hidden rounded-lg flex flex-col p-5 z-20 relative"
+const CartContent = ({ setIsCheckoutOpen }) => {
+  const { toggleCart } = useStore();
+  const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
+  const { cart, Total } = useStore();
+  return (
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0, transition: { duration: 0.1 } }}
+      onClick={(e) => e.stopPropagation()}
+      className="w-[90%] xl:w-[40%] md:w-[70%] h-[80%] md:h-[90%] bg-accent overflow-hidden rounded-lg flex flex-col md:p-5 z-20 relative"
+    >
+      <p className="text-custom font-poppins text-2xl md:text-4xl font-semibold pt-3 pl-3 md:p-0">
+        Your{" "}
+        <span className="hidden md:inline-block text-custom">Shopping</span>{" "}
+        Cart
+      </p>
+      <hr className="border border-gray-200 my-2" />
+      <button
+        onClick={() => {
+          document.body.style.overflow = "auto";
+          toggleCart(false);
+        }}
+        className="absolute w-6 h-6 bg-red-800 grid place-content-center rounded-full top-3 right-2"
       >
-        <p className="text-custom font-poppins">Your Shopping Cart</p>
-        <hr className="border border-gray-200 my-2" />
-        <button
-          onClick={() => {
-            document.body.style.overflow = "auto";
-            toggleCart(false);
-          }}
-          className="absolute w-8 h-8 bg-red-800 grid place-content-center rounded-full top-4 right-4"
-        >
-          <X />
-        </button>
-        {cart.length ? (
-          <div className="border border-gray-200 rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-scroll">
+        <X />
+      </button>
+      {cart.length ? (
+        <>
+          <div className="border border-gray-200 rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-scroll overflow-x-hidden w-[100%]">
             <AnimatePresence>
               {cart.map((item) => (
                 <CartCard key={item.id} product={item} />
               ))}
             </AnimatePresence>
           </div>
-        ) : (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.2 }}
-            exit={{ opacity: 0 }}
-            layout
-            className="text-primary text-9xl font-poppins flex items-center justify-center rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-auto opacity-20"
-          >
-            <span className="text-custom">Your cart is empty.</span>
-          </motion.p>
-        )}
-        {cart.length ? (
           <div className="w-full flex flex-col">
             <div className="flex mt-2">
-              <p className="text-custom font-poppins p-2 text-2xl">Total :</p>
-              <p className="text-custom font-poppins text-2xl p-2 px-0 rounded-lg ">
-                {Total}SR
+              <p className="text-custom font-poppins p-2  text-2xl">TOTAL :</p>
+              <p className="text-custom font-poppins font-semibold text-2xl p-2 px-0 rounded-lg ">
+                {Total}<span className="text-sm font-light text-custom">SR</span>
               </p>
             </div>
             <motion.button
@@ -67,7 +60,18 @@ const CartContent = ({setIsCheckoutOpen}) => {
               </motion.span>
             </motion.button>
           </div>
-        ) : (
+        </>
+      ) : (
+        <>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.2 }}
+            exit={{ opacity: 0 }}
+            layout
+            className="text-primary p-5 md:p-0 text-7xl md:text-8xl lg:text-9xl font-poppins md:flex md:items-center md:justify-center rounded-lg md:px-2 h-[35rem] scrollbar-hide overflow-y-auto opacity-20"
+          >
+            <span className="text-custom">Your cart is empty.</span>
+          </motion.p>
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -78,13 +82,14 @@ const CartContent = ({setIsCheckoutOpen}) => {
               toggleCart(false);
               window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
             }}
-            className=" rounded-lg w-fit p-5 ml-auto shadow-lg border font-poppins text-5xl flex font-light items-center justify-center"
+            className=" rounded-lg w-fit md:p-5 m-3 ml-auto shadow-lg border font-poppins text-2xl p-3 md:text-5xl flex font-light items-center justify-center"
           >
             <span className="text-custom">Add Some</span>
           </motion.button>
-        )}
-      </motion.div>
-    );
-  };
+        </>
+      )}
+    </motion.div>
+  );
+};
 
 export default CartContent;

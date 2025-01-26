@@ -25,11 +25,11 @@ const CartModal = () => {
       className="fixed top-0 left-0 w-full h-full bg-custom bg-opacity-50 grid place-items-center z-30"
     >
       {isCheckoutOpen ? (
-        token && verify(token)) ? (
+        true) ? (
         <CheckoutForm
           setIsCheckoutOpen={setIsCheckoutOpen}
           onClick={(e) => e.stopPropagation()}
-          className="w-[40%] h-[90%] bg-white rounded-lg flex flex-col p-5 z-50 relative"
+          className="w-[90%] md:w-[40%] md:h-[90%] bg-white rounded-lg flex flex-col p-5 z-50 relative"
         /> ) : (
         <SignModal setIsCheckoutOpen={setIsCheckoutOpen} />
       ) : (

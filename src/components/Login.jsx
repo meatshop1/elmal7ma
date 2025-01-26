@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/users/login";
+import { Key, UserRound  } from "lucide-react";
 
 const schema = z.object({
   username: z.string().nonempty("username is required"),
@@ -14,12 +15,14 @@ const fields = [
   {
     type: "text",
     placeholder: "Username",
+    icon: <UserRound className="size-5 stroke-black" />,
     name: "username",
     className: "col-span-6",
   },
   {
     type: "password",
     placeholder: "Password",
+    icon: <Key className="size-5 stroke-black" />,
     name: "password",
     className: "col-span-6",
   },
@@ -58,7 +61,7 @@ const Login = ({ setLoginState, setIsCheckoutOpen }) => {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="w-[25%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
+      className="w-[90%] md:w-[30%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
     >
       <div className="flex flex-col items-center h-full overflow-hidden">
         <h1 className="text-5xl font-bold text-custom mb-4">Login</h1>

@@ -62,6 +62,7 @@ const FooterContent = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
+                    key={0}
                     className="text-xs lg:text-[1rem] font-thin lg:leading-5"
                   >
                     At <strong>Elmanzla Meatshop</strong>, we’ve been serving
@@ -90,7 +91,9 @@ const FooterContent = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
+                    key={1}
                     className="text-xs lg:text-[1rem] font-thin lg:leading-5"
+                    
                   >
                     Our mission is simple: to provide our customers with the
                     freshest, highest-quality meats while upholding sustainable
@@ -118,6 +121,7 @@ const FooterContent = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
+                    key={2}
                     className="text-xs lg:text-[1rem] font-thin lg:leading-5"
                   >
                     All our products are carefully inspected and hand-cut by our

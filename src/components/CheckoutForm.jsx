@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { motion } from "framer-motion";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { ArrowLeft, LocateFixed, MapPinHouse, Phone } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import { MapPinHouse } from "lucide-react";
+import { z } from "zod";
 import Bill from "./Bill";
-import { ArrowLeft } from "lucide-react";
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
@@ -28,6 +27,7 @@ const Fields = [
     {
       type: "text",
       placeholder: "Phone",
+      icon: <Phone className="size-5 stroke-black"/>,
       name: "phone",
       className: "col-span-8",
     },
@@ -36,18 +36,21 @@ const Fields = [
     {
       type: "text",
       placeholder: "District",
+      icon: <MapPinHouse className="size-5 stroke-black" />,
       name: "neighborhood",
       className: "col-span-10",
     },
     {
       type: "text",
       placeholder: "Street 1",
+      icon: <MapPinHouse className="size-5 stroke-black" />,
       name: "first_street",
       className: "col-span-10",
     },
     {
       type: "text",
       placeholder: "Street 2",
+      icon: <MapPinHouse className="size-5 stroke-black" />,
       name: "second_street",
       className: "col-span-10",
     },
@@ -62,15 +65,17 @@ export const FormField = ({
   error,
   valueAsNumber,
   className,
+  icon
 }) => (
-  <div className={twMerge("w-[98%] flex flex-col mb-2 h-16", className)}>
+  <div className={twMerge("w-[98%] flex flex-col mb-2 h-16 relative", className)}>
     <span className="text-black font-poppins text-lg">{placeholder}</span>
     <input
       type={type}
       placeholder={placeholder}
-      className="p-1 text-sm border-2 border-black text-black font-poppins"
+      className="p-1 text-sm border-2 pl-8 border-black text-black font-poppins relative"
       {...register(name, { valueAsNumber })}
     />
+    <span className="absolute left-2 bottom-[0.55rem]">{icon}</span>
     <div className="text-red-800 font-poppins h-4 flex items-center justify-start">
       {error && (
         <span className="error-message h-full text-xs text-primary">
@@ -188,7 +193,7 @@ function Form({ setIsCheckoutOpen }) {
             />
             <label className="flex items-center gap-2">
               <span className="text-custom text-lg ">Use Current Location</span>
-              <MapPinHouse stroke="#1D1616" />
+              <LocateFixed className="size-5 stroke-black" />
             </label>
           </div>
         </div>
