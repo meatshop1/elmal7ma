@@ -6,8 +6,11 @@ import { Facebook, Instagram, Phone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 const FooterContent = () => {
-  const phone = "+20553097953";
-  const whatsupLink = `https://wa.me/${phone}?text=Hello%2C%20I%20have%20a%20question%20about%20your%20products.`;
+  const phone = import.meta.env.VITE_PHONE_NUMBER;
+  const whatsupNumber = import.meta.env.VITE_WHATSUP_NUMBER;
+  const facebookUrl = import.meta.env.VITE_FACEBOOK_URL;
+  const instagramUrl = import.meta.env.VITE_INSTAGRAM_URL;
+  const whatsupLink = `https://wa.me/${whatsupNumber}?text=Hello%2C%20I%20have%20a%20question%20about%20your%20products.`;
 
   const tabs = ["Our Story", "Our Mission", "Quality You Can Trust"];
   const [activeTabIndex, setActiveTabIndex] = useState(null);
@@ -167,11 +170,15 @@ const FooterContent = () => {
       <div className="lg:row-span-1 lg:row-start-5">
         <hr className="w-full mx-auto h-0.2 bg-accent rounded-full opacity-10" />
         <div className="flex justify-center items-center space-x-4 mt-1 lg:pt-4">
-          <button className=" text-accent w-10 h-10 rounded-full grid place-content-center">
+          <button 
+          onClick={() => window.open(facebookUrl, "_blank")}
+          className=" text-accent w-10 h-10 rounded-full grid place-content-center">
             <Facebook />
           </button>
 
-          <button className=" text-accent w-10 h-10 rounded-full grid place-content-center">
+          <button 
+          onClick={() => window.open(instagramUrl, "_blank")}
+          className=" text-accent w-10 h-10 rounded-full grid place-content-center">
             <Instagram />
           </button>
         </div>

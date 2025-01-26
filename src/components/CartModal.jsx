@@ -25,7 +25,7 @@ const CartModal = () => {
       className="fixed top-0 left-0 w-full h-full bg-custom bg-opacity-50 grid place-items-center z-30"
     >
       {isCheckoutOpen ? (
-        true) ? (
+        token && verify(token)) ? (
         <CheckoutForm
           setIsCheckoutOpen={setIsCheckoutOpen}
           onClick={(e) => e.stopPropagation()}
