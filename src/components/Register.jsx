@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { register as registerFn } from "../api/users/register"; 
 import { useTranslation } from "react-i18next";
-
+import { useStore } from "../store";
 import { Key, Mail, UserRound } from "lucide-react";
 
 const schema = z.object({
@@ -40,6 +40,7 @@ const schema = z.object({
 
 const Register = ({setLoginState ,setIsCheckoutOpen}) => {
   const { t } = useTranslation();
+  const { lng } = useStore();
   const fields = [
     {
       type: "text",
@@ -114,7 +115,7 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
       className="w-[90%] md:w-[30%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
     >
       <div className="flex flex-col items-center h-full overflow-hidden">
-        <h1 className="text-5xl font-bold text-custom mb-4">{t("Register.title")}</h1>
+        <h1 className={`font-bold text-custom mb-4 text-5xl ${lng === "en" ? "font-poppins " : "font-kufam"}`}>{t("Register.title")}</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-6 gap-4 w-full bg-white"
@@ -130,14 +131,14 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="col-span-6 bg-primary text-2xl text-white p-2 rounded-md"
+            className={`col-span-6 bg-primary text-2xl text-white p-2 rounded-md ${lng === "en" ? "font-poppins" : "font-kufam text-xl"}`}
           >
             {t("Register.registerBtn")}
           </button>
           <button
             type="button"
             onClick={() => setLoginState(true)} //TODO: navigate to Login page
-            className="col-span-6 bg-secondary text-2xl  text-white p-2 rounded-md"
+            className={`col-span-6 bg-secondary text-2xl text-white p-2 rounded-md ${lng === "en" ? "font-poppins" : "font-kufam text-xl"}`}
           >
             {t("Register.loginBtn")}
           </button>

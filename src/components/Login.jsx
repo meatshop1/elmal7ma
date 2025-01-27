@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/users/login";
 import { Key, UserRound  } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useStore} from "../store";
 
 const schema = z.object({
   username: z.string().nonempty("username is required"),
@@ -16,6 +17,8 @@ const schema = z.object({
 
 const Login = ({ setLoginState, setIsCheckoutOpen }) => {
   const { t } = useTranslation();
+  const { lng } = useStore();
+
   const fields = [
     {
       type: "text",
@@ -68,7 +71,7 @@ const Login = ({ setLoginState, setIsCheckoutOpen }) => {
       className="w-[90%] md:w-[30%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
     >
       <div className="flex flex-col items-center h-full overflow-hidden">
-        <h1 className="text-5xl font-bold text-custom mb-4">{t("Login.title")}</h1>
+        <h1 className={`font-bold text-custom mb-4 ${lng === "en" ? "font-poppins text-5xl" : "font-kufam text-3xl"}`}>{t("Login.title")}</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-6 gap-4 w-full bg-white"
@@ -84,14 +87,14 @@ const Login = ({ setLoginState, setIsCheckoutOpen }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="col-span-6 bg-primary text-2xl text-white p-2 rounded-md"
+            className={`col-span-6 bg-primary text-white p-2 rounded-md ${lng === "en" ? "font-poppins  text-2xl" : "font-kufam text-xl"}`}
           >
             {t("Login.loginBtn")}
           </button>
           <button
             type="button"
             onClick={() => setLoginState(false)} //TODO: navigate to register page
-            className="col-span-6 bg-secondary text-2xl  text-white p-2 rounded-md"
+            className={`col-span-6 bg-secondary text-white p-2 rounded-md ${lng === "en" ? "font-poppins  text-2xl" : "font-kufam text-xl"}`}
           >
             {t("Login.registerBtn")}
           </button>

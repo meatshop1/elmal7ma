@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import Bill from "./Bill";
 import { useTranslation } from "react-i18next";
+import { useStore } from "../store"
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
@@ -34,16 +35,18 @@ export const FormField = ({
   valueAsNumber,
   className,
   icon
-}) => (
+}) => {
+  const { lng } = useStore();
+  return (
   <div className={twMerge("w-[98%] flex flex-col mb-2 h-16 relative", className)}>
-    <span className="text-black font-poppins text-lg">{placeholder}</span>
+    <span className={`text-black text-lg ${lng === "en" ? "font-poppins" : "font-kufam"}`}>{placeholder}</span>
     <input
       type={type}
       placeholder={placeholder}
-      className="p-1 text-sm border-2 pl-8 border-black text-black font-poppins relative"
+      className={`p-1 text-sm border-2 border-black text-black relative ${lng === "en" ? "pl-8 font-poppins" : "pr-8 font-kufam"}`}
       {...register(name, { valueAsNumber })}
     />
-    <span className="absolute left-2 bottom-[0.55rem]">{icon}</span>
+    <span className={`absolute ${lng == "en" ? "left-2  bottom-[0.55rem]" : "right-2 bottom-3"}`}>{icon}</span>
     <div className="text-red-800 font-poppins h-4 flex items-center justify-start">
       {error && (
         <span className="error-message h-full text-xs text-primary">
@@ -52,7 +55,7 @@ export const FormField = ({
       )}
     </div>
   </div>
-);
+)};
 
 function Form({ setIsCheckoutOpen }) {
   const [isCurrentLocationChecked, setIsCurrentLocationChecked] =
@@ -130,7 +133,7 @@ function Form({ setIsCheckoutOpen }) {
   } = useForm({
     resolver: zodResolver(schema),
   });
-
+  const { lng } = useStore();
   const onSubmit = async (data) => {
     console.log("SUBMITTING", data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -156,6 +159,7 @@ function Form({ setIsCheckoutOpen }) {
     navigator.geolocation.getCurrentPosition(getLocation, handleLocationError);
   };
 
+
   return (
     <div className="h-full gap-2 overflow-auto scrollbar-hide  ">
       <button
@@ -165,7 +169,7 @@ function Form({ setIsCheckoutOpen }) {
         <ArrowLeft />
       </button>
       <form className="h-full flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-3xl font-semibold mb-4 text-black border-b-2 font-poppins pb-2">
+        <h1 className={` font-semibold mb-4 text-black border-b-2 pb-2 ${lng === "en" ? "font-poppins text-3xl" : "font-kufam text-2xl"}`}>
           {t("Checkout.title")}
         </h1>
         <div className="flex flex-col h-[100%] mb-2">
@@ -198,7 +202,7 @@ function Form({ setIsCheckoutOpen }) {
               className="h-5 w-5"
             />
             <label className="flex items-center gap-2">
-              <span className="text-custom text-lg ">{t("Checkout.useCurrentLocation")}</span>
+              <span className={`text-custom text-lg ${lng === "en" ? "font-poppins" : "font-kufam text-sm font-semibold" }`}>{t("Checkout.useCurrentLocation")}</span>
               <LocateFixed className="size-5 stroke-black" />
             </label>
           </div>
@@ -207,7 +211,7 @@ function Form({ setIsCheckoutOpen }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="submit-button text-black font-poppins mt-auto border disabled:opacity-50 border-black"
+          className={`submit-button text-black mt-auto border disabled:opacity-50 border-black ${lng === "en" ? "font-poppins" : "font-kufam text-xl leading-10 font-semibold" }`}
         >
           {t("Checkout.submit")}
         </button>

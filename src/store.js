@@ -11,7 +11,7 @@ export const useStore = create((set) => ({
     cart: [],
     cartOpen: false,
     searchOpen: false,
-    lng: cookies.get("i18next"),
+    lng: cookies.get("i18next") || "en",
     Total: 0,
     itemsCount: 0,
     setLng: (lng) =>

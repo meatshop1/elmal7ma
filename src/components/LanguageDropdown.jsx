@@ -11,9 +11,10 @@ const LanguageDropdown = () => {
 
 
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
     setIsOpen(false);
+    window.location.reload();
     setLng(lng);
+    i18n.changeLanguage(lng);
   };
 
   useEffect(() => {

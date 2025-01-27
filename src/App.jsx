@@ -6,7 +6,8 @@ import Locations from "./components/Locations";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { useStore } from "./store";
-
+import { useEffect } from "react";
+import cookies from "js-cookie";
 
 // TODO: hero image takes a lot of time to load
 // TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
@@ -14,7 +15,15 @@ import { useStore } from "./store";
 // TODO: Add Language support
 
 function App() {
-  const { cartOpen } = useStore();
+  const { cartOpen, lng, setLng } = useStore();
+
+  useEffect(() => {
+    const curLng = cookies.get("i18next")
+    if(curLng === "en-US" || !curLng) {
+      cookies.set("i18next", "en")
+      setLng("en")
+    }
+  }, [lng]);
 
   return (
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
