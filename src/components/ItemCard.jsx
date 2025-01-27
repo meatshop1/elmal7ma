@@ -54,7 +54,7 @@ const ItemCard = ({ product, className }) => {
             {showCounter && (
               <Counter
                 hideCounter={hideCounter}
-                className={""}
+                className={`${lng !== "en" ? "left-2 md:left-4" : "right-2 md:right-4"}`}
                 increment={increment.bind(null, product)}
                 decrement={decrement.bind(null, product)}
                 initCount={product.count}

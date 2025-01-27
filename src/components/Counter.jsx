@@ -23,7 +23,7 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
   return (
     <motion.div
       className={twMerge(
-        `absolute w-20 h-6 md:w-28 md:h-8 bg-secondary rounded-lg flex items-center overflow-hidden justify-between ${lng !== "en" ? "left-2 md:left-4" : "right-2 md:right-4"}`,
+        `absolute w-20 h-6 md:w-28 md:h-8 bg-secondary rounded-lg flex items-center overflow-hidden justify-between`,
         className
       )}
       initial={{ opacity: 0, y: 20 }}
