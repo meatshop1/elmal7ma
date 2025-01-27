@@ -2,11 +2,17 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import elmanzla from "../assets/elmanzla-removebg-preview.png";
+import { useTranslation } from "react-i18next";
+import { useStore } from "../store";
 
 const Hero = () => {
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
-  const subHeading = "the best quality meat in the market";
+  const { t } = useTranslation();
+  const { lng } = useStore();
+  const subHeadingSplitter = lng !== "en" ? " " : "";
+  const subHeading = t("hero.subHeading");
 
+  
   return (
     <div className="h-[100vh] relative w-full overflow-hidden">
       <img
@@ -26,27 +32,29 @@ const Hero = () => {
         }}
         className="absolute w-full h-full bg-black opacity-50 "
       ></div>
-      <div className="absolute z-10 top-[4rem] pl-5 flex flex-col gap-3 md:top-[6rem] md:pl-10 lg:top-[6rem]">
-        <h1 className="font-poppins text-5xl h-fit w-[60%] z-10 md:text-7xl lg:text-8xl">
+      <div className={`absolute z-10 top-[4rem] flex flex-col gap-3 md:top-[6rem]  lg:top-[6rem] ${lng === "en" ? "pl-5 md:pl-10" : "pr-5 md:pr-10"}`}>
+        <h1 className={`font-poppins text-5xl h-fit w-[60%] z-10 md:text-7xl lg:text-8xl`}>
           <motion.span
             initial={{ opacity: 0, y: -200 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
+            className={`${lng === "en" ? "font-poppins" : "font-kufam"}`}
           >
-            Freshness You Can Taste
+            {t("hero.title.part1")}
           </motion.span>
           ,
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.2 }}
+            className={`${lng === "en" ? "font-poppins" : "font-kufam"}`}
           >
             {" "}
-            Quality You Can Trust
+            {t("hero.title.part2")}
           </motion.span>
         </h1>
         <p className="font-poppins text-lg font-thin z-10 md:text-2xl lg:text-3xl">
-          {subHeading.split("").map((word, index) =>
+          {subHeading.split(subHeadingSplitter).map((word, index) =>
             word === " " ? (
               <span key={index}>&nbsp;</span>
             ) : (
@@ -55,9 +63,10 @@ const Hero = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.01 * index + 0.5 }}
-                className="inline-block"
+                className={`${lng === "en" ? "font-poppins" : "font-kufam"} inline-block`}
               >
                 {word}
+                {lng === "ar" && <span key={index}>&nbsp;</span>}
               </motion.span>
             )
           )}
@@ -74,7 +83,7 @@ const Hero = () => {
           window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
         }
       >
-        <span className="mt-2">Shop now</span>{" "}
+        <span className={`mt-2 ${lng === "ar" && "font-kufam text-xl"} `}>{t("hero.cta")}</span>{" "}
         <motion.span
           initial={{ y: 0 }}
           animate={{ y: isCheckoutHovered ? 10 : 0 }}
@@ -89,7 +98,7 @@ const Hero = () => {
         animate={{ opacity: 1, scale: 1.1 }}
         transition={{ duration: 0.5, delay: 0.5, type: "spring" }}
         src={elmanzla}
-        className="w-[5rem] h-[5rem] absolute top-24 object-cover border-red-800 rounded-full right-5 z-10 md:w-[8rem] md:h-[8rem] md:top-28 md:right-10 lg:w-[12rem] lg:h-[12rem] lg:top-32 lg:right-20"
+        className={`w-[5rem] h-[5rem] absolute top-24 object-cover border-red-800 rounded-full ${lng == "en" ? "right-5 md:right-10 lg:right-20" : "left-5 md:left-10 lg:left-20"} z-10 md:w-[8rem] md:h-[8rem] md:top-28 lg:w-[12rem] lg:h-[12rem] lg:top-32`}
       />
     </div>
   );

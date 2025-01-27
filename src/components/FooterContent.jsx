@@ -4,15 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import elmanzla from "../assets/elmanzla-removebg-preview.png";
 import { Facebook, Instagram, Phone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { useStore } from "../store"
 
 const FooterContent = () => {
+  const { t } = useTranslation();
   const phone = import.meta.env.VITE_PHONE_NUMBER;
   const whatsupNumber = import.meta.env.VITE_WHATSUP_NUMBER;
   const facebookUrl = import.meta.env.VITE_FACEBOOK_URL;
   const instagramUrl = import.meta.env.VITE_INSTAGRAM_URL;
   const whatsupLink = `https://wa.me/${whatsupNumber}?text=Hello%2C%20I%20have%20a%20question%20about%20your%20products.`;
+  const { lng } = useStore()
 
-  const tabs = ["Our Story", "Our Mission", "Quality You Can Trust"];
+
   const [activeTabIndex, setActiveTabIndex] = useState(null);
   const toggleTab = (index) =>
     activeTabIndex === index
@@ -45,15 +49,17 @@ const FooterContent = () => {
         </div>
         <AnimatePresence>
           <div className=" border-opacity-30 border-accent p-3 overflow-hidden col-span-2 col-start-2 h-64 lg:h-72">
-            <div className="text-xl lg:text-4xl font-bold lg:mb-4">
-              About Us
+            <div className={`text-xl lg:text-4xl font-bold lg:mb-4 ${lng === "en" ? "" : "font-kufam"} `}>
+              {t("Footer.AboutUs.title")}
             </div>
             <div className="section border-b-2 p-2 border-accent border-opacity-10 relative">
-              <h2 className="text-lg lg:text-xl lg:mb-2 ">Our Story</h2>
+              <h2 className={`text-lg lg:text-xl lg:mb-2 ${lng === "en" ? "" : "font-kufam"}`}>
+                {t("Footer.AboutUs.ourStory.title")}
+              </h2>
               <motion.button
                 variants={variants}
                 whileTap={"clicked"}
-                className="absolute right-2 top-2"
+                className={`${lng === "en" ? "right-2" : "left-2"} absolute top-2`}
                 onClick={() => toggleTab(0)}
               >
                 {activeTabIndex !== 0 ? <CircleArrowDown /> : <CircleArrowUp />}
@@ -66,23 +72,21 @@ const FooterContent = () => {
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
                     key={0}
-                    className="text-xs lg:text-[1rem] font-thin lg:leading-5"
+                    className={`text-xs lg:text-[1rem] font-light lg:leading-5 ${lng === "en" ? "" : "font-kufam"}`}
                   >
-                    At <strong>Elmanzla Meatshop</strong>, we’ve been serving
-                    the finest quality meats since 1995. What started as a small
-                    family-owned butcher shop has grown into a trusted name in
-                    the community. Our passion for quality and tradition drives
-                    everything we do.
+                    {t("Footer.AboutUs.ourStory.content")}
                   </motion.p>
                 )}
               </AnimatePresence>
             </div>
             <div className="section border-b-2 p-2 border-accent border-opacity-10 relative">
-              <h2 className="text-lg lg:text-xl lg:mb-2">Our Mission</h2>
+              <h2 className={`text-lg lg:text-xl lg:mb-2 ${lng === "en" ? "" : "font-kufam"}`}>
+                {t("Footer.AboutUs.ourMission.title")}
+              </h2>
               <motion.button
                 variants={variants}
                 whileTap={"clicked"}
-                className="absolute right-2 top-2"
+                className={`${lng === "en" ? "right-2" : "left-2"} absolute top-2`}
                 onClick={() => toggleTab(1)}
               >
                 {activeTabIndex !== 1 ? <CircleArrowDown /> : <CircleArrowUp />}
@@ -95,24 +99,21 @@ const FooterContent = () => {
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
                     key={1}
-                    className="text-xs lg:text-[1rem] font-thin lg:leading-5"
-                    
+                    className={`text-xs lg:text-[1rem] font-light lg:leading-5 ${lng === "en" ? "" : "font-kufam"}`}
                   >
-                    Our mission is simple: to provide our customers with the
-                    freshest, highest-quality meats while upholding sustainable
-                    and ethical practices.
+                    {t("Footer.AboutUs.ourMission.content")}
                   </motion.p>
                 )}
               </AnimatePresence>
             </div>
             <div className="section p-2 relative">
-              <h2 className="text-lg lg:text-xl lg:mb-2 ">
-                Quality You Can Trust
+              <h2 className={`text-lg lg:text-xl lg:mb-2 ${lng === "en" ? "" : "font-kufam"}`}>
+                {t("Footer.AboutUs.qualityYouCanTrust.title")}
               </h2>
               <motion.button
                 variants={variants}
                 whileTap={"clicked"}
-                className="absolute right-2 top-2"
+                className={`${lng === "en" ? "right-2" : "left-2"} absolute top-2`}
                 onClick={() => toggleTab(2)}
               >
                 {activeTabIndex !== 2 ? <CircleArrowDown /> : <CircleArrowUp />}
@@ -125,10 +126,9 @@ const FooterContent = () => {
                     exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     layout
                     key={2}
-                    className="text-xs lg:text-[1rem] font-thin lg:leading-5"
+                    className={`text-xs lg:text-[1rem] font-light lg:leading-5 ${lng === "en" ? "" : "font-kufam"}`}
                   >
-                    All our products are carefully inspected and hand-cut by our
-                    expert butchers to ensure the highest standards.
+                    {t("Footer.AboutUs.qualityYouCanTrust.content")}
                   </motion.p>
                 )}
               </AnimatePresence>
@@ -137,8 +137,8 @@ const FooterContent = () => {
         </AnimatePresence>
 
         <div className="p-3 ">
-          <div className="text-xl lg:text-4xl font-bold lg:mb-4 mb-2">
-            Contact Us
+          <div className={`text-xl lg:text-4xl font-bold lg:mb-4 mb-2 ${lng === "en" ? "" : "font-kufam"}`}>
+            {t("Footer.ContactUs.title")}
           </div>
           <button className="border border-accent w-full border-opacity-30 px-4 p-2 lg:mb-4 mb-2 rounded-md">
             <a
@@ -146,8 +146,11 @@ const FooterContent = () => {
               className="flex items-center justify-center gap-3"
             >
               <Phone className="size-5 lg:size-7" />
-              <p className="text-sm lg:text-[1rem] lg:leading-5">
-                <span className="font-semibold">Manager</span> : Mohammed Farag
+              <p className={`text-sm lg:text-[1rem] lg:leading-5 ${lng === "en" ? "" : "font-kufam"}`}>
+                <span className={`font-semibold ${lng === "en" ? "" : "font-kufam"}`}>
+                  {t("Footer.ContactUs.phoneBtn.position")}
+                </span>{" "}
+                : {t("Footer.ContactUs.phoneBtn.name")}
               </p>
             </a>
           </button>
@@ -159,8 +162,8 @@ const FooterContent = () => {
               className="flex items-center justify-center gap-3"
             >
               <FaWhatsapp className="size-5 lg:size-7" />
-              <span className="text-sm lg:text-[1rem] lg:leading-5 ">
-                Contact us on WhatsApp
+              <span className={`text-sm lg:text-[1rem] lg:leading-5 ${lng === "en" ? "" : "font-kufam"}`}>
+              {t("Footer.ContactUs.whatsappBtn.title")}
               </span>
             </a>
           </button>
@@ -170,15 +173,17 @@ const FooterContent = () => {
       <div className="lg:row-span-1 lg:row-start-5">
         <hr className="w-full mx-auto h-0.2 bg-accent rounded-full opacity-10" />
         <div className="flex justify-center items-center space-x-4 mt-1 lg:pt-4">
-          <button 
-          onClick={() => window.open(facebookUrl, "_blank")}
-          className=" text-accent w-10 h-10 rounded-full grid place-content-center">
+          <button
+            onClick={() => window.open(facebookUrl, "_blank")}
+            className=" text-accent w-10 h-10 rounded-full grid place-content-center"
+          >
             <Facebook />
           </button>
 
-          <button 
-          onClick={() => window.open(instagramUrl, "_blank")}
-          className=" text-accent w-10 h-10 rounded-full grid place-content-center">
+          <button
+            onClick={() => window.open(instagramUrl, "_blank")}
+            className=" text-accent w-10 h-10 rounded-full grid place-content-center"
+          >
             <Instagram />
           </button>
         </div>

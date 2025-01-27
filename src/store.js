@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { persist } from "zustand/middleware";
+import i18 from "i18next";
 import { produce } from "immer";
-
+import cookies from "js-cookie";
 // Product data => id, name, price, image, description,
 //                 category, count, total price, inCart  
 
@@ -10,8 +11,15 @@ export const useStore = create((set) => ({
     cart: [],
     cartOpen: false,
     searchOpen: false,
+    lng: cookies.get("i18next"),
     Total: 0,
     itemsCount: 0,
+    setLng: (lng) =>
+        set(
+            produce((state) => {
+                state.lng = lng;
+            })
+        ),
     addToCart: (product) =>
         set(
             produce((state) => {

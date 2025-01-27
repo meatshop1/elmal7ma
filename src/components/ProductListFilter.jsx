@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { fetchCollections } from "../api/collections/fetchCollections";
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,7 +17,7 @@ const ProductListFilter = ({ onChange }) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState([]);
   const debouncedSearch = useDebounce(search);
-
+  const { t } = useTranslation();
   // TODO: should be named tabs instead of collections then make sure to replace .name with .title
   const { data: collections, isLoading } = useQuery({
     queryKey: ["collections"],
@@ -31,7 +32,7 @@ const ProductListFilter = ({ onChange }) => {
     <div className="flex flex-col items-center justify-center w-full md:w-1/2 lg:w-1/3">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder={t("ProductFilter.searchPlaceholder")}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="text-white text-lg rounded-md p-2 mt-5 focus:outline-none w-[80%] h-8 bg-secondary md:w-full md:h-10 md:text-xl"

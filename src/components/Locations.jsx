@@ -1,5 +1,7 @@
 import React from "react";
 import LocationCard from "./LocationCard";
+import { useTranslation } from "react-i18next";
+import { useStore } from "../store"
 
 const locations = [
   {
@@ -19,8 +21,7 @@ const locations = [
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
     ),
-    hours: "8:00AM - 12:00AM",
-    contact: "0501799400",
+    id: "1"
   },
   {
     name: "Makati",
@@ -39,8 +40,7 @@ const locations = [
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
     ),
-    hours: "8:00AM - 12:00AM",
-    contact: "0555327319",
+    id: "2"
   },
   {
     name: "Ortigas",
@@ -59,8 +59,7 @@ const locations = [
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
     ),
-    hours: "8:00AM - 12:00AM",
-    contact: "0555096163",
+    id: "3"
   },
 ];
 
@@ -80,19 +79,20 @@ const Locations = () => {
 };
 
 const LocationContent = () => {
+  const { t } = useTranslation();
+  const { lng } = useStore()
   return (
     <div className="bg-secondary w-full py-5 pb-10 h-[45rem]">
-      <h1 className="text-6xl text-center my-8 font-poppins w-full">
-        Visit us
+      <h1 className={`text-6xl text-center my-8 ${lng === "en" ? "font-poppins" : "font-kufam"} w-full`}>
+        {t("Locations.title")}
       </h1>
       <div className=" xl:grid xl:grid-rows-* xl:grid-cols-[repeat(auto-fill,minmax(21rem,1fr))] xl:w-[70%] m-auto flex flex-col gap-4">
         {locations.map((location) => (
           <LocationCard
             key={location.name}
             locationSrc={location.location}
+            id={location.id}
             address={location.address}
-            time={location.hours}
-            phoneNum={location.contact}
           />
         ))}
       </div>

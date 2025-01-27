@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import Bill from "./Bill";
+import { useTranslation } from "react-i18next";
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
@@ -22,40 +23,7 @@ const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   );
 };
 
-const Fields = [
-  [
-    {
-      type: "text",
-      placeholder: "Phone",
-      icon: <Phone className="size-5 stroke-black"/>,
-      name: "phone",
-      className: "col-span-8",
-    },
-  ],
-  [
-    {
-      type: "text",
-      placeholder: "District",
-      icon: <MapPinHouse className="size-5 stroke-black" />,
-      name: "neighborhood",
-      className: "col-span-10",
-    },
-    {
-      type: "text",
-      placeholder: "Street 1",
-      icon: <MapPinHouse className="size-5 stroke-black" />,
-      name: "first_street",
-      className: "col-span-10",
-    },
-    {
-      type: "text",
-      placeholder: "Street 2",
-      icon: <MapPinHouse className="size-5 stroke-black" />,
-      name: "second_street",
-      className: "col-span-10",
-    },
-  ],
-];
+
 
 export const FormField = ({
   type,
@@ -89,6 +57,44 @@ export const FormField = ({
 function Form({ setIsCheckoutOpen }) {
   const [isCurrentLocationChecked, setIsCurrentLocationChecked] =
     useState(false);
+  const { t } = useTranslation();
+
+  const Fields = [
+    [
+      {
+        type: "text",
+        placeholder: t("Checkout.phone"),
+        icon: <Phone className="size-5 stroke-black"/>,
+        name: "phone",
+        className: "col-span-8",
+      },
+    ],
+    [
+      {
+        type: "text",
+        placeholder: t("Checkout.neighborhood"),
+        icon: <MapPinHouse className="size-5 stroke-black" />,
+        name: "neighborhood",
+        className: "col-span-10",
+      },
+      {
+        type: "text",
+        placeholder: t("Checkout.firstStreet"),
+        icon: <MapPinHouse className="size-5 stroke-black" />,
+        name: "first_street",
+        className: "col-span-10",
+      },
+      {
+        type: "text",
+        placeholder: t("Checkout.secondStreet"),
+        icon: <MapPinHouse className="size-5 stroke-black" />,
+        name: "second_street",
+        className: "col-span-10",
+      },
+    ],
+  ];
+
+
   const schema = z
     .object({
       phone: z
@@ -160,7 +166,7 @@ function Form({ setIsCheckoutOpen }) {
       </button>
       <form className="h-full flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-3xl font-semibold mb-4 text-black border-b-2 font-poppins pb-2">
-          Checkout
+          {t("Checkout.title")}
         </h1>
         <div className="flex flex-col h-[100%] mb-2">
           <div className="grid grid-cols-8">
@@ -192,7 +198,7 @@ function Form({ setIsCheckoutOpen }) {
               className="h-5 w-5"
             />
             <label className="flex items-center gap-2">
-              <span className="text-custom text-lg ">Use Current Location</span>
+              <span className="text-custom text-lg ">{t("Checkout.useCurrentLocation")}</span>
               <LocateFixed className="size-5 stroke-black" />
             </label>
           </div>
@@ -203,7 +209,7 @@ function Form({ setIsCheckoutOpen }) {
           disabled={isSubmitting}
           className="submit-button text-black font-poppins mt-auto border disabled:opacity-50 border-black"
         >
-          Submit
+          {t("Checkout.submit")}
         </button>
       </form>
     </div>

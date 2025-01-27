@@ -6,7 +6,7 @@ import Locations from "./components/Locations";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { useStore } from "./store";
-import { useEffect } from "react";
+
 
 // TODO: hero image takes a lot of time to load
 // TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
@@ -15,6 +15,7 @@ import { useEffect } from "react";
 
 function App() {
   const { cartOpen } = useStore();
+
   return (
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />

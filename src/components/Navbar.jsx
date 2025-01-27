@@ -1,4 +1,5 @@
 import { useState } from "react";
+import LanguageDropdown from "./LanguageDropdown";
 
 import {
   motion,
@@ -10,7 +11,7 @@ import { useStore } from "../store";
 
 const Navbar = () => {
   const [hide, setHide] = useState(false);
-  const { toggleCart, itemsCount } = useStore();
+  const { toggleCart, itemsCount, lng } = useStore();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -21,11 +22,11 @@ const Navbar = () => {
     document.body.style.overflow = "hidden";
     toggleCart(true);
   };
-
+  // there was overflow-hidden before language dropdown
   const classesWithoutScroll =
-    "w-full h-12 flex items-center justify-between px-1 overflow-hidden bg-red-800 z-30 fixed top-0 md:px-4 md:h-16";
+    "w-full h-12 flex items-center justify-between px-1 bg-red-800 z-30 fixed top-0 md:px-4 md:h-16";
   const classesWithScroll =
-    "w-12 h-12 flex items-center justify-center overflow-hidden rounded-full transition-all px-1 bg-red-800 z-30 fixed right-4 top-4";
+    `w-12 h-12 flex items-center justify-center rounded-full transition-all px-1 bg-red-800 z-30 fixed ${lng === "en" ? "right-4" : "left-4"} top-4`;
 
   return (
     <motion.div
@@ -35,10 +36,12 @@ const Navbar = () => {
       exit={{ y: -100 }}
       className={`${hide ? classesWithScroll : classesWithoutScroll}`}
     >
+      
       {!hide && (
         <p className="font-kufam font-semibold w-fit px-3 text-xl md:text-3xl">ملحمة المنزلة</p>
       )}
-      <div className="z-40">
+      <div className="z-40 flex items-center">
+        {!hide && <LanguageDropdown />}
         <button
           onClick={handleCartOpen}
           className={` grid place-content-center font-kufam font-semibold px-3 relative ${

@@ -3,11 +3,13 @@ import { useStore } from "../store";
 import { motion, AnimatePresence } from "framer-motion";
 import { MoveRight, X } from "lucide-react";
 import CartCard from "./CartCard";
+import { useTranslation } from "react-i18next";
 
 const CartContent = ({ setIsCheckoutOpen }) => {
   const { toggleCart } = useStore();
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
   const { cart, Total } = useStore();
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -17,9 +19,8 @@ const CartContent = ({ setIsCheckoutOpen }) => {
       className="w-[90%] xl:w-[40%] md:w-[70%] h-[80%] md:h-[90%] bg-accent overflow-hidden rounded-lg flex flex-col md:p-5 z-20 relative"
     >
       <p className="text-custom font-poppins text-2xl md:text-4xl font-semibold pt-3 pl-3 md:p-0">
-        Your{" "}
-        <span className="hidden md:inline-block text-custom">Shopping</span>{" "}
-        Cart
+        <span className="hidden md:inline-block text-custom">{t("Cart.lgTitle")}</span>
+        <span className="md:hidden text-custom">{t("Cart.smTitle")}</span>
       </p>
       <hr className="border border-gray-200 my-2" />
       <button
@@ -42,7 +43,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
           </div>
           <div className="w-full flex flex-col">
             <div className="flex mt-2">
-              <p className="text-custom font-poppins p-2  text-2xl">TOTAL :</p>
+              <p className="text-custom font-poppins p-2  text-2xl">{t("Cart.total")} :</p>
               <p className="text-custom font-poppins font-semibold text-2xl p-2 px-0 rounded-lg ">
                 {Total}<span className="text-sm font-light text-custom">SR</span>
               </p>
@@ -54,7 +55,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
               onClick={() => setIsCheckoutOpen(true)}
               className="text-accent  font-poppins border text-xl flex items-center justify-center gap-4 m-2 p-2 bg-custom rounded-lg"
             >
-              <span>Checkout</span>{" "}
+              <span>{t("Cart.checkout")}</span>{" "}
               <motion.span animate={{ x: isCheckoutHovered ? 10 : 0 }}>
                 <MoveRight />
               </motion.span>
@@ -70,7 +71,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
             layout
             className="text-primary p-5 md:p-0 text-7xl md:text-8xl lg:text-9xl font-poppins md:flex md:items-center md:justify-center rounded-lg md:px-2 h-[35rem] scrollbar-hide overflow-y-auto opacity-20"
           >
-            <span className="text-custom">Your cart is empty.</span>
+            <span className="text-custom">{t("Cart.emptyCart")}</span>
           </motion.p>
           <motion.button
             initial={{ opacity: 0 }}
@@ -84,7 +85,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
             }}
             className=" rounded-lg w-fit md:p-5 m-3 ml-auto shadow-lg border font-poppins text-2xl p-3 md:text-5xl flex font-light items-center justify-center"
           >
-            <span className="text-custom">Add Some</span>
+            <span className="text-custom">{t("Cart.emptyCta")}</span>
           </motion.button>
         </>
       )}

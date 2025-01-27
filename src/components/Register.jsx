@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { register as registerFn } from "../api/users/register"; 
+import { useTranslation } from "react-i18next";
 
 import { Key, Mail, UserRound } from "lucide-react";
 
@@ -35,45 +36,47 @@ const schema = z.object({
     }),
 });
 
-const fields = [
-  {
-    type: "text",
-    placeholder: "First Name",
-    icon: <UserRound className="size-5 stroke-black" />,
-    name: "first_name",
-    className: "col-span-3",
-  },
-  {
-    type: "text",
-    placeholder: "Last Name",
-    icon: <UserRound className="size-5 stroke-black" />,
-    name: "last_name",
-    className: "col-span-3",
-  },
-  {
-    type: "text",
-    placeholder: "Username",
-    icon: <UserRound className="size-5 stroke-black" />,
-    name: "username",
-    className: "col-span-6",
-  },
-  {
-    type: "text",
-    placeholder: "Email",
-    icon: <Mail className="size-5 stroke-black"/>,
-    name: "email",
-    className: "col-span-6",
-  },
-  {
-    type: "password",
-    placeholder: "Password",
-    icon: <Key className="size-5 stroke-black"/>,
-    name: "password",
-    className: "col-span-6",
-  },
-];
+
 
 const Register = ({setLoginState ,setIsCheckoutOpen}) => {
+  const { t } = useTranslation();
+  const fields = [
+    {
+      type: "text",
+      placeholder: t("Register.firstName"),
+      icon: <UserRound className="size-5 stroke-black" />,
+      name: "first_name",
+      className: "col-span-3",
+    },
+    {
+      type: "text",
+      placeholder: t("Register.lastName"),
+      icon: <UserRound className="size-5 stroke-black" />,
+      name: "last_name",
+      className: "col-span-3",
+    },
+    {
+      type: "text",
+      placeholder: t("Register.username"),
+      icon: <UserRound className="size-5 stroke-black" />,
+      name: "username",
+      className: "col-span-6",
+    },
+    {
+      type: "text",
+      placeholder: t("Register.email"),
+      icon: <Mail className="size-5 stroke-black"/>,
+      name: "email",
+      className: "col-span-6",
+    },
+    {
+      type: "password",
+      placeholder: t("Register.password"),
+      icon: <Key className="size-5 stroke-black"/>,
+      name: "password",
+      className: "col-span-6",
+    },
+  ];
   const {
     register,
     handleSubmit,
@@ -111,7 +114,7 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
       className="w-[90%] md:w-[30%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
     >
       <div className="flex flex-col items-center h-full overflow-hidden">
-        <h1 className="text-5xl font-bold text-custom mb-4">Register</h1>
+        <h1 className="text-5xl font-bold text-custom mb-4">{t("Register.title")}</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-6 gap-4 w-full bg-white"
@@ -129,14 +132,14 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
             disabled={isSubmitting}
             className="col-span-6 bg-primary text-2xl text-white p-2 rounded-md"
           >
-            Create
+            {t("Register.registerBtn")}
           </button>
           <button
             type="button"
             onClick={() => setLoginState(true)} //TODO: navigate to Login page
             className="col-span-6 bg-secondary text-2xl  text-white p-2 rounded-md"
           >
-            Login
+            {t("Register.loginBtn")}
           </button>
         </form>
       </div>

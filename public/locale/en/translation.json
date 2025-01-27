@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "title": {
+      "part1": "Freshness You Can Taste",
+      "part2": "Quality You Can Trust"
+    },
+    "subHeading": "the best quality meat in the market",
+    "cta": "Shop Now"
+  },
+  "ProductFilter": {
+    "searchPlaceholder": "Search..."
+  },
+  "ProductList": {
+    "noProducts": "No products found"
+  },
+  "Locations": {
+    "title": "Visit Us",
+    "1": {
+      "phone": "0501799400",
+      "hours": "8:00 AM - 12:00 AM"
+    },
+    "2": {
+      "phone": "0555327319",
+      "hours": "8:00 AM - 12:00 AM"
+    },
+    "3": {
+      "phone": "0555096163",
+      "hours": "8:00 AM - 12:00 AM"
+    }
+  },
+  "Footer": {
+    "AboutUs": {
+      "title": "About Us",
+      "ourStory": {
+        "title": "Our Story",
+        "content": "At Elmanzla Meatshop, we’ve been serving the finest quality meats since 1995. What started as a small family-owned butcher shop has grown into a trusted name in the community. Our passion for quality and tradition drives"
+      },
+      "ourMission": {
+        "title": "Our Mission",
+        "content": "Our mission is simple: to provide our customers with the freshest, highest-quality meats while upholding sustainable and ethical practices."
+      },
+      "qualityYouCanTrust": {
+        "title": "Quality You Can Trust",
+        "content": "All our products are carefully inspected and hand-cut by our expert butchers to ensure the highest standards."
+      }
+    },
+    "ContactUs": {
+      "title": "Contact Us",
+      "phoneBtn": {
+        "position": "Manager",
+        "name": "Mohammed Farag"
+      },
+      "whatsappBtn": {
+        "title": "Contact Us on WhatsApp"
+      }
+    }
+  },
+  "Cart": {
+    "smTitle": "Your Cart",
+    "lgTitle": "Your Shopping Cart",
+    "emptyCart": "Your cart is empty.",
+    "emptyCta": "Add Some",
+    "total": "Total",
+    "checkout": "Checkout"
+  },
+  "Login": {
+    "title": "Login",
+    "username": "Username", 
+    "password": "Password",
+    "loginBtn": "Login",
+    "registerBtn": "Register"
+  },
+  "Register": {
+    "title": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username", 
+    "password": "Password",
+    "email": "Email",
+    "registerBtn": "Create",
+    "loginBtn": "Login"
+  },
+  "Checkout": {
+    "title": "Checkout",
+    "phone": "Phone",
+    "neighborhood": "Neighborhood",
+    "firstStreet": "First Street",
+    "secondStreet": "Second Street",
+    "useCurrentLocation": "Use Current Location",
+    "submit": "Submit"
+  }, 
+  "Bill": {
+    "total": "Total",
+    "delivery": "Delivery",
+    "subTotal": "Subtotal"
+  }
+}
