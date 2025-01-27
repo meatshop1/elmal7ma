@@ -6,10 +6,11 @@ import { useStore } from "../store";
 
 const Counter = ({ hideCounter, className, increment, decrement, initCount }) => {
   const [count, setCount] = useState(initCount || 1);
+  const { lng } = useStore();
+  
   const handleIncrement = () => {
     setCount((prev) => prev + 1);
     increment();
-    console.log(useStore.getState().cart);
   };
   const handleDecrement = () => {
     decrement();
@@ -18,12 +19,11 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
       return;
     }
     setCount((prev) => prev - 1);
-    console.log(useStore.getState().cart);
   };
   return (
     <motion.div
       className={twMerge(
-        "absolute w-20 h-6 md:w-28 md:h-8 bg-secondary rounded-lg flex items-center justify-between right-2 md:right-4",
+        `absolute w-20 h-6 md:w-28 md:h-8 bg-secondary rounded-lg flex items-center overflow-hidden justify-between ${lng !== "en" ? "left-2 md:left-4" : "right-2 md:right-4"}`,
         className
       )}
       initial={{ opacity: 0, y: 20 }}

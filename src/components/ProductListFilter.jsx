@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { fetchCollections } from "../api/collections/fetchCollections";
 import { useQuery } from "@tanstack/react-query";
+import { useStore } from "../store";
 
 const taps = [
   { id: 1, name: "All" },
@@ -18,6 +19,9 @@ const ProductListFilter = ({ onChange }) => {
   const [category, setCategory] = useState([]);
   const debouncedSearch = useDebounce(search);
   const { t } = useTranslation();
+  const { lng } = useStore();
+
+
   // TODO: should be named tabs instead of collections then make sure to replace .name with .title
   const { data: collections, isLoading } = useQuery({
     queryKey: ["collections"],
@@ -35,7 +39,7 @@ const ProductListFilter = ({ onChange }) => {
         placeholder={t("ProductFilter.searchPlaceholder")}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="text-white text-lg rounded-md p-2 mt-5 focus:outline-none w-[80%] h-8 bg-secondary md:w-full md:h-10 md:text-xl"
+        className={`text-white text-lg rounded-md p-2 mt-5 focus:outline-none w-[80%] h-8 bg-secondary md:w-full md:h-10 md:text-xl ${lng === "en" ? "font-poppins" : "font-kufam "} placeholder:text-accent`}
       />
       <div className="flex flex-wrap justify-center mt-2 w-[80%] md:w-full">
         {taps.map((tap) => (
@@ -61,7 +65,7 @@ const ProductListFilter = ({ onChange }) => {
               category.includes(tap.name)
                 ? " border-2 border-accent bg-secondary"
                 : "bg-custom border-2 border-transparent"
-            }  text-sm rounded-md px-1 m-1 md:text-lg  focus:outline-none`}
+            }  text-sm rounded-md px-1 m-1 md:text-lg  focus:outline-none ${lng === "en" ? "font-poppins" : "font-kufam pt-1"}`}
           >
             {tap.name}
           </button>

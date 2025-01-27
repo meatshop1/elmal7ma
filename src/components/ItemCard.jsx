@@ -7,7 +7,7 @@ import Counter from "./Counter";
 
 const ItemCard = ({ product, className }) => {
   const [showCounter, setShowCounter] = useState(false);
-  const { addToCart, removeFromCart, increment, decrement, cart } = useStore();
+  const { addToCart, removeFromCart, increment, decrement, cart, lng } = useStore();
 
   const [scobe, animate] = useAnimate();
 
@@ -44,8 +44,8 @@ const ItemCard = ({ product, className }) => {
           alt="placeholder"
           className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3"
         />
-        <h2 className="text-[1rem] font-semibold ml-2 mt-2 md:text-xl md:ml-4 ">{product.name}</h2>
-        <p className="text-sm text-gray-400 ml-2 md:ml-4 bg-red">{product.description}</p>
+        <h2 className={`text-[1rem] font-semibold  mt-2 md:text-xl ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam"}`}>{product.name}</h2>
+        <p className={`text-sm text-gray-400 bg-red ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam"}`}>{product.description}</p>
         <div className="flex items-center justify-between w-full px-2 md:px-4 mt-auto py-2 relative ">
           <p className="text-lg font-semibold ">
             <span className="text-xl md:text-2xl">{product.price}</span><span className="pl-1 font-thin">SR</span>
