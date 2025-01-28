@@ -8,39 +8,43 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "../store";
 import { Key, Mail, UserRound } from "lucide-react";
 
-const schema = z.object({
-  first_name: z
-    .string()
-    .nonempty("this field required")
-    .min(3, "name is too short")
-    .max(20),
-  last_name: z
-    .string()
-    .nonempty("this field required")
-    .min(3, "name is too short")
-    .max(20),
-  email: z.string().nonempty("email is required").email("invalid email"),
-  username: z.string().nonempty("username is required"),
-  password: z
-    .string()
-    .nonempty("password is required")
-    .min(8, "password is too short")
-    .refine((data) => /[A-Z]/.test(data), {
-      message: "password must contain at least one uppercase letter",
-    })
-    .refine((data) => /[a-z]/.test(data), {
-      message: "password must contain at least one lowercase letter",
-    })
-    .refine((data) => /[0-9]/.test(data),  {
-       message: "password must contain at least one number"
-    }),
-});
+
 
 
 
 const Register = ({setLoginState ,setIsCheckoutOpen}) => {
   const { t } = useTranslation();
   const { lng } = useStore();
+
+
+  const schema = z.object({
+    first_name: z
+      .string()
+      .nonempty(t("PersonalInfoErrors.firstNameRequired"))
+      .min(3, "name is too short")
+      .max(20),
+    last_name: z
+      .string()
+      .nonempty(t("PersonalInfoErrors.lastNameRequired"))
+      .min(3, "name is too short")
+      .max(20),
+    email: z.string().nonempty(t("EmailErrors.required")).email(t("EmailErrors.invalid")),
+    username: z.string().nonempty(t("PersonalInfoErrors.usernameRequired")),
+    password: z
+      .string()
+      .nonempty(t("PasswordErrors.required"))
+      .min(8, t("PasswordErrors.short"))
+      .refine((data) => /[A-Z]/.test(data), {
+        message: t("PasswordErrors.uppercase"),
+      })
+      .refine((data) => /[a-z]/.test(data), {
+        message: t("PasswordErrors.lowercase"),
+      })
+      .refine((data) => /[0-9]/.test(data),  {
+         message: t("PasswordErrors.number"),
+      }),
+  });
+
   const fields = [
     {
       type: "text",

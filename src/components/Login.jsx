@@ -8,17 +8,18 @@ import { Key, UserRound  } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useStore} from "../store";
 
-const schema = z.object({
-  username: z.string().nonempty("username is required"),
-  password: z.string().nonempty("password is required"),
-});
+
 
 
 
 const Login = ({ setLoginState, setIsCheckoutOpen }) => {
   const { t } = useTranslation();
   const { lng } = useStore();
-
+  const schema = z.object({
+    username: z.string().nonempty(t("PersonalInfoErrors.usernameRequired")),
+    password: z.string().nonempty(t("PasswordErrors.required")),
+  });
+  
   const fields = [
     {
       type: "text",

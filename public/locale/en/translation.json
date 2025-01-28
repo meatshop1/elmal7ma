@@ -7,6 +7,28 @@
     "subHeading": "the best quality meat in the market",
     "cta": "Shop Now"
   },
+  "PasswordErrors": {
+    "required": "Password is required",
+    "short": "Password must be at least 8 characters",
+    "uppercase": "Password must contain at least one uppercase letter",
+    "lowercase": "Password must contain at least one lowercase letter",
+    "number": "Password must contain at least one number"
+  },
+  "EmailErrors": {
+    "required": "Email is required",
+    "invalid": "Email is invalid"
+  },
+  "PersonalInfoErrors": {
+    "usernameRequired": "Username is required",
+    "firstNameRequired": "First Name is required",
+    "lastNameRequired": "Last Name is required",
+    "noLocationSelected": "Either insert your location or use current location"
+  },
+  "PhoneErrors": {
+    "required": "Phone is required",
+    "invalid": "Phone is invalid"
+  },
+  "Currency": "SR",
   "ProductFilter": {
     "searchPlaceholder": "Search..."
   },

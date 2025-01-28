@@ -102,8 +102,8 @@ function Form({ setIsCheckoutOpen }) {
     .object({
       phone: z
         .string()
-        .nonempty("this field required")
-        .length(11, "invalid phone number"),
+        .nonempty(t("PhoneErrors.required"))
+        .length(10, t("PhoneErrors.invalid")),
       neighborhood: z.string().max(50),
       first_street: z.string().max(50),
       second_street: z.string().max(50),
@@ -113,13 +113,13 @@ function Form({ setIsCheckoutOpen }) {
         isCurrentLocationChecked ||
         (data.neighborhood && data.first_street && data.second_street), // At least one field must be present
       {
-        message: "Either location or current location is required", // Custom error message
+        message: t("PersonalInfoErrors.noLocationSelected"), // Custom error message
         path: ["second_street"], // Attach the error to a specific field
       }
     ).refine(
       data => data.phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/),
       {
-        message: "Invalid phone number",
+        message: t("PhoneErrors.invalid"),
       }
     )
 

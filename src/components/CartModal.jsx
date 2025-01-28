@@ -1,18 +1,31 @@
 import { motion } from "framer-motion";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { verify } from "../api/users/verify";
 import { useStore } from "../store";
 import CartContent from "./CartContent";
 import CheckoutForm from "./CheckoutForm";
 import SignModal from "./SignModal";
+import { useMutation } from "@tanstack/react-query";
 
 
 
 const CartModal = () => {
   const { toggleCart, cartOpen } = useStore();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: verify,
+    onSuccess: (data) => {
+      console.log(data)
+      setIsSignedIn(data);
+    },
+  });
+
+  useEffect(() => {
+    mutation.mutate();
+  }, [isCheckoutOpen]);
 
   return (
     <motion.div
@@ -24,8 +37,7 @@ const CartModal = () => {
       style={{ pointerEvents: cartOpen ? "auto" : "none" }}
       className="fixed top-0 left-0 w-full h-full bg-custom bg-opacity-50 grid place-items-center z-30"
     >
-      {isCheckoutOpen ? (
-       token && verify(token)) ? (
+      {isCheckoutOpen ? isSignedIn ? (
         <CheckoutForm
           setIsCheckoutOpen={setIsCheckoutOpen}
           onClick={(e) => e.stopPropagation()}
