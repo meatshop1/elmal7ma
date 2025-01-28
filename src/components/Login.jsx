@@ -56,7 +56,7 @@ const Login = ({ setLoginState, setIsCheckoutOpen }) => {
       const errorData = JSON.parse(error.message);
       setError("username", {
         type: "manual",
-        message: errorData.detail,
+        message: lng === "en" ? errorData.detail : "هذه البيانات غير صحيحة",
       });
     },
   });

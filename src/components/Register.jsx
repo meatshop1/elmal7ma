@@ -3,19 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { register as registerFn } from "../api/users/register"; 
+import { register as registerFn } from "../api/users/register";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../store";
 import { Key, Mail, UserRound } from "lucide-react";
 
-
-
-
-
-const Register = ({setLoginState ,setIsCheckoutOpen}) => {
+const Register = ({ setLoginState, setIsCheckoutOpen }) => {
   const { t } = useTranslation();
   const { lng } = useStore();
-
 
   const schema = z.object({
     first_name: z
@@ -28,7 +23,10 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
       .nonempty(t("PersonalInfoErrors.lastNameRequired"))
       .min(3, "name is too short")
       .max(20),
-    email: z.string().nonempty(t("EmailErrors.required")).email(t("EmailErrors.invalid")),
+    email: z
+      .string()
+      .nonempty(t("EmailErrors.required"))
+      .email(t("EmailErrors.invalid")),
     username: z.string().nonempty(t("PersonalInfoErrors.usernameRequired")),
     password: z
       .string()
@@ -40,8 +38,8 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
       .refine((data) => /[a-z]/.test(data), {
         message: t("PasswordErrors.lowercase"),
       })
-      .refine((data) => /[0-9]/.test(data),  {
-         message: t("PasswordErrors.number"),
+      .refine((data) => /[0-9]/.test(data), {
+        message: t("PasswordErrors.number"),
       }),
   });
 
@@ -70,14 +68,14 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
     {
       type: "text",
       placeholder: t("Register.email"),
-      icon: <Mail className="size-5 stroke-black"/>,
+      icon: <Mail className="size-5 stroke-black" />,
       name: "email",
       className: "col-span-6",
     },
     {
       type: "password",
       placeholder: t("Register.password"),
-      icon: <Key className="size-5 stroke-black"/>,
+      icon: <Key className="size-5 stroke-black" />,
       name: "password",
       className: "col-span-6",
     },
@@ -92,6 +90,11 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
     resolver: zodResolver(schema),
   });
 
+  const ARABIC_SERVER_ERRORS = {
+    email: "يوجد حساب مسجل بهذا البريد الإلكتروني",
+    username: "اسم المستخدم موجود بالفعل",
+  };
+
   const mutation = useMutation({
     mutationFn: registerFn,
     onSuccess: (data) => {
@@ -100,10 +103,17 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
     onError: (error) => {
       const errorData = JSON.parse(error.message);
       for (const key in errorData) {
-        setError(key, {
-          type: "manual",
-          message: errorData[key][0],
-        });
+        if (lng === "en") {
+          setError(key, {
+            type: "manual",
+            message: errorData[key][0],
+          });
+        } else {
+          setError(key, {
+            type: "manual",
+            message: ARABIC_SERVER_ERRORS[key],
+          });
+        }
       }
     },
   });
@@ -119,7 +129,13 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
       className="w-[90%] md:w-[30%] h-fit bg-white rounded-lg flex flex-col p-7 z-50 relative"
     >
       <div className="flex flex-col items-center h-full overflow-hidden">
-        <h1 className={`font-bold text-custom mb-4 text-5xl ${lng === "en" ? "font-poppins " : "font-kufam"}`}>{t("Register.title")}</h1>
+        <h1
+          className={`font-bold text-custom mb-4 text-5xl ${
+            lng === "en" ? "font-poppins " : "font-kufam"
+          }`}
+        >
+          {t("Register.title")}
+        </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-6 gap-4 w-full bg-white"
@@ -135,14 +151,18 @@ const Register = ({setLoginState ,setIsCheckoutOpen}) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`col-span-6 bg-primary text-2xl text-white p-2 rounded-md ${lng === "en" ? "font-poppins" : "font-kufam text-xl"}`}
+            className={`col-span-6 bg-primary text-2xl text-white p-2 rounded-md ${
+              lng === "en" ? "font-poppins" : "font-kufam text-xl"
+            }`}
           >
             {t("Register.registerBtn")}
           </button>
           <button
             type="button"
             onClick={() => setLoginState(true)} //TODO: navigate to Login page
-            className={`col-span-6 bg-secondary text-2xl text-white p-2 rounded-md ${lng === "en" ? "font-poppins" : "font-kufam text-xl"}`}
+            className={`col-span-6 bg-secondary text-2xl text-white p-2 rounded-md ${
+              lng === "en" ? "font-poppins" : "font-kufam text-xl"
+            }`}
           >
             {t("Register.loginBtn")}
           </button>
