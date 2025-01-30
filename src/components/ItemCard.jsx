@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useStore } from "../store";
 import Counter from "./Counter";
+import { useTranslation } from "react-i18next";
 
 const ItemCard = ({ product, className }) => {
   const [showCounter, setShowCounter] = useState(false);
   const { addToCart, removeFromCart, increment, decrement, cart, lng } = useStore();
-
+  const { t } = useTranslation();
   const [scobe, animate] = useAnimate();
 
   const handleAdd = () => {
@@ -48,7 +49,7 @@ const ItemCard = ({ product, className }) => {
         <p className={`text-sm text-gray-400 bg-red ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam"}`}>{product.description}</p>
         <div className="flex items-center justify-between w-full px-2 md:px-4 mt-auto py-2 relative ">
           <p className="text-lg font-semibold ">
-            <span className="text-xl md:text-2xl">{product.price}</span><span className="pl-1 font-thin">SR</span>
+            <span className="text-xl md:text-2xl">{product.price}</span><span className={`font-thin ${lng === "en" ? "pl-1" : "pr-1 text-sm font-kufam"}`}>{t("Currency")}</span>
           </p>
           <AnimatePresence>
             {showCounter && (

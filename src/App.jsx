@@ -8,11 +8,11 @@ import Navbar from "./components/Navbar";
 import { useStore } from "./store";
 import { useEffect } from "react";
 import cookies from "js-cookie";
+import { getCartOrCreate } from "./api/cart/getCartOrCreate";
 
 // TODO: hero image takes a lot of time to load
 // TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
 // TODO: API integration
-// TODO: Add Language support
 
 function App() {
   const { cartOpen, lng, setLng } = useStore();
@@ -23,6 +23,7 @@ function App() {
       cookies.set("i18next", "en")
       setLng("en")
     }
+    getCartOrCreate()
   }, [lng]);
 
   return (

@@ -8,6 +8,8 @@ import { z } from "zod";
 import Bill from "./Bill";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../store"
+import { postAddress } from "../api/address/postAddress";
+import { postOrder } from "../api/order/postOrder";
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
@@ -127,15 +129,18 @@ function Form({ setIsCheckoutOpen }) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitted, isValid },
+    formState: { errors, isSubmitting, isSubmitted, isValid, isLoading },
     setError,
     reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
   const { lng } = useStore();
+
   const onSubmit = async (data) => {
-    console.log("SUBMITTING", data);
+    const response = await postAddress(data);
+    const orderResponse = await postOrder();
+    console.log("ORDER RESPONSE", orderResponse);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("SUCCESS", data);
     reset();
@@ -213,7 +218,7 @@ function Form({ setIsCheckoutOpen }) {
           disabled={isSubmitting}
           className={`submit-button text-black mt-auto border disabled:opacity-50 border-black ${lng === "en" ? "font-poppins" : "font-kufam text-xl leading-10 font-semibold" }`}
         >
-          {t("Checkout.submit")}
+          {isLoading ? <Loader /> : t("Checkout.submit")}
         </button>
       </form>
     </div>

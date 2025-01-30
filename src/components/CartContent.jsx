@@ -4,12 +4,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MoveRight, X } from "lucide-react";
 import CartCard from "./CartCard";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCartItems } from "../api/cart/fetchCartItems";
 
 const CartContent = ({ setIsCheckoutOpen }) => {
   const { toggleCart } = useStore();
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
   const { cart, Total, lng } = useStore();
   const { t } = useTranslation();
+
+    const { data: cart1, isLoading } = useQuery({
+      queryKey: ["cart"],
+      queryFn: () => fetchCartItems(),
+    });
+
+   console.log(cart1)
+
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -45,7 +55,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
             <div className="flex mt-2">
               <p className={`text-custom p-2 text-2xl ${lng === "en" ? "font-poppins text-2xl" : "font-kufam text-xl"}`}>{t("Cart.total")} :</p>
               <p className="text-custom font-poppins font-semibold text-2xl p-2 px-0 rounded-lg ">
-                {Total}<span className="text-sm font-light text-custom">SR</span>
+                {Total}<span className={`text-sm font-light text-custom ${lng === "en" ? "pl-1" : "pr-1 font-kufam"}`}>{t("Currency")}</span>
               </p>
             </div>
             <motion.button

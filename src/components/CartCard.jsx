@@ -2,9 +2,11 @@ import { Trash2 } from "lucide-react";
 import Counter from "./Counter";
 import { motion } from "framer-motion";
 import { useStore } from "../store";
+import { useTranslation } from "react-i18next";
 
 const CartCard = ({ product }) => {
   const { removeFromCart, increment, decrement, lng } = useStore();
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -40,7 +42,7 @@ const CartCard = ({ product }) => {
         </p>
         <p className="text-white text-lg md:text-2xl font-light mt-auto">
           {product.price}
-          <span className="text-sm font-thin">SR</span>
+          <span className={`text-sm font-thin ${lng === "en" ? "pl-1" : "pr-1 font-kufam"}`}>{t("Currency")}</span>
         </p>
         <Counter
           initCount={product.count}
