@@ -18,6 +18,8 @@
     "required": "Email is required",
     "invalid": "Email is invalid"
   },
+  "PreviousBtn": "Prev",
+  "NextBtn": "Next",
   "PersonalInfoErrors": {
     "usernameRequired": "Username is required",
     "firstNameRequired": "First Name is required",

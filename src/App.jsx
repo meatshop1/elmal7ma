@@ -9,10 +9,13 @@ import { useStore } from "./store";
 import { useEffect } from "react";
 import cookies from "js-cookie";
 import { getCartOrCreate } from "./api/cart/getCartOrCreate";
+import { convertEnglishToArabic } from "./utils/helpers";
 
 // TODO: hero image takes a lot of time to load
 // TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
 // TODO: API integration
+
+console.log(convertEnglishToArabic(1234567890)); // ١٢٣٤٥٦٧٨٩٠
 
 function App() {
   const { cartOpen, lng, setLng } = useStore();

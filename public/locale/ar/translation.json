@@ -18,6 +18,8 @@
     "required": "البريد الإلكتروني مطلوب",
     "invalid": "البريد الإلكتروني غير صالح"
   },
+  "PreviousBtn": "السابق",
+  "NextBtn": "التالي",
   "PersonalInfoErrors": {
     "usernameRequired": "اسم المستخدم مطلوب",
     "firstNameRequired": "الاسم الأول مطلوب",
