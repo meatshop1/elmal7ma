@@ -13,6 +13,7 @@ export const items = [
         url: "https://www.shutterstock.com/image-photo/variety-raw-beef-meat-prime-260nw-2496493565.jpg",
         name: "Item 2",
         category: "Category 2",
+        notes: "This is a note",
         price: 200,
         count: 0,
         description: "Description 2",

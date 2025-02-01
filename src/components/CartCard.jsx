@@ -3,6 +3,7 @@ import Counter from "./Counter";
 import { motion } from "framer-motion";
 import { useStore } from "../store";
 import { useTranslation } from "react-i18next";
+import Notes from "./Notes";
 
 const CartCard = ({ product }) => {
   const { removeFromCart, increment, decrement, lng } = useStore();
@@ -14,7 +15,7 @@ const CartCard = ({ product }) => {
       exit={{ opacity: 0, x: 2000 }}
       transition={{ duration: 0.2 }}
       layout
-      className="w-full h-24 md:h-32 font-poppins bg-custom flex gap-2 rounded-lg p-2 my-2 relative "
+      className="w-full h-40 md:h-44 font-poppins bg-custom flex gap-2 rounded-lg p-2 my-2 relative "
     >
       <button
         onClick={() => removeFromCart(product)}
@@ -40,6 +41,7 @@ const CartCard = ({ product }) => {
         <p className={`text-gray-500 text-xs md:text-sm ${lng === "en" ? "" : "font-kufam"}`}>
           {product.description}
         </p>
+        <Notes initialValue={product.notes ? product.notes : ""}/>
         <p className="text-white text-lg md:text-2xl font-light mt-auto">
           {product.price}
           <span className={`text-sm font-thin ${lng === "en" ? "pl-1" : "pr-1 font-kufam"}`}>{t("Currency")}</span>
