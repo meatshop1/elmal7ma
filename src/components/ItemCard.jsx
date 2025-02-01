@@ -45,8 +45,8 @@ const ItemCard = ({ product, className }) => {
           alt="placeholder"
           className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3"
         />
-        <h2 className={`text-[1rem] font-semibold  mt-2 md:text-xl ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam"}`}>{product.name}</h2>
-        <p className={`text-sm text-gray-400 bg-red ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam"}`}>{product.description}</p>
+        <h2 className={`text-[1rem] font-semibold h-fit leading-5 mt-2 md:text-xl ${lng === "en" ? "ml-2 mr-1  md:ml-4" : "mr-2 ml-1 md:mr-4 font-kufam"}`}>{lng === "en" ? product.name : product.name_ar}</h2>
+        <p className={`text-sm text-gray-400 bg-red ${lng === "en" ? "ml-2  md:ml-4" : "mr-2 md:mr-4 font-kufam text-xs"}`}>{lng === "en" ? product.collection : product.collection_ar}</p>
         <div className="flex items-center justify-between w-full px-2 md:px-4 mt-auto py-2 relative ">
           <p className="text-lg font-semibold ">
             <span className="text-xl md:text-2xl">{product.price}</span><span className={`font-thin ${lng === "en" ? "pl-1" : "pr-1 text-sm font-kufam"}`}>{t("Currency")}</span>

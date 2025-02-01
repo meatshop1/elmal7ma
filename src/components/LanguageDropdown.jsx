@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../utils/i18n";
 import { useStore } from "../store";
 import i18n from "i18next";
-import { Languages } from "lucide-react";
+import { Languages, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 const LanguageDropdown = () => {
@@ -27,10 +27,11 @@ const LanguageDropdown = () => {
       <motion.button
         whileTap={{ scale: 0.9 }}
         style={{ border: `1px solid ${isOpen ? "#fff" : "transparent"}` }}
-        className={`p-1 border-1 border-primary rounded-lg`}
+        className={`p-1 border-1 border-primary rounded-lg flex items-center gap-1`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <Languages className="size-5" />
+        {isOpen ? <ChevronUp className="size-4"/> : <ChevronDown className="size-4"/>}
       </motion.button>
 
       {isOpen && (<motion.div

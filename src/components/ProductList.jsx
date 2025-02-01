@@ -42,7 +42,7 @@ const ProductList = ({ products, className }) => {
         previousLabel={t("PreviousBtn")}
         nextLabel={t("NextBtn")}
         nextClassName={`bg-custom text-accent text-sm  m-1 rounded-md ${
-          page === pageCount ? "hidden" : ""
+          page === pageCount || pageCount === 0 ? "hidden" : ""
         }`}
         nextLinkClassName={`${lng === "ar" ? "font-kufam" : "font-poppins"} grid place-content-center p-2 w-full`}
         previousClassName={`bg-custom text-accent text-sm  m-1 rounded-md ${
@@ -54,7 +54,7 @@ const ProductList = ({ products, className }) => {
         breakLabel={"..."}
         breakClassName={""}
         pageCount={pageCount}
-        marginPagesDisplayed={1}
+        marginPagesDisplayed={0}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
         containerClassName={"flex justify-evenly md:justify-center mt-5 w-full px-5"}

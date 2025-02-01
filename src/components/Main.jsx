@@ -4,16 +4,17 @@ import { fetchProducts } from "../api/products/fetchProducts";
 import Loader from "./Loader";
 import ProductList from "./ProductList";
 import ProductListFilter from "./ProductListFilter";
+import { useStore } from "../store";
 import ReactPaginate from "react-paginate";
 
 
 const Main = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState([]);
-  
+  const { lng } = useStore();
   const { data: products, isLoading } = useQuery({
-    queryKey: ["products", { search, category }],
-    queryFn: () => fetchProducts({ search, category }),
+    queryKey: ["products", { search, category, lng }],
+    queryFn: () => fetchProducts({ search, category, lng }),
   });
 
 

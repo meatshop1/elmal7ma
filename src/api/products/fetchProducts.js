@@ -1,3 +1,4 @@
+import { useStore } from "../../store";
 export const items = [
     {
         id: 1,
@@ -291,24 +292,23 @@ export const items = [
 ];
 
 export const fetchProducts = async (options) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // TODO: replace the proudcts below with products1
     const SERVER_URL = import.meta.env.VITE_SERVER_URL;
     const response = await fetch(SERVER_URL + "/products");
-    const products1 = await response.json();
-
-    let products = items;
+    let products = await response.json();
+    const lng = options.lng;
     if (options?.search) {
-        products = products.filter((product) =>
-            product.name.toLowerCase().includes(options.search.toLowerCase())
-        );
+        const en_callback = product => product.name.toLowerCase().includes(options.search.toLowerCase())
+        const ar_callback = product => product.name_ar.includes(options.search)
+        const fn = lng === "en" ? en_callback : ar_callback;
+        products = products.filter(product => fn(product));
     }
     if (options?.category?.length) {
+        const en_callback = product => options.category.includes(product.collection)
+        const ar_callback = product => options.category.includes(product.collection_ar)
+        const fn = lng === "en" ? en_callback : ar_callback;
         if(options.category.includes("All")) return products;
-        products = products.filter((product) =>
-            options.category.includes(product.category)
-        );
+        if(options.category.includes("الكل")) return products;
+        products = products.filter(product => fn(product));
     }
 
     return products
