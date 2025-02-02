@@ -8,17 +8,17 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCartItems } from "../api/cart/fetchCartItems";
 
 const CartContent = ({ setIsCheckoutOpen }) => {
-  const { toggleCart } = useStore();
+  const { toggleCart, setTotal, setItemsCount } = useStore();
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
-  const { cart, Total, lng } = useStore();
+  const { Total, lng } = useStore();
   const { t } = useTranslation();
 
-    const { data: cart1, isLoading } = useQuery({
+    const { data: cart, isLoading } = useQuery({
       queryKey: ["cart"],
-      queryFn: () => fetchCartItems(),
+      queryFn: fetchCartItems,
     });
 
-   console.log(cart1)
+   console.log("Cart items" ,cart)
 
   return (
     <motion.div
@@ -42,11 +42,11 @@ const CartContent = ({ setIsCheckoutOpen }) => {
       >
         <X />
       </button>
-      {cart.length ? (
+      {cart?.items && cart.items.length ? (
         <>
           <div className="border border-gray-200 rounded-lg px-2 h-[35rem] scrollbar-hide overflow-y-scroll overflow-x-hidden w-[100%]">
             <AnimatePresence>
-              {cart.map((item) => (
+              {cart.items.map((item) => (
                 <CartCard key={item.id} product={item} />
               ))}
             </AnimatePresence>

@@ -5,18 +5,42 @@ import { twMerge } from "tailwind-merge";
 import { useStore } from "../store";
 import Counter from "./Counter";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addToCart } from "../api/cart/addToCart";
+import { removeFromCart } from "../api/cart/removeFromCart";
 
 const ItemCard = ({ product, className }) => {
   const [showCounter, setShowCounter] = useState(false);
-  const { addToCart, removeFromCart, increment, decrement, cart, lng } = useStore();
+  const {increment, decrement, cart, lng } = useStore();
   const { t } = useTranslation();
   const [scobe, animate] = useAnimate();
+    const queryClient = useQueryClient();
+    const addMutation = useMutation({
+      mutationFn: addToCart,
+      onSuccess: (data) => {
+        console.log("Added to Cart Successfully", data);
+        queryClient.invalidateQueries("cart");
+      },
+    });
+
+    const removeMutation = useMutation({
+      mutationFn: removeFromCart,
+      onSuccess: (data) => {
+        console.log("Removed from Cart Successfully", data);
+        queryClient.invalidateQueries("cart");
+      },
+    });
+
+  const handleAddMutation = () => {
+    addMutation.mutate({ product_id: product.id, quantity: 1, notes: "", animal: 'cow' });
+  }
+  const handleRemoveMutation = () => {
+    removeMutation.mutate({product_id:product.id, item_id: null});
+  }
 
   const handleAdd = () => {
-    console.log("Trash Clicked");
-    console.log(product);
     setShowCounter((prev) => !prev);
-    showCounter ? removeFromCart(product) : addToCart(product);
+    showCounter ? handleRemoveMutation() : handleAddMutation();
     animate("button", { y: showCounter ? 0 : -35 });
   };
 
@@ -59,6 +83,7 @@ const ItemCard = ({ product, className }) => {
                 increment={increment.bind(null, product)}
                 decrement={decrement.bind(null, product)}
                 initCount={product.count}
+                product_id={product.id}
               />
             )}
           </AnimatePresence>

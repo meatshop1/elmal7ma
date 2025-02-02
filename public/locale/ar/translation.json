@@ -20,6 +20,7 @@
   },
   "PreviousBtn": "السابق",
   "NextBtn": "التالي",
+  "EmptyNotesPlaceholder": "أضف ملاحظة...",
   "PersonalInfoErrors": {
     "usernameRequired": "اسم المستخدم مطلوب",
     "firstNameRequired": "الاسم الأول مطلوب",

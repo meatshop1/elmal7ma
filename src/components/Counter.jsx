@@ -3,22 +3,44 @@ import { Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { useStore } from "../store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { patchCartItemQuantity } from "../api/cart/patchCartItemQuantity";
+import { removeFromCart } from "../api/cart/removeFromCart";
 
-const Counter = ({ hideCounter, className, increment, decrement, initCount }) => {
+const Counter = ({
+  hideCounter,
+  className,
+  initCount,
+  product_id,
+}) => {
   const [count, setCount] = useState(initCount || 1);
   const { lng } = useStore();
-  
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: patchCartItemQuantity,
+    onSuccess: (data) => {
+      setCount(data.quantity);
+      queryClient.invalidateQueries("cart");
+    },
+  });
+  const removeMutation = useMutation({
+    mutationFn: removeFromCart,
+    onSuccess: (data) => {
+      console.log("Removed from Cart Successfully", data);
+      queryClient.invalidateQueries("cart");
+    },
+  });
+
   const handleIncrement = () => {
-    setCount((prev) => prev + 1);
-    increment();
+    mutation.mutate({ product_id, quantity: count + 1 });
   };
   const handleDecrement = () => {
-    decrement();
     if (count === 1) {
+      removeMutation.mutate({product_id , item_id: null});
       hideCounter();
       return;
     }
-    setCount((prev) => prev - 1);
+    mutation.mutate({ product_id, quantity: count - 1 });
   };
   return (
     <motion.div
@@ -38,7 +60,7 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
         onClick={handleDecrement}
       >
         <motion.span exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
-          <Minus className="size-5 md:size-7"/>
+          <Minus className="size-5 md:size-7" />
         </motion.span>
       </motion.button>
 
@@ -59,7 +81,7 @@ const Counter = ({ hideCounter, className, increment, decrement, initCount }) =>
         onClick={handleIncrement}
       >
         <motion.p exit={{ opacity: 0 }} transition={{ duration: 0.05 }}>
-          <Plus className="size-5 md:size-7"/>
+          <Plus className="size-5 md:size-7" />
         </motion.p>
       </motion.button>
     </motion.div>

@@ -20,6 +20,7 @@
   },
   "PreviousBtn": "Prev",
   "NextBtn": "Next",
+  "EmptyNotesPlaceholder": "Add a note...",
   "PersonalInfoErrors": {
     "usernameRequired": "Username is required",
     "firstNameRequired": "First Name is required",

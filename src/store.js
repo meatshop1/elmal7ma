@@ -34,7 +34,7 @@ export const useStore = create((set) => ({
         set(
             produce((state) => {
                 const index = state.cart.findIndex((p) => p.id === product.id);
-                const price = state.cart[index].price * state.cart[index].count;
+                const price = state.cart[index]?.price * state.cart[index]?.count;
                 state.Total -= price;
                 state.itemsCount -= state.cart[index].count;
                 state.cart = state.cart.filter((p) => p.id !== product.id);
@@ -86,6 +86,19 @@ export const useStore = create((set) => ({
         set(
             produce((state) => {
                 state.searchQuery = query;
+            })
+        ),
+    setTotal: (total) =>
+        set(
+            produce((state) => {
+                state.Total = total;
+            })
+        ),
+    setItemsCount: (count) =>
+        set(
+            produce((state) => {
+                state.itemsCount = count;
+                console.log("count" , state.itemsCount)
             })
         ),
 }));

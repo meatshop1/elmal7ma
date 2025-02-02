@@ -1,9 +1,9 @@
-export const addNoteOnCartItem = (item_id, obj) => {
+export const addNoteOnCartItem = ({item_id, obj}) => {
     // obj contains the note and quantity and animal type
     const cart_id = localStorage.getItem("cart_id");
     const SERVER_URL = import.meta.env.VITE_SERVER_URL;
     try {
-        fetch(SERVER_URL + `/carts/${cart_id}/items/${item_id}`, {
+        fetch(SERVER_URL + `/carts/${cart_id}/items/${item_id}/`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
