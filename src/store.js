@@ -4,11 +4,13 @@ import { persist } from "zustand/middleware";
 import i18 from "i18next";
 import { produce } from "immer";
 import cookies from "js-cookie";
+import { use } from "react";
 // Product data => id, name, price, image, description,
 //                 category, count, total price, inCart  
 
 export const useStore = create((set) => ({
     cart: [],
+    openedCounters: {}, // { id: count }
     cartOpen: false,
     searchOpen: false,
     lng: cookies.get("i18next") || "en",
@@ -98,7 +100,22 @@ export const useStore = create((set) => ({
         set(
             produce((state) => {
                 state.itemsCount = count;
-                console.log("count" , state.itemsCount)
             })
         ),
+    setOpenedCounters: (id, count) =>
+        set(
+            produce((state) => {
+                state.openedCounters[id] = count;
+            })
+        ),
+    deleteOpenedCounter: (id) =>
+        set(
+            produce((state) => {
+                let temp = state.openedCounters;
+                delete temp[id];
+                state.openedCounters = temp;
+            })
+        ),
+        
+
 }));

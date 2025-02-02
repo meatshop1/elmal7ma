@@ -18,8 +18,6 @@ const CartContent = ({ setIsCheckoutOpen }) => {
       queryFn: fetchCartItems,
     });
 
-   console.log("Cart items" ,cart)
-
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -59,7 +57,7 @@ const CartContent = ({ setIsCheckoutOpen }) => {
               </p>
             </div>
             <motion.button
-              disabled={!cart.length}
+              disabled={!cart.items.length}
               onHoverStart={() => setIsCheckoutHovered(true)}
               onHoverEnd={() => setIsCheckoutHovered(false)}
               onClick={() => setIsCheckoutOpen(true)}

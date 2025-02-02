@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
-import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge";
-import { useStore } from "../store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { Minus, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { patchCartItemQuantity } from "../api/cart/patchCartItemQuantity";
 import { removeFromCart } from "../api/cart/removeFromCart";
+import { useStore } from "../store";
 
 const Counter = ({
   hideCounter,
@@ -13,8 +13,9 @@ const Counter = ({
   initCount,
   product_id,
 }) => {
-  const [count, setCount] = useState(initCount || 1);
-  const { lng } = useStore();
+  // console.log(product_id, "initCount is" ,initCount)
+  const [count, setCount] = useState(1);
+  const { lng, deleteOpenedCounter, openedCounters } = useStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: patchCartItemQuantity,
@@ -28,8 +29,14 @@ const Counter = ({
     onSuccess: (data) => {
       console.log("Removed from Cart Successfully", data);
       queryClient.invalidateQueries("cart");
+      deleteOpenedCounter(product_id);
+      console.log(openedCounters)
     },
   });
+
+  useEffect(() => {
+    setCount(initCount || 1);
+  }, [initCount]);
 
   const handleIncrement = () => {
     mutation.mutate({ product_id, quantity: count + 1 });

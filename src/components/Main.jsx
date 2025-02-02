@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchProducts } from "../api/products/fetchProducts";
+import { useStore } from "../store";
 import Loader from "./Loader";
 import ProductList from "./ProductList";
 import ProductListFilter from "./ProductListFilter";
-import { useStore } from "../store";
-import ReactPaginate from "react-paginate";
 
 
 const Main = () => {

@@ -10,23 +10,49 @@ import { useEffect } from "react";
 import cookies from "js-cookie";
 import { getCartOrCreate } from "./api/cart/getCartOrCreate";
 import { convertEnglishToArabic } from "./utils/helpers";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCartItems } from "./api/cart/fetchCartItems";
+import { use } from "react";
 
 // TODO: hero image takes a lot of time to load
 // TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
 // TODO: API integration
 
-console.log(convertEnglishToArabic(1234567890)); // ١٢٣٤٥٦٧٨٩٠
-
 function App() {
-  const { cartOpen, lng, setLng } = useStore();
+  const {
+    cartOpen,
+    lng,
+    setLng,
+    setOpenedCounters,
+    openedCounters,
+    setItemsCount,
+    deleteOpenedCounter,
+  } = useStore();
+
+  // const {
+  //   data: cart,
+  //   isLoading,
+  //   isFetched,
+  //   isFetching,
+  // } = useQuery({
+  //   queryKey: ["cart"],
+  //   queryFn: fetchCartItems,
+  // });
+
+  // if (cart) {
+  //   for (let item of cart.items) {
+  //     setOpenedCounters(item.product.id, item.quantity);
+  //   }
+  //   setItemsCount(cart.items.length);
+  // }
 
   useEffect(() => {
-    const curLng = cookies.get("i18next")
-    if(curLng === "en-US" || !curLng) {
-      cookies.set("i18next", "en")
-      setLng("en")
+    const curLng = cookies.get("i18next");
+    if (curLng === "en-US" || !curLng) {
+      cookies.set("i18next", "en");
+      setLng("en");
     }
-    getCartOrCreate()
+    getCartOrCreate();
   }, [lng]);
 
   return (
