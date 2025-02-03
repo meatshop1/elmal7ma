@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "../store"
 import { postAddress } from "../api/address/postAddress";
 import { postOrder } from "../api/order/postOrder";
+import { addPhone } from "../api/order/addPhone"
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
   return (
@@ -63,6 +64,7 @@ function Form({ setIsCheckoutOpen }) {
   const [isCurrentLocationChecked, setIsCurrentLocationChecked] =
     useState(false);
   const { t } = useTranslation();
+  const [location, setLocation] = useState({});
 
   const Fields = [
     [
@@ -138,16 +140,15 @@ function Form({ setIsCheckoutOpen }) {
   const { lng } = useStore();
 
   const onSubmit = async (data) => {
-    const response = await postAddress(data);
+    const response = await postAddress({...data, ...location });
     const orderResponse = await postOrder();
-    console.log("ORDER RESPONSE", orderResponse);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("SUCCESS", data);
+    const phoneResponse = await addPhone(data.phone);
     reset();
   };
 
   const getLocation = (position) => {
     const { latitude, longitude } = position.coords;
+    setLocation({ latitude, longitude });
     setHref(
       `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
     );

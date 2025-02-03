@@ -8,6 +8,7 @@ import { addToCart } from "../api/cart/addToCart";
 import { removeFromCart } from "../api/cart/removeFromCart";
 import { useStore } from "../store";
 import Counter from "./Counter";
+import imgPlaceholder from "../assets/img-placeholder.webp";
 
 const ItemCard = ({ product, className, hasCounter }) => {
   const { lng } = useStore();
@@ -59,6 +60,7 @@ const ItemCard = ({ product, className, hasCounter }) => {
     animate("button", { y: 0 });
   };
 
+
   return (
     <motion.div ref={scobe}>
       <div
@@ -68,9 +70,9 @@ const ItemCard = ({ product, className, hasCounter }) => {
         )}
       >
         <img
-          src={product.url}
+          src={product?.images?.at(0) ? product?.images?.at(0)['image']: imgPlaceholder}
           alt="placeholder"
-          className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3"
+          className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3 object-cover"
         />
         <h2
           className={`text-[1rem] font-semibold h-fit leading-5 mt-2 md:text-xl ${

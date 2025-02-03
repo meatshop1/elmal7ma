@@ -4,6 +4,7 @@ import { ArrowDown } from "lucide-react";
 import elmanzla from "../assets/elmanzla-removebg-preview.png";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../store";
+import hero from "../assets/elmanzala-hero.webp";
 
 const Hero = () => {
   const [isCheckoutHovered, setIsCheckoutHovered] = useState(false);
@@ -16,7 +17,7 @@ const Hero = () => {
   return (
     <div className="h-[100vh] relative w-full overflow-hidden">
       <img
-        src="https://www.woodwardmeats.com/static/img/steak-feature/woodward-meats-steak-feature-600x450.cda43ce454b3.jpg"
+        src={hero}
         alt=""
         className="w-full h-full object-cover 0"
       />

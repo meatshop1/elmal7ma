@@ -6,12 +6,14 @@ import { removeFromCart } from "../api/cart/removeFromCart";
 import { useStore } from "../store";
 import Counter from "./Counter";
 import Notes from "./Notes";
+import imgPlaceholder from "../assets/img-placeholder.webp";
+
 
 const CartCard = ({ product }) => {
   const { lng } = useStore();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-
+  const MEDIA_URL = import.meta.env.VITE_MEDIA_URL;
   const removeMutation = useMutation({
     mutationFn: removeFromCart,
     onSuccess: (data) => {
@@ -22,6 +24,7 @@ const CartCard = ({ product }) => {
   const handleRemoveMutation = () => {
     removeMutation.mutate({ product_id: null, item_id: product.id });
   };
+
 
   return (
     <motion.div
@@ -41,8 +44,8 @@ const CartCard = ({ product }) => {
         <Trash2 className="size-5 md:size-7" />
       </button>
       <img
-        src={product.url}
-        alt={product.name}
+        src={product?.product?.images ? `${MEDIA_URL}${product?.product?.images[0]}`: imgPlaceholder}
+        alt={product.product?.name}
         className="w-1/3 h-full object-cover rounded-lg"
       />
       <div
