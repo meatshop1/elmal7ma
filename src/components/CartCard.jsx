@@ -44,7 +44,7 @@ const CartCard = ({ product }) => {
         <Trash2 className="size-5 md:size-7" />
       </button>
       <img
-        src={product?.product?.images ? `${MEDIA_URL}${product?.product?.images[0]}`: imgPlaceholder}
+        src={product?.product?.images ? `${product?.product?.images[0]}`: imgPlaceholder}
         alt={product.product?.name}
         className="w-1/3 h-full object-cover rounded-lg"
       />
