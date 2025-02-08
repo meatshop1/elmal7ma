@@ -18,6 +18,14 @@
     "required": "البريد الإلكتروني مطلوب",
     "invalid": "البريد الإلكتروني غير صالح"
   },
+  "SuccessFeedback": {
+    "title": "تم",
+    "content": "تمت العملية بنجاح"
+  },
+  "FailureFeedback": {
+    "title": "عذرًا",
+    "content": "حدث خطأ ما، يرجى المحاولة مرة أخرى"
+  },
   "PreviousBtn": "السابق",
   "NextBtn": "التالي",
   "EmptyNotesPlaceholder": "أضف ملاحظة...",

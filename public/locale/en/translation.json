@@ -18,6 +18,14 @@
     "required": "Email is required",
     "invalid": "Email is invalid"
   },
+  "SuccessFeedback": {
+    "title": "Success",
+    "content": "Operation completed successfully"
+  },
+  "FailureFeedback": {
+    "title": "Error",
+    "content": "An error occurred, please try again"
+  },
   "PreviousBtn": "Prev",
   "NextBtn": "Next",
   "EmptyNotesPlaceholder": "Add a note...",

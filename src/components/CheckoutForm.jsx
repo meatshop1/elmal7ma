@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { ArrowLeft, LocateFixed, MapPinHouse, Phone } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ArrowLeft, LocateFixed, MapPinHouse, Phone, Check } from "lucide-react";
+import { useState , useEffect } from "react";
+import { set, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import Bill from "./Bill";
@@ -11,8 +11,22 @@ import { useStore } from "../store"
 import { postAddress } from "../api/address/postAddress";
 import { postOrder } from "../api/order/postOrder";
 import { addPhone } from "../api/order/addPhone"
+import FeedbackModal from "./FeedbackModal";
 
 const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
+  const [showFeedback, setShowFeedback] = useState(null);
+  const handleFeedback = (val) => {
+    console.log("handle clicked")
+    setShowFeedback(val);
+  }
+  useEffect(() => {
+    if (showFeedback !== null) {
+      setTimeout(() => {
+        setShowFeedback(null);
+        setIsCheckoutOpen(false);
+      }, 3000);
+    }
+  }, [showFeedback]);
   return (
     <motion.div
       initial={{ opacity: 0 }} // initial animation
@@ -22,7 +36,12 @@ const CheckoutForm = ({ onClick, className, setIsCheckoutOpen }) => {
       onClick={onClick}
       className={className}
     >
-      <Form setIsCheckoutOpen={setIsCheckoutOpen} />
+      {showFeedback === null && <Form handleFeedback={handleFeedback} setIsCheckoutOpen={setIsCheckoutOpen} />}
+      {showFeedback !== null && <FeedbackModal
+        type={"success"}
+        logo={<Check />}
+        onClick={handleFeedback}
+      />}
     </motion.div>
   );
 };
@@ -60,11 +79,12 @@ export const FormField = ({
   </div>
 )};
 
-function Form({ setIsCheckoutOpen }) {
+function Form({ handleFeedback, setIsCheckoutOpen }) {
   const [isCurrentLocationChecked, setIsCurrentLocationChecked] =
     useState(false);
   const { t } = useTranslation();
   const [location, setLocation] = useState({});
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   const Fields = [
     [
@@ -143,6 +163,13 @@ function Form({ setIsCheckoutOpen }) {
     const response = await postAddress({...data, ...location });
     const orderResponse = await postOrder();
     const phoneResponse = await addPhone(data.phone);
+    console.log(response, orderResponse, phoneResponse); 
+    if (response && orderResponse && phoneResponse) {
+      handleFeedback(true);
+    }else {
+      handleFeedback(false);
+    }
+      
     reset();
   };
 
