@@ -45,6 +45,9 @@ const ProductList = ({ products, className }) => {
     return lng === "en" ? page : convertEnglishToArabic(page);
   };
 
+  if(!products || products.length === 0) {
+    return  <p className={`text-white text-3xl my-auto min-h-[80vh] flex pt-24 justify-center w-full ${lng === "en" ? "font-poppins" : "font-kufam"}`}>{t("NoResults")}</p>
+  }
 
   return (
     <>

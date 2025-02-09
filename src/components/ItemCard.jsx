@@ -73,6 +73,7 @@ const ItemCard = ({ product, className, hasCounter }) => {
           src={product?.images?.at(0) ? product?.images?.at(0)['image']: imgPlaceholder}
           alt="placeholder"
           className="w-[93%] h-1/2 mx-auto rounded-lg mt-2 md:mt-3 object-cover"
+          loading="lazy"
         />
         <h2
           className={`text-[1rem] font-semibold h-fit leading-5 mt-2 md:text-xl ${
