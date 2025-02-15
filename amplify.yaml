@@ -3,8 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - n lts  # Ensure latest Node LTS is installed
-        - n 20   # Switch to Node 20
+        - curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+        - export NVM_DIR="$HOME/.nvm"
+        - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        - nvm install 20
+        - nvm use 20
         - node -v
         - npm ci
     build:
