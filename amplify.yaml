@@ -3,8 +3,9 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 20  # Ensure Node.js 20 is used
-        - nvm use 20
+        - nvm install 20  # Install Node.js 20
+        - nvm use 20  # Use Node.js 20
+        - node -v  # Verify version
         - npm ci
     build:
       commands:
