@@ -83,7 +83,7 @@ const LocationContent = () => {
   const { lng } = useStore()
   return (
     <div className="bg-secondary w-full py-5 pb-10 h-[45rem]">
-      <h1 className={`text-6xl text-center my-8 ${lng === "en" ? "font-poppins" : "font-kufam"} w-full`}>
+      <h1 className={`text-6xl text-center pt-8 my-8 ${lng === "en" ? "font-poppins" : "font-kufam"} w-full`}>
         {t("Locations.title")}
       </h1>
       <div className=" xl:grid xl:grid-rows-* xl:grid-cols-[repeat(auto-fill,minmax(21rem,1fr))] xl:w-[70%] m-auto flex flex-col gap-4">

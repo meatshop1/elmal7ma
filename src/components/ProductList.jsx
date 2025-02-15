@@ -26,12 +26,12 @@ const ProductList = ({ products, className }) => {
 
   useEffect(() => {
     let map = new Map();
-    if (cartItems) {
+    if (cartItems && cartItems.items) {
       for (let item of cartItems.items) {
         map.set(item.product.id, item.quantity);
       }
     }
-    setItemsCount(cartItems?.items.length || 0);
+    setItemsCount(cartItems?.items?.length || 0);
     setTotal(cartItems?.total_price || 0);
     setCounterIds(map);
   }, [cartItems]); 

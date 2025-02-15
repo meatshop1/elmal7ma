@@ -171,6 +171,7 @@ function Form({ handleFeedback, setIsCheckoutOpen }) {
     }
       
     reset();
+    return;
   };
 
   const getLocation = (position) => {

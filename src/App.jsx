@@ -10,9 +10,8 @@ import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { useStore } from "./store";
 
-// TODO: hero image takes a lot of time to load
-// TODO: Checkout on submit should give a feedback to the user and if the button is clicked and the fields are empty it should show an error message
-// TODO: API integration
+//TODO: you should use optimistically update the cart when adding or removing items
+
 
 function App() {
   const {
