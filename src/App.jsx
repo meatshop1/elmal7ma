@@ -28,7 +28,7 @@ function App() {
     }
     getCartOrCreate();
   }, [lng]);
-
+  console.log("this update comes from github")
   return (
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />
