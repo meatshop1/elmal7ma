@@ -11,7 +11,9 @@ import Navbar from "./components/Navbar";
 import { useStore } from "./store";
 
 //TODO: you should use optimistically update the cart when adding or removing items
-
+//TODO: you should switch the modal open animation depending on the device refresh rate cause it's laggy on 60hz screens
+//TODO: Mixed content error on the backend when trying to fetch 
+//TODO: Mixed content error when trying to fetch the images from the s3 bucket
 
 function App() {
   const {
