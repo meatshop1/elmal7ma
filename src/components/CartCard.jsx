@@ -13,7 +13,6 @@ const CartCard = ({ product }) => {
   const { lng } = useStore();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const MEDIA_URL = import.meta.env.VITE_MEDIA_URL;
   const removeMutation = useMutation({
     mutationFn: removeFromCart,
     onSuccess: (data) => {

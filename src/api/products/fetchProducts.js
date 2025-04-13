@@ -1,4 +1,3 @@
-import { useStore } from "../../store";
 export const items = [
     {
         id: 1,
@@ -290,10 +289,12 @@ export const items = [
         description: "Description 5",
     },
 ];
+import { getConfig } from "../config";
 
 export const fetchProducts = async (options) => {
-    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
-    const response = await fetch(SERVER_URL + "/products");
+    const config = getConfig();
+    const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
+    const response = await fetch(SERVER_URL + "/products/");
     let products = await response.json();
     const lng = options.lng;
     if (options?.search) {

@@ -1,5 +1,7 @@
+import { getConfig } from "../config";
 export const addPhone = async (phone) => {
-    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const config = getConfig();
+    const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
     const token = localStorage.getItem("token");
     if (!token) {
         return;

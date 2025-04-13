@@ -9,6 +9,7 @@ import Locations from "./components/Locations";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { useStore } from "./store";
+import { loadConfig } from "./api/config";
 
 //TODO: you should use optimistically update the cart when adding or removing items
 //TODO: you should switch the modal open animation depending on the device refresh rate cause it's laggy on 60hz screens
@@ -22,6 +23,18 @@ function App() {
     setLng,
   } = useStore();
 
+  // Load the config file
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        await loadConfig();
+      } catch (error) {
+        console.error("Error loading config:", error);
+      }
+    };
+    fetchConfig();
+  }, []);
+
   useEffect(() => {
     const curLng = cookies.get("i18next");
     if (curLng === "en-US" || !curLng) {
@@ -30,7 +43,7 @@ function App() {
     }
     getCartOrCreate();
   }, [lng]);
-  console.log("this update comes from github")
+  
   return (
     <div className="font-mono flex flex-col items-center text-white text-3xl bg-primary">
       <Navbar />

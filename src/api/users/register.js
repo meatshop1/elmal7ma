@@ -1,7 +1,9 @@
 import { login } from "./login";
+import { getConfig } from "../config";
 export const register = async (data) => {
     console.log(data)
-    const SERVER_URL = import.meta.env.VITE_AUTH_URL;
+    const config = getConfig();
+    const SERVER_URL = config?.AUTH_URL || import.meta.env.VITE_AUTH_URL;
     console.log(SERVER_URL + "/users/")
     const response = await fetch(SERVER_URL + "/users/", {
         method: "POST",

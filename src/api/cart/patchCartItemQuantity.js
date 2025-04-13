@@ -1,7 +1,8 @@
 import { fetchCartItems } from "./fetchCartItems";
-
+import { getConfig } from "../config";
 export const patchCartItemQuantity = async ({ product_id, quantity, item_id }) => {
-    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const config = getConfig();
+    const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
     const cart_id = localStorage.getItem("cart_id");
 
     try {

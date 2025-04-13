@@ -1,5 +1,8 @@
+import { getConfig } from "../config";
 export const postAddress = async (data) => {
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/address/`, {
+    const config = getConfig();
+    const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
+    const response = await fetch(SERVER_URL + '/address/', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

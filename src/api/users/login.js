@@ -1,5 +1,7 @@
+import { getConfig } from "../config";
 export const login = async (data) => {
-    const SERVER_URL = import.meta.env.VITE_AUTH_URL;
+    const config = getConfig();
+    const SERVER_URL = config?.AUTH_URL || import.meta.env.VITE_AUTH_URL;
     const response = await fetch(SERVER_URL + "/jwt/create", {
         method: "POST",
         headers: {

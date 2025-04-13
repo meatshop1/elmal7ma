@@ -1,7 +1,9 @@
+import { getConfig } from "../config";
+
 export const postAddress = async (address) => {
     const token = localStorage.getItem("token");
-    console.log(address)
-    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const config = getConfig();
+    const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
 
     if (!token) {
         throw new Error("Unauthorized");

@@ -1,12 +1,13 @@
 import { getCartOrCreate } from "../cart/getCartOrCreate";
 import { verify } from "../users/verify";
-
+import { getConfig } from "../config";
 export const postOrder = async () => {
     try {
         const token = localStorage.getItem("token");
         const cart_id = localStorage.getItem("cart_id");
         const address_id = localStorage.getItem("address_id");
-        const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+        const config = getConfig();
+        const SERVER_URL = config?.SERVER_URL || import.meta.env.VITE_SERVER_URL;
 
         //check if the user is logged in 
         const user = await verify();
