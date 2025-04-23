@@ -32,6 +32,7 @@ pipeline{
                     --prettyPrint
                     --noupdate
                 ''', odcInstallation: 'owasp-10'
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 10
                      }
                 }
             }
