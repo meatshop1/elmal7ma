@@ -28,7 +28,7 @@ pipeline{
                     --out ./ 
                     --format ALL 
                     --prettyPrint
-                    --skip-nvd-update
+                    --noupdate
                 ''', odcInstallation: 'owasp-10'
             }
         }
