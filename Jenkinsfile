@@ -47,11 +47,14 @@ pipeline{
             steps{
                 script {
                     sh '''
-                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
-                            -Dsonar.projectKey=meatshop \
-                            -Dsonar.sources=./src \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.token=sqp_62f0173ee7dc268629d799d866e88d6a217daaa0 \
+                         $SONAR_SCANNER_HOME/bin/sonar-scanner \\
+                            -Dsonar.projectKey=meatshop \\
+                            -Dsonar.sources=./src \\
+                            -Dsonar.host.url=http://localhost:9000 \\
+                            -Dsonar.token=sqp_62f0173ee7dc268629d799d866e88d6a217daaa0 \\
+                            -Dsonar.projectName=meatshop \\
+                            -Dsonar.sourceEncoding=UTF-8 \\
+                            -Dsonar.javascript.node.maxspace=8192
  
                     '''
                 }
