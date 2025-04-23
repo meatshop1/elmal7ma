@@ -20,18 +20,23 @@ pipeline{
                     '''
                 }
             }
-           
         }
         stage('owasp dependency check'){
             steps{
-             dependencyCheck additionalArguments: '''
-                  --scan ./ 
-                  --out ./ 
-                  --format ALL 
-                  --prettyPrint 
+                dependencyCheck additionalArguments: '''
+                    --scan ./ 
+                    --out ./ 
+                    --format ALL 
+                    --prettyPrint
+                    --skip-nvd-update
                 ''', odcInstallation: 'owasp-10'
-
+            }
         }
     }
- }
+    post {
+        always {
+            // Archive the dependency check reports as artifacts
+            archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
+        }
+    }
 }
