@@ -11,17 +11,19 @@ pipeline{
                 }
             }
         }
-        stage('Dependency Check'){
+        stage('Dependency Scanning'){
+            parallel {
+                 stage('Dependency Check'){
             steps{
                 script {
                     echo 'checking dependencies...'
                     sh '''
                         npm audit --audit-level=critical 
                     '''
-                }
-            }
-        }
-        stage('owasp dependency check'){
+                    }
+                 }
+             }       
+                stage('owasp dependency check'){
             steps{
                 dependencyCheck additionalArguments: '''
                     --scan ./ 
@@ -30,8 +32,13 @@ pipeline{
                     --prettyPrint
                     --noupdate
                 ''', odcInstallation: 'owasp-10'
+                     }
+                }
             }
         }
+
+       
+        
     }
     // post {
     //     always {
