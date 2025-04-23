@@ -1,5 +1,9 @@
 pipeline{
     agent any
+
+    environment {
+        SONAR_SCANNER_HOME = tool 'soanarqube-scanner';
+    }
     stages{
         stage('installing...'){
             steps{
@@ -43,9 +47,9 @@ pipeline{
             steps{
                 script {
                     sh '''
-                        sonar-scanner \
+                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
                             -Dsonar.projectKey=meatshop \
-                            -Dsonar.sources=. \
+                            -Dsonar.sources=src \
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.token=sqp_62f0173ee7dc268629d799d866e88d6a217daaa0 \
  
