@@ -39,6 +39,21 @@ pipeline{
             }
         }
 
+        stage('SAST - SonarQube'){
+            steps{
+                script {
+                    sh '''
+                        sonar-scanner \
+                            -Dsonar.projectKey=meatshop \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.token=sqp_62f0173ee7dc268629d799d866e88d6a217daaa0 \
+ 
+                    '''
+                }
+            }
+        }
+
        
         
     }
