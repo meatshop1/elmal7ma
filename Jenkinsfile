@@ -33,7 +33,7 @@ pipeline{
                             --out ./
                             --format ALL
                             --prettyPrint
-                            --disbaleYarnAudit \
+                            --disableYarnAudit \
                             --noupdate
                         ''', odcInstallation: 'owasp-10'
                         dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
