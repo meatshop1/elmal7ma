@@ -58,6 +58,16 @@ pipeline{
                 }
             }
         }
+        stage('Building Docke Image'){
+            steps{
+                script {
+                    echo 'building docker image...'
+                    sh '''
+                        docker build -t eladwy/frontend:$GIT_COMMIT .
+                    '''
+                }
+            }
+        }
     }
     post {
         always {
