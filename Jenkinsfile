@@ -72,24 +72,40 @@ pipeline{
             }
         }
 
-        stage('Trivy Vulnerability Scanning') {
+        stage('Trivy Vulnarability Scanner'){
             steps {
-                script {
-                    echo 'trivy scanning...'
+                sh '''
+                    trivy image borhom11/frontend-meatshop:$GIT_COMMIT \
+                        --severity LOW,MEDIUM \
+                        --exit-code 0 \
+                        --quiet \
+                        --format json -o trivy-image-MEDIUM-results.json
+
+                     trivy image borhom11/frontend-meatshop:$GIT_COMMIT \
+                        --severity HIGH,CRITICAL \
+                        --exit-code 1 \
+                        --quiet \
+                        --format json -o trivy-image-CRITICAL-results.json
+                '''
+            }
+            post {
+                always {
                     sh '''
-                        
-                        trivy image eladwy/frontend:$GIT_COMMIT \
-                            --severity LOW,MEDIUM \
-                            --exit-code 0 \
-                            --quiet \
-                            --format json -o trivy-success.json
-                        
-                    
-                        trivy image eladwy/frontend:$GIT_COMMIT \
-                            --severity HIGH,CRITICAL \
-                            --exit-code 1 \
-                            --quiet \
-                            --format json -o trivy-fail.json
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                            --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                            --output trivy-image-CRITICAL-results.html trivy-image-CRITICAL-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                            --output trivy-image-MEDIUM-results.xml trivy-image-MEDIUM-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                            --output trivy-image-CRITICAL-results.xml trivy-image-CRITICAL-results.json
                     '''
                 }
             }
