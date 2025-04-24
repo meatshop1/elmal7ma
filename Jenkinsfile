@@ -94,11 +94,9 @@ pipeline{
 
         stage('Push Docker Image'){
             steps{
-                
-                    withDockerRegistry(credentialsId: 'docker-hub', url: "") {
+                    withDockerRegistry(credentialsId: 'docker-hub', url: "https://index.docker.io/v1/") {
                         echo 'pushing docker image...'
                         sh '''
-                            
                             docker push eladwy/frontend:$GIT_COMMIT
                         '''
                     }
