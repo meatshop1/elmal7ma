@@ -68,6 +68,27 @@ pipeline{
                 }
             }
         }
+
+        stage('Trivy Vulnerability Scanning..'){
+            steps{
+                script {
+                    echo 'trivy scanning...'
+                    sh '''
+                        trivy image eladwy/frontend:$GIT_COMMIT
+                         --severity LOW,MEDIUM \
+                         --exit-code 0 \
+                         --quiet \
+                         --format json -o trivy-success.json \
+
+                        trivy image eladwy/frontend:$GIT_COMMIT \
+                         --severity HIGH,CRITICAL\
+                         --exit-code 1 \
+                         --quiet \
+                         --format json -o trivy-fail.json
+                    '''
+                }
+            }
+        }
     }
     post {
         always {
