@@ -70,27 +70,41 @@ pipeline{
         }
 
         stage('Trivy Vulnerability Scanning') {
-    steps {
-        script {
-            echo 'trivy scanning...'
-            sh '''
-                
-                trivy image eladwy/frontend:$GIT_COMMIT \
-                    --severity LOW,MEDIUM \
-                    --exit-code 0 \
-                    --quiet \
-                    --format json -o trivy-success.json
-                
-               
-                trivy image eladwy/frontend:$GIT_COMMIT \
-                    --severity HIGH,CRITICAL \
-                    --exit-code 1 \
-                    --quiet \
-                    --format json -o trivy-fail.json
-            '''
+            steps {
+                script {
+                    echo 'trivy scanning...'
+                    sh '''
+                        
+                        trivy image eladwy/frontend:$GIT_COMMIT \
+                            --severity LOW,MEDIUM \
+                            --exit-code 0 \
+                            --quiet \
+                            --format json -o trivy-success.json
+                        
+                    
+                        trivy image eladwy/frontend:$GIT_COMMIT \
+                            --severity HIGH,CRITICAL \
+                            --exit-code 1 \
+                            --quiet \
+                            --format json -o trivy-fail.json
+                    '''
+                }
+            }
         }
-    }
-}
+
+        stage('Push Docker Image'){
+            steps{
+                
+                    withDockerRegistry(credentialsId: 'docker-hub', url: "") {
+                        echo 'pushing docker image...'
+                        sh '''
+                            
+                            docker push eladwy/frontend:$GIT_COMMIT
+                        '''
+                    }
+                }
+            } 
+        }
     }
     post {
         always {
