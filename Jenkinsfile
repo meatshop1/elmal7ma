@@ -2,7 +2,6 @@ pipeline{
     agent any
     environment {
         SONAR_SCANNER_HOME = tool 'sonarqube-scanner';
-        SONAR_TOKEN = 'sqp_62f0173ee7dc268629d799d866e88d6a217daaa0'
     }
     stages{
         stage('installing...'){
@@ -34,6 +33,7 @@ pipeline{
                             --out ./
                             --format ALL
                             --prettyPrint
+                            --disbaleYarnAudit \
                             --noupdate
                         ''', odcInstallation: 'owasp-10'
                         dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
@@ -44,16 +44,17 @@ pipeline{
         }
         stage('SAST - SonarQube'){
             steps{
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=meatshop \
-                        -Dsonar.projectName=meatshop \
-                        -Dsonar.sources=./src \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=${SONAR_TOKEN} \
-                        -Dsonar.js.node.path=$(which node)
-                    '''
+                timeout(time: 60, unit: 'SECONDS') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=meatshop \
+                            -Dsonar.projectName=meatshop \
+                            -Dsonar.sources=./src \
+                            -Dsonar.js.node.path=$(which node)
+                        '''
+                    }
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
