@@ -9,7 +9,7 @@ pipeline{
                 script {
                     echo 'installing ...'
                     sh '''
-                        npm install --no-audit
+                        npm install 
                     '''
                 }
             }
