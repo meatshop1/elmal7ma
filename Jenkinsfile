@@ -44,7 +44,7 @@ pipeline{
         }
         stage('SAST - SonarQube'){
             steps{
-                timeout(time: 60, unit: 'SECONDS') {
+                timeout(time: 120, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
                             ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
@@ -77,7 +77,6 @@ pipeline{
                 script {
                     echo 'trivy scanning...'
                     sh '''
-                        
                         trivy image eladwy/frontend:$GIT_COMMIT \
                             --severity LOW,MEDIUM \
                             --exit-code 0 \
@@ -92,6 +91,27 @@ pipeline{
                             --format json -o trivy-fail.json
                     '''
                 }
+                 post {
+                always {
+                    sh '''
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                            --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
+                            --output trivy-image-CRITICAL-results.html trivy-image-CRITICAL-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                            --output trivy-image-MEDIUM-results.xml trivy-image-MEDIUM-results.json
+
+                        trivy convert \
+                            --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
+                            --output trivy-image-CRITICAL-results.xml trivy-image-CRITICAL-results.json
+                    '''
+                }
+            }
             }
         }
 
