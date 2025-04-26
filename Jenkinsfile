@@ -122,6 +122,9 @@ pipeline{
             } 
 
         stage('Deploy to aws'){
+            when{
+                branch 'features/*'
+            }
             steps{
                 script{
                         sshagent(['aws-dev-deploy']){
