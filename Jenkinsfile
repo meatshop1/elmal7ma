@@ -42,29 +42,22 @@ pipeline{
                 }
             }
         }
-       stage('SAST - SonarQube'){
-            steps{
-                timeout(time: 600, unit: 'SECONDS') {
+       stage('SAST - SonarQube') {
+            steps {
+                timeout(time: 120, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
-                                ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                                -Dsonar.projectKey=meatshop \
-                                -Dsonar.projectName=meatshop \
-                                -Dsonar.sources=./src \
-                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-                                -Dsonar.coverage.exclusions=**/*.test.js,**/*.spec.js,**/node_modules/** \
-                                -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js \
-                                -Dsonar.tests=src \
-                                -Dsonar.qualitygate.wait=false \
-                                -Dsonar.js.node.path=$(which node)
-                            '''
+                            $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                               -Dsonar.projectKey=frontend-project \
+                               -Dsonar.sources=./src \
+                         '''
                     }
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: true
                     }
                 }
             }
-        }       
+        }    
         stage('Building Docke Image'){
             steps{
                 script {
