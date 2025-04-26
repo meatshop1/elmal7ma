@@ -150,7 +150,7 @@ pipeline{
                 branch 'features'
             }
             steps{
-                withAWS(credentials: 'aws-dev-deploy', region: 'me-south-1') {
+                withAWS(credentials: 'aws', region: 'me-south-1') {
                     echo 'running integration tests...'
                     sh '''
                        bash integration-tests.sh
