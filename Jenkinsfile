@@ -153,7 +153,7 @@ pipeline{
                 withAWS(credentials: 'aws', region: 'me-south-1') {
                     echo 'running integration tests...'
                     sh '''
-                       bash integration-tests.sh
+                       bash integration-test.sh
                     '''
                 }
             }
