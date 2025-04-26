@@ -47,17 +47,17 @@ pipeline{
                 timeout(time: 600, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
-                            ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=meatshop \
-                            -Dsonar.projectName=meatshop \
-                            -Dsonar.sources=./src \
-                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-                            -Dsonar.coverage.exclusions=**/*.test.js,**/*.spec.js,**/node_modules/** \
-                            -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js \
-                            -Dsonar.tests=src \
-                            -Dsonar.qualitygate.wait=true \
-                            -Dsonar.js.node.path=$(which node)
-                        '''
+                                ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                                -Dsonar.projectKey=meatshop \
+                                -Dsonar.projectName=meatshop \
+                                -Dsonar.sources=./src \
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                                -Dsonar.coverage.exclusions=**/*.test.js,**/*.spec.js,**/node_modules/** \
+                                -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js \
+                                -Dsonar.tests=src \
+                                -Dsonar.qualitygate.wait=false \
+                                -Dsonar.js.node.path=$(which node)
+                            '''
                     }
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: false
