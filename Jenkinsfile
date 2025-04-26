@@ -123,7 +123,7 @@ pipeline{
 
         stage('Deploy to aws'){
             when{
-                branch 'features/*'
+                branch 'features'
             }
             steps{
                 script{
