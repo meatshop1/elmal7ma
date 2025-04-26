@@ -49,6 +49,7 @@ pipeline{
                         sh '''
                             $SONAR_SCANNER_HOME/bin/sonar-scanner \
                                -Dsonar.projectKey=meatshop \
+                               -Dsonar.projectName=meatshop \
                                -Dsonar.sources=./src \
                          '''
                     }
