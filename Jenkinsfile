@@ -60,7 +60,7 @@ pipeline{
                             '''
                     }
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                        waitForQualityGate abortPipeline: false
+                        waitForQualityGate abortPipeline: true
                     }
                 }
             }
