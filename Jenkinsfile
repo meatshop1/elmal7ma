@@ -144,6 +144,20 @@ pipeline{
                 }
             }
         }
+
+        stage('Integration Testing'){
+            when{
+                branch 'features'
+            }
+            steps{
+                withAWS(credentialsId: 'aws-dev-deploy', region: 'me-south-1') {
+                    echo 'running integration tests...'
+                    sh '''
+                       bash integration-tests.sh
+                    '''
+                }
+            }
+        }
     }
     post {
         always {
