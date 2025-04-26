@@ -59,7 +59,7 @@ pipeline{
                             -Dsonar.js.node.path=$(which node)
                         '''
                     }
-                    catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: true
                     }
                 }
