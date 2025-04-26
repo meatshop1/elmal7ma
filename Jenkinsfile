@@ -44,7 +44,7 @@ pipeline{
         }
         stage('SAST - SonarQube'){
             steps{
-                timeout(time: 60, unit: 'SECONDS') {
+                timeout(time: 120, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
                             ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
@@ -75,17 +75,18 @@ pipeline{
         stage('Trivy Vulnarability Scanner'){
             steps {
                 sh '''
-                    trivy image borhom11/frontend-meatshop:$GIT_COMMIT \
-                        --severity LOW,MEDIUM \
-                        --exit-code 0 \
-                        --quiet \
-                        --format json -o trivy-image-MEDIUM-results.json
-
-                     trivy image borhom11/frontend-meatshop:$GIT_COMMIT \
-                        --severity HIGH,CRITICAL \
-                        --exit-code 1 \
-                        --quiet \
-                        --format json -o trivy-image-CRITICAL-results.json
+                    trivy image eladwy/frontend:$GIT_COMMIT \
+                            --severity LOW,MEDIUM \
+                            --exit-code 0 \
+                            --quiet \
+                            --format json -o trivy-success.json
+                        
+                    
+                        trivy image eladwy/frontend:$GIT_COMMIT \
+                            --severity HIGH,CRITICAL \
+                            --exit-code 1 \
+                            --quiet \
+                            --format json -o trivy-fail.json
                 '''
             }
             post {
