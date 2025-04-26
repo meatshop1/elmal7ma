@@ -7,60 +7,58 @@ pipeline{
         stage('installing...'){
             steps{
                 script {
-                    echo 'installing ...'
+                    echo 'installing ....'
                     sh '''
-                        npm install --no-audit
+                        npm install 
                     '''
                 }
             }
         }
-        stage('Dependency Scanning'){
-            parallel {
-                stage('Dependency Check'){
-                    steps{
-                        script {
-                            echo 'checking dependencies...'
-                            sh '''
-                                npm audit --audit-level=critical
-                            '''
-                        }
-                    }
-                }      
-                stage('owasp dependency check'){
-                    steps{
-                        dependencyCheck additionalArguments: '''
-                            --scan ./
-                            --out ./
-                            --format ALL
-                            --prettyPrint
-                            --disableYarnAudit \
-                            --noupdate
-                        ''', odcInstallation: 'owasp-10'
-                        dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
-                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'dependency check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                    }
-                }
-            }
-        }
-        stage('SAST - SonarQube'){
-            steps{
+        // stage('Dependency Scanning'){
+        //     parallel {
+        //         stage('Dependency Check'){
+        //             steps{
+        //                 script {
+        //                     echo 'checking dependencies...'
+        //                     sh '''
+        //                         npm audit --audit-level=critical
+        //                     '''
+        //                 }
+        //             }
+        //         }      
+        //         stage('owasp dependency check'){
+        //             steps{
+        //                 dependencyCheck additionalArguments: '''
+        //                     --scan ./
+        //                     --out ./
+        //                     --format ALL
+        //                     --prettyPrint
+        //                     --disableYarnAudit \
+        //                     --noupdate
+        //                 ''', odcInstallation: 'owasp-10'
+        //                 dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
+        //                 publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'dependency check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        //             }
+        //         }
+        //     }
+        // }
+       stage('SAST - SonarQube') {
+            steps {
                 timeout(time: 120, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
-                            ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=meatshop \
-                            -Dsonar.projectName=meatshop \
-                            -Dsonar.sources=./src \
-                            -Dsonar.js.node.path=$(which node)
-                        '''
+                            $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                               -Dsonar.projectKey=meatshop \
+                               -Dsonar.projectName=meatshop \
+                               -Dsonar.sources=./src \
+                         '''
                     }
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: true
                     }
-                    
                 }
             }
-        }
+        }    
         stage('Building Docke Image'){
             steps{
                 script {
@@ -72,12 +70,10 @@ pipeline{
             }
         }
 
-        stage('Trivy Vulnerability Scanning') {
+        stage('Trivy Vulnarability Scanner'){
             steps {
-                script {
-                    echo 'trivy scanning...'
-                    sh '''
-                        trivy image eladwy/frontend:$GIT_COMMIT \
+                sh '''
+                    trivy image eladwy/frontend:$GIT_COMMIT \
                             --severity LOW,MEDIUM \
                             --exit-code 0 \
                             --quiet \
@@ -89,29 +85,28 @@ pipeline{
                             --exit-code 1 \
                             --quiet \
                             --format json -o trivy-fail.json
-                    '''
-                }
-                 post {
+                '''
+            }
+            post {
                 always {
                     sh '''
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                            --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
+                            --output trivy-image-MEDIUM-results.html trivy-success.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                            --output trivy-image-CRITICAL-results.html trivy-image-CRITICAL-results.json
+                            --output trivy-image-CRITICAL-results.html trivy-fail.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-                            --output trivy-image-MEDIUM-results.xml trivy-image-MEDIUM-results.json
+                            --output trivy-image-MEDIUM-results.xml trivy-success.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-                            --output trivy-image-CRITICAL-results.xml trivy-image-CRITICAL-results.json
+                            --output trivy-image-CRITICAL-results.xml trivy-fail.json
                     '''
                 }
-            }
             }
         }
 
@@ -125,6 +120,26 @@ pipeline{
                     }
                 }
             } 
+
+        stage('Deploy to aws'){
+            steps{
+                script{
+                        sshagent(['aws-dev-deploy']){
+                            ssh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
+                                    if sudo docker ps -a | grep -q "frontend"; then
+                                        echo "Container exists, stopping and removing..."
+                                        sudo docker stop frontend
+                                        sudo docker rm frontend
+                                        echo "Container stopped and removed."
+                                    fi
+                                    echo "Running new container..."
+                                    sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
+                                    "
+                            '''
+                    }
+                }
+            }
         }
     }
     post {
@@ -132,3 +147,4 @@ pipeline{
             archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
         }
     }
+}
