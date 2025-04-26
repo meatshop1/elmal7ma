@@ -1,8 +1,5 @@
 pipeline{
     agent any
-    tools {
-        nodejs 'NodeJS 20.x' // Add this if you have NodeJS plugin and Node 20.x configured
-    }
     environment {
         SONAR_SCANNER_HOME = tool 'sonarqube-scanner';
     }
@@ -17,16 +14,6 @@ pipeline{
                 }
             }
         }
-        stage('Fix Security Vulnerabilities'){
-            steps{
-                script {
-                    echo 'Fixing security vulnerabilities...'
-                    sh '''
-                        npm audit fix || true
-                    '''
-                }
-            }
-        }
         stage('Dependency Scanning'){
             parallel {
                 stage('Dependency Check'){
@@ -34,7 +21,7 @@ pipeline{
                         script {
                             echo 'checking dependencies...'
                             sh '''
-                                npm audit --audit-level=critical || true
+                                npm audit --audit-level=critical
                             '''
                         }
                     }
@@ -57,7 +44,7 @@ pipeline{
         }
         stage('SAST - SonarQube'){
             steps{
-                timeout(time: 600, unit: 'SECONDS') { // Increased to 10 minutes
+                timeout(time: 340, unit: 'SECONDS') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
                             ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
@@ -70,10 +57,11 @@ pipeline{
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: true
                     }
+                    
                 }
             }
         }
-        stage('Building Docker Image'){
+        stage('Building Docke Image'){
             steps{
                 script {
                     echo 'building docker image...'
@@ -84,26 +72,26 @@ pipeline{
             }
         }
 
-        stage('Trivy Vulnerability Scanner'){
+        stage('Trivy Vulnarability Scanner'){
             steps {
                 sh '''
                     trivy image eladwy/frontend:$GIT_COMMIT \
-                        --severity LOW,MEDIUM \
-                        --exit-code 0 \
-                        --quiet \
-                        --format json -o trivy-success.json
+                            --severity LOW,MEDIUM \
+                            --exit-code 0 \
+                            --quiet \
+                            --format json -o trivy-success.json
+                        
                     
-                    trivy image eladwy/frontend:$GIT_COMMIT \
-                        --severity HIGH,CRITICAL \
-                        --exit-code 1 \
-                        --quiet \
-                        --format json -o trivy-fail.json
+                        trivy image eladwy/frontend:$GIT_COMMIT \
+                            --severity HIGH,CRITICAL \
+                            --exit-code 1 \
+                            --quiet \
+                            --format json -o trivy-fail.json
                 '''
             }
             post {
                 always {
                     sh '''
-                        # Fixed file paths to match the output files
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
                             --output trivy-image-MEDIUM-results.html trivy-success.json
@@ -126,18 +114,18 @@ pipeline{
 
         stage('Push Docker Image'){
             steps{
-                withDockerRegistry(credentialsId: 'docker-hub', url: "https://index.docker.io/v1/") {
-                    echo 'pushing docker image...'
-                    sh '''
-                        docker push eladwy/frontend:$GIT_COMMIT
-                    '''
+                    withDockerRegistry(credentialsId: 'docker-hub', url: "https://index.docker.io/v1/") {
+                        echo 'pushing docker image...'
+                        sh '''
+                            docker push eladwy/frontend:$GIT_COMMIT
+                        '''
+                    }
                 }
-            }
-        } 
+            } 
+        }
     }
     post {
         always {
-            archiveArtifacts artifacts: 'dependency-check-report.*, trivy-*.json, trivy-*.html, trivy-*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
         }
     }
-}
