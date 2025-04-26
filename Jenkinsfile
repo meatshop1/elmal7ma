@@ -128,7 +128,7 @@ pipeline{
             steps{
                 script{
                         sshagent(['aws-dev-deploy']){
-                            ssh '''
+                            sh '''
                                 ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
                                     if sudo docker ps -a | grep -q "frontend"; then
                                         echo "Container exists, stopping and removing..."
