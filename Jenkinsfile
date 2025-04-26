@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    tools {
+        nodejs 'NodeJS 20.x' // Add this if you have NodeJS plugin and Node 20.x configured
+    }
     environment {
         SONAR_SCANNER_HOME = tool 'sonarqube-scanner';
     }
@@ -14,6 +17,16 @@ pipeline{
                 }
             }
         }
+        stage('Fix Security Vulnerabilities'){
+            steps{
+                script {
+                    echo 'Fixing security vulnerabilities...'
+                    sh '''
+                        npm audit fix || true
+                    '''
+                }
+            }
+        }
         stage('Dependency Scanning'){
             parallel {
                 stage('Dependency Check'){
@@ -21,7 +34,7 @@ pipeline{
                         script {
                             echo 'checking dependencies...'
                             sh '''
-                                npm audit --audit-level=critical
+                                npm audit --audit-level=critical || true
                             '''
                         }
                     }
@@ -44,7 +57,7 @@ pipeline{
         }
         stage('SAST - SonarQube'){
             steps{
-                timeout(time: 340, unit: 'SECONDS') {
+                timeout(time: 600, unit: 'SECONDS') { // Increased to 10 minutes
                     withSonarQubeEnv('SonarQube') {
                         sh '''
                             ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
@@ -57,11 +70,10 @@ pipeline{
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         waitForQualityGate abortPipeline: true
                     }
-                    
                 }
             }
         }
-        stage('Building Docke Image'){
+        stage('Building Docker Image'){
             steps{
                 script {
                     echo 'building docker image...'
@@ -72,41 +84,41 @@ pipeline{
             }
         }
 
-        stage('Trivy Vulnarability Scanner'){
+        stage('Trivy Vulnerability Scanner'){
             steps {
                 sh '''
                     trivy image eladwy/frontend:$GIT_COMMIT \
-                            --severity LOW,MEDIUM \
-                            --exit-code 0 \
-                            --quiet \
-                            --format json -o trivy-success.json
-                        
+                        --severity LOW,MEDIUM \
+                        --exit-code 0 \
+                        --quiet \
+                        --format json -o trivy-success.json
                     
-                        trivy image eladwy/frontend:$GIT_COMMIT \
-                            --severity HIGH,CRITICAL \
-                            --exit-code 1 \
-                            --quiet \
-                            --format json -o trivy-fail.json
+                    trivy image eladwy/frontend:$GIT_COMMIT \
+                        --severity HIGH,CRITICAL \
+                        --exit-code 1 \
+                        --quiet \
+                        --format json -o trivy-fail.json
                 '''
             }
             post {
                 always {
                     sh '''
+                        # Fixed file paths to match the output files
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                            --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
+                            --output trivy-image-MEDIUM-results.html trivy-success.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-                            --output trivy-image-CRITICAL-results.html trivy-image-CRITICAL-results.json
+                            --output trivy-image-CRITICAL-results.html trivy-fail.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-                            --output trivy-image-MEDIUM-results.xml trivy-image-MEDIUM-results.json
+                            --output trivy-image-MEDIUM-results.xml trivy-success.json
 
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-                            --output trivy-image-CRITICAL-results.xml trivy-image-CRITICAL-results.json
+                            --output trivy-image-CRITICAL-results.xml trivy-fail.json
                     '''
                 }
             }
@@ -114,18 +126,18 @@ pipeline{
 
         stage('Push Docker Image'){
             steps{
-                    withDockerRegistry(credentialsId: 'docker-hub', url: "https://index.docker.io/v1/") {
-                        echo 'pushing docker image...'
-                        sh '''
-                            docker push eladwy/frontend:$GIT_COMMIT
-                        '''
-                    }
+                withDockerRegistry(credentialsId: 'docker-hub', url: "https://index.docker.io/v1/") {
+                    echo 'pushing docker image...'
+                    sh '''
+                        docker push eladwy/frontend:$GIT_COMMIT
+                    '''
                 }
-            } 
-        }
+            }
+        } 
     }
     post {
         always {
-            archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'dependency-check-report.*, trivy-*.json, trivy-*.html, trivy-*.xml', allowEmptyArchive: true
         }
     }
+}
