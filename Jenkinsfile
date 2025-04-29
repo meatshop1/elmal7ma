@@ -179,7 +179,7 @@ pipeline{
                             echo "12345"
                             git checkout main
                             git checkout -b feature$BUILD_ID
-                            sed -i "s|\(eladwy\|borhom11\)/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" frontend/deployment.yaml
+                            sed -i "s|\\(eladwy\\|borhom11\\)/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" frontend/deployment.yaml
                             cat frontend/deployment.yaml
 
 
