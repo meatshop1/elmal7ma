@@ -170,6 +170,7 @@ pipeline{
                     dir ('meatshop-k8s'){
                         sh '''
                             ###Get the build id###
+                            echo "123"
                             git checkout main
                             git checkout -b feature$BUILD_ID
                             sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
