@@ -2,12 +2,13 @@ pipeline{
     agent any
     environment {
         SONAR_SCANNER_HOME = tool 'sonarqube-scanner';
+        GITHUB_TOKEN = credentials('git_hub_token');   
     }
     stages{
         stage('installing...'){
             steps{
                 script {
-                    echo 'installing ...'
+                    echo 'installing ....'
                     sh '''
                         npm install 
                     '''
@@ -120,10 +121,81 @@ pipeline{
                     }
                 }
             } 
+
+        stage('Deploy to aws'){
+            when{
+                branch 'features'
+            }
+            steps{
+                script{
+                        sshagent(['aws-dev-deploy']){
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
+                                    if sudo docker ps -a | grep -q "frontend"; then
+                                        echo "Container exists, stopping and removing..."
+                                        sudo docker stop frontend
+                                        sudo docker rm frontend
+                                        echo "Container stopped and removed."
+                                    fi
+                                    echo "Running new container..."
+                                    sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
+                                    "
+                            '''
+                    }
+                }
+            }
         }
+
+        stage('Integration Testing'){
+            when{
+                branch 'features'
+            }
+            steps{
+                withAWS(credentials: 'aws', region: 'me-south-1') {
+                    echo 'running integration tests...'
+                    sh '''
+                       bash integration-test.sh
+                    '''
+                }
+            }
+        }
+        stage('K8S update image tag'){
+            when{
+                branch 'PR*'
+            }
+            steps{
+                script {
+                    echo 'updating image tag in k8s...'
+                    sh '''
+                        ###Get the build id###
+                        git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git
+                        git checkout main
+                        git checkout -b feature$BUILD_ID
+                        sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
+                        cat /frontend/deployment.yaml
+
+
+                        ###Commit and push to feature branch###
+                        git config --global user.email "abdoahmed32522@gmail.com"
+                        git remote set-url origin https://$GITHUB_TOKEN@github.com/abdelrahman-eladwy/meatshop-k8s.git
+                        git add .
+                        git commit -m "updating image tag to $GIT_COMMIT"
+                        git push -u origin feature$BUILD_ID
+                    '''
+                }
+            }
+        }
+            
     }
     post {
         always {
+            script {
+                if (fileExists('meatshop-k8s')) {
+                    sh ' rm -rf meatshop-k8s'
+                    
+                }
+            }
             archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
         }
     }
+}
