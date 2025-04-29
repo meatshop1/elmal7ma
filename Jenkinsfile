@@ -147,6 +147,7 @@ pipeline{
         }
 
         stage('Integration Testing'){
+
             when{
                 branch 'features'
             }
@@ -159,14 +160,19 @@ pipeline{
                 }
             }
         }
+
+
+
         stage('K8S update image tag'){
+
             when{
                 branch 'PR*'
             }
+
             steps{
                 script {
                     echo 'updating image tag in k8s...'
-                    sh'git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git'
+                    sh 'git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git'
                     dir ('meatshop-k8s'){
                         sh '''
                             ###Get the build id###
