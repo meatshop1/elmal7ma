@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment {
         SONAR_SCANNER_HOME = tool 'sonarqube-scanner';
+        GITHUB_TOKEN = credentials('git_hub_token');   
     }
     stages{
         stage('installing...'){
@@ -158,9 +159,40 @@ pipeline{
                 }
             }
         }
+        stage('K8S update image tag'){
+            when{
+                branch 'PR*'
+            }
+            steps{
+                script {
+                    echo 'updating image tag in k8s...'
+                    sh '''
+                        git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git
+                        git checkout main
+                        git checkout -b feature$BUILD_ID
+                        sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
+                        cat /frontend/deployment.yaml
+
+                        ###Commit and push to feature branch###
+                        git config --global user.email "abdoahmed32522@gmail.com"
+                        git remote set-url origin https://$GITHUB_TOKEN@github.com/abdelrahman-eladwy/meatshop-k8s.git
+                        git add .
+                        git commit -m "updating image tag to $GIT_COMMIT"
+                        git push -u origin feature$BUILD_ID
+                    '''
+                }
+            }
+        }
+            
     }
     post {
         always {
+            script {
+                if (fileExists('meatshop-k8s')) {
+                    sh ' rm -rf meatshop-k8s'
+                    
+                }
+            }
             archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
         }
     }
