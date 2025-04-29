@@ -166,22 +166,24 @@ pipeline{
             steps{
                 script {
                     echo 'updating image tag in k8s...'
-                    sh '''
-                        ###Get the build id###
-                        git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git
-                        git checkout main
-                        git checkout -b feature$BUILD_ID
-                        sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
-                        cat /frontend/deployment.yaml
+                    sh'git clone -b main https://github.com/abdelrahman-eladwy/meatshop-k8s.git'
+                    dir ('meatshop-k8s'){
+                        sh '''
+                            ###Get the build id###
+                            git checkout main
+                            git checkout -b feature$BUILD_ID
+                            sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
+                            cat /frontend/deployment.yaml
 
 
-                        ###Commit and push to feature branch###
-                        git config --global user.email "abdoahmed32522@gmail.com"
-                        git remote set-url origin https://$GITHUB_TOKEN@github.com/abdelrahman-eladwy/meatshop-k8s.git
-                        git add .
-                        git commit -m "updating image tag to $GIT_COMMIT"
-                        git push -u origin feature$BUILD_ID
-                    '''
+                            ###Commit and push to feature branch###
+                            git config --global user.email "abdoahmed32522@gmail.com"
+                            git remote set-url origin https://$GITHUB_TOKEN@github.com/abdelrahman-eladwy/meatshop-k8s.git
+                            git add .
+                            git commit -m "updating image tag to $GIT_COMMIT"
+                            git push -u origin feature$BUILD_ID
+                        '''
+                    }
                 }
             }
         }
