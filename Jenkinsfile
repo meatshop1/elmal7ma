@@ -176,11 +176,11 @@ pipeline{
                     dir ('meatshop-k8s'){
                         sh '''
                             ###Get the build id###
-                            echo "123"
+                            echo "12345"
                             git checkout main
                             git checkout -b feature$BUILD_ID
-                            sed -i "s|eladwy/frontend:.*|eladwy/frontend:$GIT_COMMIT|g" /frontend/deployment.yaml
-                            cat /frontend/deployment.yaml
+                            sed -E -i "s-(eladwy|borhom11)/frontend:.*-eladwy/frontend:$GIT_COMMIT-g" frontend/deployment.yaml
+                            cat frontend/deployment.yaml
 
 
                             ###Commit and push to feature branch###
@@ -194,8 +194,66 @@ pipeline{
                 }
             }
         }
+
+        stage('K8S - Raise PR'){
+            when{
+                branch 'PR*'
+            }
+             steps {
+                script {
+                    
+                    def branchName = "feature${BUILD_ID}"
+                    
+                    sh """
+                        curl -L \\
+                            -X POST \\
+                            -H "Accept: application/vnd.github+json" \\
+                            -H "Authorization: Bearer \$GITHUB_TOKEN" \\
+                            -H "X-GitHub-Api-Version: 2022-11-28" \\
+                            https://api.github.com/repos/abdelrahman-eladwy/meatshop-k8s/pulls \\
+                            -d '{"title":"Update docker image to latest version","body":"Automated PR to update the frontend image tag to commit $GIT_COMMIT","head":"${branchName}","base":"main"}'
+                    """
+                }
+             }
+        }
+        stage('simulating running app') {
+            when {
+                branch 'PR*'
+            }
+            steps {
+                script {
+                    echo 'simulating running app...'
+                    sh '''
+                        if docker ps -a | grep -q frontend; then
+                            echo "Container Found, Stopping..."
+                            docker stop frontend && docker rm frontend
+                            echo "Container stopped and removed"
+                        fi
+                        docker run -d --name frontend -p 3000:80 eladwy/frontend:$GIT_COMMIT
+                    '''
+                }
+            }
+        }
+        stage('DAST - OWASP ZAP'){
+            when {
+                branch 'PR*'
+            }
+            steps{
+                sh '''
+                    chmod 777 $(pwd)
+                    docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
+                    -t http://192.168.1.83:3000 \
+                    -g gen.conf \
+                    -r testreport.html \
+                    -c zap_ignore_rules
+                '''
+            }
+        }
             
     }
+
+
+
     post {
         always {
             script {
