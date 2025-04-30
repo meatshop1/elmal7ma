@@ -207,7 +207,7 @@ pipeline{
                         -H "Authorization: Bearer $GITHUB_TOKEN" \
                         -H "X-GitHub-Api-Version: 2022-11-28" \
                         https://api.github.com/repos/meatshop1/elmal7ma/pulls \
-                        -d '{"title":"update docker image","body":"Please pull these awesome changes in!","head":"feature-$BUILD_ID","base":"main"}'
+                        -d '{"title":"update docker image","body":"Please pull these awesome changes in!","head":"octocat:new-feature","base":"main"}'
                 '''
             }
         }
