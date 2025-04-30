@@ -238,7 +238,7 @@ pipeline{
                 sh '''
                     chmod 777 $(pwd)
                     docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                    -t http://localhost:80 \
+                    -t http://localhost:3000 \
                     -g gen.conf \
                     -r testreport.html
                 '''
