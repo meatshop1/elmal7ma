@@ -244,7 +244,7 @@ pipeline{
                     docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
                     -t http://192.168.1.83:3000 \
                     -r testreport.html \
-                    -c zap_ignore_rules
+                    -C zap_ignore_rules
                 '''
             }
         }
