@@ -216,24 +216,23 @@ pipeline{
                 }
              }
         }
-        stage('simulating running app'){
-            when{
+        stage('simulating running app') {
+            when {
                 branch 'PR*'
             }
-            steps{
+            steps {
                 script {
                     echo 'simulating running app...'
                     sh '''
-                      if docker ps -a | grep -q "frontend"; then
-                        echo "Container Found, Stopping..."
-                        docker stop "frontend-meatshop" && docker rm "frontend-meatshop"
-                        echo "Container stopped and removed"
-                    fi
+                        if docker ps -a | grep -q frontend; then
+                            echo "Container Found, Stopping..."
+                            docker stop frontend && docker rm frontend
+                            echo "Container stopped and removed"
+                        fi
                         docker run -d --name frontend -p 3000:80 eladwy/frontend:$GIT_COMMIT
                     '''
                 }
             }
-            
         }
         stage('DAST - OWASP ZAP'){
             when {
