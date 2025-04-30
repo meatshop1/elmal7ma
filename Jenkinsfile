@@ -224,6 +224,11 @@ pipeline{
                 script {
                     echo 'simulating running app...'
                     sh '''
+                      if docker ps -a | grep -q "frontend"; then
+                        echo "Container Found, Stopping..."
+                        docker stop "frontend-meatshop" && docker rm "frontend-meatshop"
+                        echo "Container stopped and removed"
+                    fi
                         docker run -d --name frontend -p 3000:80 eladwy/frontend:$GIT_COMMIT
                     '''
                 }
@@ -238,7 +243,7 @@ pipeline{
                 sh '''
                     chmod 777 $(pwd)
                     docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                    -t http://localhost:3000 \
+                    -t http://192.168.1.83:3000 \
                     -g gen.conf \
                     -r testreport.html
                 '''
