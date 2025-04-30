@@ -199,17 +199,22 @@ pipeline{
             when{
                 branch 'PR*'
             }
-            steps{
-                sh '''
-                    curl -L \
-                        -X POST \
-                        -H "Accept: application/vnd.github+json" \
-                        -H "Authorization: Bearer $GITHUB_TOKEN" \
-                        -H "X-GitHub-Api-Version: 2022-11-28" \
-                        https://api.github.com/repos/abdelrahman-eladwy/meatshop-k8s/pulls \
-                        -d '{"title":"update docker image","body":"Please pull these awesome changes in!","head":"feature-$BUILD_ID","base":"main"}'
-                '''
-            }
+             steps {
+                script {
+                    // Get the current build ID to reference the correct branch
+                    def branchName = "feature${BUILD_ID}"
+                    
+                    sh """
+                        curl -L \\
+                            -X POST \\
+                            -H "Accept: application/vnd.github+json" \\
+                            -H "Authorization: Bearer \$GITHUB_TOKEN" \\
+                            -H "X-GitHub-Api-Version: 2022-11-28" \\
+                            https://api.github.com/repos/abdelrahman-eladwy/meatshop-k8s/pulls \\
+                            -d '{"title":"Update docker image to latest version","body":"Automated PR to update the frontend image tag to commit $GIT_COMMIT","head":"${branchName}","base":"main"}'
+                    """
+                }
+             }
         }
             
     }
