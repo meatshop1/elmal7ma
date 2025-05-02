@@ -17,7 +17,34 @@ pipeline {
         }
 
         // Dependency scanning stage (commented out)
-        // Uncomment if needed
+        // stage('Dependency Scanning'){
+        //     parallel {
+        //         stage('Dependency Check'){
+        //             steps{
+        //                 script {
+        //                     echo 'checking dependencies...'
+        //                     sh '''
+        //                         npm audit --audit-level=critical
+        //                     '''
+        //                 }
+        //             }
+        //         }      
+        //         stage('owasp dependency check'){
+        //             steps{
+        //                 dependencyCheck additionalArguments: '''
+        //                     --scan ./
+        //                     --out ./
+        //                     --format ALL
+        //                     --prettyPrint
+        //                     --disableYarnAudit \
+        //                     --noupdate
+        //                 ''', odcInstallation: 'owasp-10'
+        //                 dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
+        //                 publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'dependency check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('SAST - SonarQube') {
             steps {
