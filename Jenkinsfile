@@ -238,33 +238,33 @@ pipeline{
     when {
         branch 'PR*'
     }
-    steps{
-        script {
-            // Check if the frontend container is accessible first
-            sh '''
-                echo "Testing connection to frontend container..."
-                curl -s --connect-timeout 5 http://localhost:3000/ || echo "Warning: Frontend service may not be accessible"
-            '''
-            
-            // Run ZAP with timeout and more verbose output
-            timeout(time: 30, unit: 'MINUTES') {
+        steps{
+            script {
+                // Check if the frontend container is accessible first
                 sh '''
-                    chmod 777 $(pwd)
-                    echo "Starting ZAP scan..."
-                    docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                        -t http://host.docker.internal:3000/ \
-                        -r zap_report.html \
-                        -w zap_report.md \
-                        -x zap_report.xml \
-                        -J zap_report.json \
-                        -c zap_ignore_rules \
-                        -I \
-                        -z "-config scanner.threadPerHost=2" \
-                        -d
+                    echo "Testing connection to frontend container..."
+                    curl -s --connect-timeout 5 http://localhost:3000/ || echo "Warning: Frontend service may not be accessible"
                 '''
+                
+                // Run ZAP with timeout and more verbose output
+                timeout(time: 30, unit: 'MINUTES') {
+                    sh '''
+                        chmod 777 $(pwd)
+                        echo "Starting ZAP scan..."
+                        docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
+                            -t http://host.docker.internal:3000/ \
+                            -r zap_report.html \
+                            -w zap_report.md \
+                            -x zap_report.xml \
+                            -J zap_report.json \
+                            -c zap_ignore_rules \
+                            -I \
+                            -z "-config scanner.threadPerHost=2" \
+                            -d
+                    '''
+                }
             }
         }
-    }
             
     }
 
