@@ -240,11 +240,14 @@ pipeline{
             }
             steps{
                 sh '''
-                    chmod 777 $(pwd)
+                     chmod 777 $(pwd)
                     docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                    -t http://192.168.1.83:3000 \
-                    -r testreport.html \
-                    -c zap_ignore_rules
+                        -t http://192.168.127.131/ \
+                        -r zap_report.html \
+                        -w zap_report.md \
+                        -x zap_report.xml \
+                        -J zap_report.json \
+                        -c zap_ignore_rules
                 '''
             }
         }
