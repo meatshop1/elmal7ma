@@ -134,6 +134,7 @@ pipeline {
                     sshagent(['aws-dev-deploy']) {
                         sh '''
                             ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
+                                sudo docker stop $(sudo docker ps -q)
                                 if sudo docker ps -a | grep -q \\"frontend\\"; then
                                     echo \\"Container exists, stopping and removing...\\"
                                     sudo docker stop frontend
@@ -244,12 +245,13 @@ pipeline {
                             chmod 777 $(pwd)
                             echo "Starting ZAP scan..."
                             docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                                -t http://192.168.1.83:3000/ \
+                                -t  http://ec2-157-175-219-194.me-south-1.compute.amazonaws.com/ \
                                 -r zap_report.html \
                                 -w zap_report.md \
                                 -x zap_report.xml \
                                 -J zap_report.json \
-                                -c zap_ignore_rules 
+                                -c zap_ignore_rules \
+                                -d
                         '''
                     }
                 }
