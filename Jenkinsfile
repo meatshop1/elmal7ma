@@ -281,4 +281,5 @@ pipeline{
             archiveArtifacts artifacts: 'dependency-check-report.*', allowEmptyArchive: true
         }
     }
+ }
 }
