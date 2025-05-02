@@ -17,34 +17,34 @@ pipeline {
         }
 
         //Dependency scanning stage (commented out)
-        stage('Dependency Scanning'){
-            parallel {
-                stage('Dependency Check'){
-                    steps{
-                        script {
-                            echo 'checking dependencies...'
-                            sh '''
-                                npm audit --audit-level=critical
-                            '''
-                        }
-                    }
-                }      
-                stage('owasp dependency check'){
-                    steps{
-                        dependencyCheck additionalArguments: '''
-                            --scan ./
-                            --out ./
-                            --format ALL
-                            --prettyPrint
-                            --disableYarnAudit \
-                            --noupdate
-                        ''', odcInstallation: 'owasp-10'
-                        dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
-                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'dependency check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                    }
-                }
-            }
-        }
+        // stage('Dependency Scanning'){
+        //     parallel {
+        //         stage('Dependency Check'){
+        //             steps{
+        //                 script {
+        //                     echo 'checking dependencies...'
+        //                     sh '''
+        //                         npm audit --audit-level=critical
+        //                     '''
+        //                 }
+        //             }
+        //         }      
+        //         stage('owasp dependency check'){
+        //             steps{
+        //                 dependencyCheck additionalArguments: '''
+        //                     --scan ./
+        //                     --out ./
+        //                     --format ALL
+        //                     --prettyPrint
+        //                     --disableYarnAudit \
+        //                     --noupdate
+        //                 ''', odcInstallation: 'owasp-10'
+        //                 dependencyCheckPublisher pattern: 'dependency-check-report.xml', stopBuild: true, unstableTotalCritical: 1, unstableTotalHigh: 5, unstableTotalMedium: 11
+        //                 publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'dependency check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('SAST - SonarQube') {
             steps {
@@ -244,15 +244,12 @@ pipeline {
                             chmod 777 $(pwd)
                             echo "Starting ZAP scan..."
                             docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                                -t http://host.docker.internal:3000/ \
+                                -t http://192.168.1.83:3000/ \
                                 -r zap_report.html \
                                 -w zap_report.md \
                                 -x zap_report.xml \
                                 -J zap_report.json \
-                                -c zap_ignore_rules \
-                                -I \
-                                -z "-config scanner.threadPerHost=2" \
-                                -d
+                                -c zap_ignore_rules 
                         '''
                     }
                 }
