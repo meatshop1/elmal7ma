@@ -136,7 +136,12 @@ pipeline {
                            ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
                             # Remove all exited containers first
                             echo 'Removing exited containers...'
-                            sudo docker rm $(sudo docker ps -a -q -f status=exited) || echo 'No exited containers to remove'
+                            EXITED_CONTAINERS=\$(sudo docker ps -a -q -f status=exited)
+                            if [ -n \"\$EXITED_CONTAINERS\" ]; then
+                                sudo docker rm \$EXITED_CONTAINERS || echo 'Failed to remove some containers'
+                            else
+                                echo 'No exited containers to remove'
+                            fi
                             
                             # Check and remove frontend container if exists
                             if sudo docker ps -a | grep -q \"frontend\"; then
@@ -148,7 +153,7 @@ pipeline {
                             
                             echo \"Running new container...\"
                             sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
-                            "
+                        "
                         '''
                     }
                 }
