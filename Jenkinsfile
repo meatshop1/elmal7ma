@@ -134,24 +134,11 @@ pipeline {
                     sshagent(['aws-dev-deploy']) {
                         sh '''
                            ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
-                            # Remove all exited containers first
-                            echo 'Removing exited containers...'
-                            EXITED_CONTAINERS=\$(sudo docker ps -a -q -f status=exited)
-                            if [ -n \"\$EXITED_CONTAINERS\" ]; then
-                                sudo docker rm \$EXITED_CONTAINERS || echo 'Failed to remove some containers'
-                            else
-                                echo 'No exited containers to remove'
-                            fi
+                            # Force remove frontend container if it exists
+                            echo 'Cleaning up containers...'
+                            sudo docker rm -f frontend || echo 'No frontend container to remove'
                             
-                            # Check and remove frontend container if exists
-                            if sudo docker ps -a | grep -q \"frontend\"; then
-                                echo \"Container exists, stopping and removing...\"
-                                sudo docker stop frontend || echo 'Failed to stop frontend'
-                                sudo docker rm frontend || echo 'Failed to remove frontend'
-                                echo \"Container stopped and removed.\"
-                            fi
-                            
-                            echo \"Running new container...\"
+                            echo 'Running new container...'
                             sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
                         "
                         '''
