@@ -134,12 +134,24 @@ pipeline {
                     sshagent(['aws-dev-deploy']) {
                         sh '''
                            ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
-                            # Force remove frontend container if it exists
-                            echo 'Cleaning up containers...'
-                            sudo docker rm -f frontend || echo 'No frontend container to remove'
+                            # Check what's using port 80
+                            echo 'Checking port 80 usage...'
+                            sudo netstat -tulpn | grep ':80 ' || echo 'Nothing found on port 80 with netstat'
+                            sudo lsof -i :80 || echo 'Nothing found on port 80 with lsof'
                             
-                            echo 'Running new container...'
-                            sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
+                            # Force remove all Docker containers
+                            echo 'Cleaning up all containers...'
+                            sudo docker rm -f \$(sudo docker ps -aq) || echo 'No containers to remove'
+                            
+                            # Check if Docker is having network issues
+                            echo 'Restarting Docker service...'
+                            sudo systemctl restart docker || echo 'Failed to restart Docker'
+                            
+                            echo 'Waiting for Docker to restart...'
+                            sleep 5
+                            
+                            echo 'Running new container on alternate port...'
+                            sudo docker run -d --name frontend -p 8080:80 eladwy/frontend:$GIT_COMMIT
                         "
                         '''
                     }
