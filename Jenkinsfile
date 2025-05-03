@@ -133,16 +133,21 @@ pipeline {
                 script {
                     sshagent(['aws-dev-deploy']) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
-                                sudo docker stop $(sudo docker ps -q)
-                                if sudo docker ps -a | grep -q \\"frontend\\"; then
-                                    echo \\"Container exists, stopping and removing...\\"
-                                    sudo docker stop frontend
-                                    sudo docker rm frontend
-                                    echo \\"Container stopped and removed.\\"
-                                fi
-                                echo \\"Running new container...\\"
-                                sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
+                           ssh -o StrictHostKeyChecking=no ubuntu@ec2-157-175-219-194.me-south-1.compute.amazonaws.com "
+                            # Remove all exited containers first
+                            echo 'Removing exited containers...'
+                            sudo docker rm $(sudo docker ps -a -q -f status=exited) || echo 'No exited containers to remove'
+                            
+                            # Check and remove frontend container if exists
+                            if sudo docker ps -a | grep -q \"frontend\"; then
+                                echo \"Container exists, stopping and removing...\"
+                                sudo docker stop frontend || echo 'Failed to stop frontend'
+                                sudo docker rm frontend || echo 'Failed to remove frontend'
+                                echo \"Container stopped and removed.\"
+                            fi
+                            
+                            echo \"Running new container...\"
+                            sudo docker run -d --name frontend -p 80:80 eladwy/frontend:$GIT_COMMIT
                             "
                         '''
                     }
